@@ -280,7 +280,7 @@ footer a:hover { text-decoration: underline; }
 </footer>
 
 <script>
-// Animazioni smooth scroll + parallax
+// Animazioni smooth scroll
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
@@ -292,6 +292,11 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
+// Navbar toggle
+const navToggle = document.getElementById('nav-toggle');
+const bottomNav = document.getElementById('bottom-nav');
+navToggle.addEventListener('click', () => { bottomNav.classList.toggle('active'); });
+
 // Parallax semplice
 window.addEventListener('scroll', () => {
   document.querySelectorAll('section').forEach(sec => {
@@ -299,11 +304,6 @@ window.addEventListener('scroll', () => {
     sec.style.transform = translateY(${window.scrollY * speed}px);
   });
 });
-
-// Navbar toggle
-const navToggle = document.getElementById('nav-toggle');
-const bottomNav = document.getElementById('bottom-nav');
-navToggle.addEventListener('click', () => { bottomNav.classList.toggle('active'); });
 </script>
 
 </body>
