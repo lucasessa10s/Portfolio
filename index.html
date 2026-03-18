@@ -95,6 +95,27 @@ footer {
 footer a { color: #00c6ff; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 
+  /* HOBBY CARD */
+.hobby-card {
+  padding: 25px;
+  text-align: center;
+  transition: 0.4s;
+}
+
+.hobby-content h3 {
+  margin-bottom: 10px;
+}
+
+.hobby-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  background: linear-gradient(135deg, #7f00ff, #00c6ff);
+  box-shadow: 0 0 20px #7f00ff, 0 0 40px #00c6ff;
+}
+
+.hobby-card:hover p {
+  color: white;
+}
+
 </style>
 </head>
 
@@ -117,6 +138,49 @@ footer a:hover { text-decoration: underline; }
 <section class="hidden">
   <h2>🔥 Cosa faccio</h2>
   <p>Creo siti web, gestisco social e sviluppo e-commerce completi con un tocco creativo.</p>
+</section>
+
+  <section class="hidden">
+  <h2>🚀 Passioni</h2>
+
+  <div class="grid">
+
+    <div class="card hobby-card">
+      <div class="hobby-content">
+        <h3>💻 Web Development</h3>
+        <p>Mi piace creare siti e sperimentare con HTML, CSS e nuove tecnologie.</p>
+      </div>
+    </div>
+
+    <div class="card hobby-card">
+      <div class="hobby-content">
+        <h3>🎨 Grafica</h3>
+        <p>Mi piace curare l’aspetto visivo e creare design moderni e accattivanti.</p>
+      </div>
+    </div>
+
+    <div class="card hobby-card">
+      <div class="hobby-content">
+        <h3>📱 Social Media</h3>
+        <p>Gestisco pagine Instagram e creo contenuti coinvolgenti.</p>
+      </div>
+    </div>
+
+    <div class="card hobby-card">
+      <div class="hobby-content">
+        <h3>📊 Marketing</h3>
+        <p>Studio strategie, sponsorizzate e crescita online.</p>
+      </div>
+    </div>
+
+    <div class="card hobby-card">
+      <div class="hobby-content">
+        <h3>🧠 Curiosità</h3>
+        <p>Amo imparare un po’ di tutto nel mondo informatico.</p>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <section id="progetti" class="hidden">
