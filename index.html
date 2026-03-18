@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Portfolio Creativo</title>
 
 <!-- FONT -->
@@ -28,13 +27,46 @@ header {
   text-align: center;
 }
 
-header h1 {
-  font-size: 50px;
+header h1 { font-size: 50px; }
+header p { font-size: 20px; }
+
+.btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: black;
+  border-radius: 30px;
+  t…
+[16:29, 18/03/2026] Luca ⚡️: <!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Creativo</title>
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0f0f0f;
+  color: white;
 }
 
-header p {
-  font-size: 20px;
+/* HERO */
+header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #7f00ff, #00c6ff);
+  text-align: center;
 }
+
+header h1 { font-size: 50px; }
+header p { font-size: 20px; }
 
 .btn {
   margin-top: 20px;
@@ -45,11 +77,7 @@ header p {
   color: white;
   transition: 0.3s;
 }
-
-.btn:hover {
-  background: white;
-  color: black;
-}
+.btn:hover { background: white; color: black; }
 
 /* SEZIONI */
 section {
@@ -57,11 +85,11 @@ section {
   text-align: center;
 }
 
-/* GRID INSTAGRAM */
+/* GRID FEED */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
+  gap: 20px;
 }
 
 /* CARD */
@@ -70,116 +98,122 @@ section {
   overflow: hidden;
   border-radius: 15px;
   cursor: pointer;
+  background: #1a1a1a;
+  transition: transform 0.4s, background 0.4s;
 }
-
 .card img {
   width: 100%;
   display: block;
-  transition: 0.6s;
+  transition: transform 0.5s;
 }
-
-/* OVERLAY */
 .overlay {
   position: absolute;
   bottom: 0;
   background: rgba(0,0,0,0.7);
   width: 100%;
-  padding: 20px;
+  padding: 15px;
   transform: translateY(100%);
-  transition: 0.4s;
+  transition: transform 0.4s;
 }
+.card:hover img { transform: scale(1.1); }
+.card:hover .overlay { transform: translateY(0); }
 
-.card:hover img {
-  transform: scale(1.1);
-}
-
-.card:hover .overlay {
-  transform: translateY(0);
-}
-
-/* ANIMAZIONI */
+/* ANIMAZIONI SMOOTH */
 .hidden {
   opacity: 0;
   transform: translateY(60px);
 }
 
+/* FOOTER */
 footer {
   padding: 40px;
   background: black;
+  text-align: center;
 }
-</style>
+footer a { color: #00c6ff; text-decoration: none; }
+footer a:hover { text-decoration: underline; }
 
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>🚀 Tuo Nome</h1>
+  <h1>🚀 Luca Sessa</h1>
   <p>Web • Social • E-commerce</p>
   <a href="#progetti" class="btn">Guarda i miei lavori</a>
 </header>
 
 <section class="hidden">
   <h2>🔥 Cosa faccio</h2>
-  <p>Creo siti web, gestisco social e sviluppo e-commerce completi.</p>
+  <p>Creo siti web, gestisco social e sviluppo e-commerce completi con un tocco creativo.</p>
 </section>
 
-<section id="progetti">
+<section id="progetti" class="hidden">
   <h2>📱 I miei progetti</h2>
-
   <div class="grid">
-
-    <div class="card hidden">
-      <img src="img/progetto1.jpg">
+    <div class="card">
+      <img src="img/gelosiaboutique.jpeg" alt="Gelosia Boutique">
       <div class="overlay">
-        <h3>Landing Fitness</h3>
+        <h3>Gelosia Boutique</h3>
         <p>Sito moderno + design UI</p>
       </div>
     </div>
-
-    <div class="card hidden">
-      <img src="img/progetto2.jpg">
+    <div class="card">
+      <img src="img/officinaluxury.jpeg" alt="Officina Luxury">
       <div class="overlay">
-        <h3>E-commerce</h3>
-        <p>Creato con Shopify</p>
+        <h3>Officina Luxury</h3>
+        <p>Negozio completo su Shopify</p>
       </div>
     </div>
-
-    <div class="card hidden">
-      <img src="img/progetto3.jpg">
+    <div class="card">
+      <img src="img/progetto3-mockup.jpg" alt="Social Design">
       <div class="overlay">
         <h3>Social Design</h3>
-        <p>Grafiche Instagram</p>
+        <p>Post e grafiche Instagram</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- INSTAGRAM -->
 <section class="hidden">
   <h2>📱 Seguimi su Instagram</h2>
-
-  <!-- SOSTITUISCI IL LINK QUI SOTTO -->
-  <iframe src="https://lightwidget.com/widgets/TUO-CODICE.html"
-  style="width:100%; border:0; height:500px;"></iframe>
-
+  <div class="grid">
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta1.jpg" alt="Instagram post 1">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta2.jpg" alt="Instagram post 2">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta3.jpg" alt="Instagram post 3">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta4.jpg" alt="Instagram post 4">
+      </a>
+    </div>
+  </div>
 </section>
 
 <section class="hidden">
   <h2>👤 Chi sono</h2>
-  <p>Mi occupo di creare esperienze digitali complete tra design, social media e sviluppo web.</p>
+  <p>Mi occupo di creare esperienze digitali complete, unendo design, social media e sviluppo web per aiutare i brand a crescere online.</p>
 </section>
 
-<footer>
+<footer class="hidden">
   <p>📩 Seguimi su Instagram</p>
-  <a href="https://instagram.com/tuo_username" target="_blank">
-    @tuo_username
-  </a>
+  <a href="https://instagram.com/lukse__" target="_blank">@lukse__</a>
 </footer>
 
-<!-- ANIMAZIONI SMOOTH -->
 <script>
+// Animazioni smooth scroll
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
@@ -195,4 +229,3 @@ document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
 </body>
 </html>
-[16:15, 18/03/2026] Luca ⚡️: 
