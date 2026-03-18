@@ -101,9 +101,17 @@ footer a:hover { text-decoration: underline; }
 <body>
 
 <header>
-  <h1>🚀 Luca Sessa</h1>
-  <p>Web • Social • E-commerce</p>
-  <a href="#progetti" class="btn">Guarda i miei lavori</a>
+  <div style="display:flex; flex-direction: column; align-items:center; gap:20px;">
+    <!-- Cerchio per foto -->
+    <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; border:4px solid #00c6ff;">
+      <img src="img/foto-profilo.jpg" alt="Foto Luca" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <!-- Nome e descrizione -->
+    <h1>🚀 Luca Sessa</h1>
+    <p>Web • Social • E-commerce</p>
+    <a href="#progetti" class="btn">Guarda i miei lavori</a>
+  </div>
 </header>
 
 <section class="hidden">
