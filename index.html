@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Luca Sessa</title>
+<title>Portfolio Personale - Luca Sessa</title>
 
 <!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
-<!-- ICONE -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
 <style>
 body {
@@ -17,63 +14,6 @@ body {
   font-family: 'Poppins', sans-serif;
   background: #0f0f0f;
   color: white;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-/* GLITCH EFFECT */
-.glitch {
-  position: relative;
-  color: #00c6ff;
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-.glitch::before {
-  left: 2px;
-  text-shadow: -2px 0 #ff00ff;
-  animation: glitchTop 2s infinite linear alternate-reverse;
-}
-.glitch::after {
-  left: -2px;
-  text-shadow: -2px 0 #00ffea;
-  animation: glitchBottom 2s infinite linear alternate-reverse;
-}
-@keyframes glitchTop {
-  0% { clip: rect(0, 9999px, 0, 0); }
-  10% { clip: rect(5px, 9999px, 15px, 0); }
-  20% { clip: rect(10px, 9999px, 20px, 0); }
-  30% { clip: rect(15px, 9999px, 25px, 0); }
-  40% { clip: rect(20px, 9999px, 30px, 0); }
-  50% { clip: rect(0px, 9999px, 20px, 0); }
-  60% { clip: rect(10px, 9999px, 15px, 0); }
-  70% { clip: rect(5px, 9999px, 25px, 0); }
-  80% { clip: rect(15px, 9999px, 20px, 0); }
-  90% { clip: rect(0px, 9999px, 15px, 0); }
-  100% { clip: rect(5px, 9999px, 25px, 0); }
-}
-@keyframes glitchBottom {
-  0% { clip: rect(0, 9999px, 0, 0); }
-  10% { clip: rect(10px, 9999px, 20px, 0); }
-  20% { clip: rect(15px, 9999px, 25px, 0); }
-  30% { clip: rect(5px, 9999px, 15px, 0); }
-  40% { clip: rect(0px, 9999px, 10px, 0); }
-  50% { clip: rect(10px, 9999px, 20px, 0); }
-  60% { clip: rect(5px, 9999px, 15px, 0); }
-  70% { clip: rect(0px, 9999px, 25px, 0); }
-  80% { clip: rect(10px, 9999px, 20px, 0); }
-  90% { clip: rect(5px, 9999px, 15px, 0); }
-  100% { clip: rect(0px, 9999px, 10px, 0); }
 }
 
 /* HERO */
@@ -85,14 +25,11 @@ header {
   align-items: center;
   background: linear-gradient(135deg, #7f00ff, #00c6ff);
   text-align: center;
-  position: relative;
-  overflow: hidden;
 }
-header p { font-size: 20px; animation: neonText 1.5s ease-in-out infinite alternate; }
-@keyframes neonText {
-  0% { text-shadow: 0 0 5px #00c6ff, 0 0 10px #7f00ff; }
-  100% { text-shadow: 0 0 20px #00c6ff, 0 0 30px #7f00ff; }
-}
+
+header h1 { font-size: 50px; }
+header p { font-size: 20px; }
+
 .btn {
   margin-top: 20px;
   padding: 12px 25px;
@@ -104,23 +41,10 @@ header p { font-size: 20px; animation: neonText 1.5s ease-in-out infinite altern
 }
 .btn:hover { background: white; color: black; }
 
-/* CERCHIO FOTO */
-#profile-pic {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #00c6ff;
-  margin-bottom: 20px;
-}
-#profile-pic img { width: 100%; height: 100%; object-fit: cover; }
-
 /* SEZIONI */
 section {
   padding: 80px 20px;
   text-align: center;
-  position: relative;
-  transition: transform 0.5s ease-out;
 }
 
 /* GRID FEED */
@@ -130,25 +54,19 @@ section {
   gap: 20px;
 }
 
-/* CARD PROGETTI */
+/* CARD */
 .card {
   position: relative;
   overflow: hidden;
   border-radius: 15px;
   cursor: pointer;
   background: #1a1a1a;
-  transition: transform 0.4s, box-shadow 0.4s;
+  transition: transform 0.4s, background 0.4s;
 }
-.card img { 
-  width: 100%; 
-  display: block; 
-  transition: transform 0.6s ease, filter 0.6s ease;
-  border-radius: 15px;
-}
-.card:hover img {
-  transform: scale(1.15) rotate(1deg);
-  filter: brightness(1.2) contrast(1.2);
-  box-shadow: 0 0 20px #7f00ff, 0 0 40px #00c6ff;
+.card img {
+  width: 100%;
+  display: block;
+  transition: transform 0.5s;
 }
 .overlay {
   position: absolute;
@@ -157,126 +75,111 @@ section {
   width: 100%;
   padding: 15px;
   transform: translateY(100%);
-  transition: transform 0.4s ease, opacity 0.4s ease;
+  transition: transform 0.4s;
 }
-.card:hover .overlay {
-  transform: translateY(0);
-  opacity: 1;
-}
+.card:hover img { transform: scale(1.1); }
+.card:hover .overlay { transform: translateY(0); }
 
 /* ANIMAZIONI SMOOTH */
-.hidden { opacity: 0; transform: translateY(60px); }
+.hidden {
+  opacity: 0;
+  transform: translateY(60px);
+}
 
 /* FOOTER */
-footer { padding: 40px; background: black; text-align: center; }
+footer {
+  padding: 40px;
+  background: black;
+  text-align: center;
+}
 footer a { color: #00c6ff; text-decoration: none; }
 footer a:hover { text-decoration: underline; }
-
-/* NAVBAR BOTTOM */
-#bottom-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  font-family: 'Poppins', sans-serif;
-}
-#nav-toggle {
-  font-size: 30px;
-  cursor: pointer;
-  color: #00c6ff;
-  background: #0f0f0f;
-  padding: 10px 15px;
-  border-radius: 50%;
-  box-shadow: 0 0 15px #00c6ff;
-  transition: all 0.3s;
-}
-#nav-toggle:hover { transform: scale(1.1); box-shadow: 0 0 25px #00c6ff; }
-#nav-menu {
-  display: flex;
-  flex-direction: column;
-  background: #1a1a1a;
-  border-radius: 15px;
-  overflow: hidden;
-  position: absolute;
-  bottom: 60px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-}
-#bottom-nav.active #nav-menu { opacity: 1; visibility: visible; transform: translateY(0); }
-#nav-menu a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 25px;
-  color: white;
-  text-decoration: none;
-  border-bottom: 1px solid #333;
-  transition: 0.3s;
-}
-#nav-menu a:last-child { border-bottom: none; }
-#nav-menu a:hover { background: #7f00ff; color: white; transform: scale(1.05); }
 
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR BOTTOM -->
-<div id="bottom-nav">
-  <div id="nav-toggle"><i class="fas fa-bars"></i></div>
-  <div id="nav-menu">
-    <a href="#progetti"><i class="fas fa-laptop-code"></i> Progetti</a>
-    <a href="#instagram"><i class="fab fa-instagram"></i> Instagram</a>
-    <a href="#chi-sono"><i class="fas fa-user"></i> Chi sono</a>
-    <a href="#contatti"><i class="fas fa-envelope"></i> Contatti</a>
-  </div>
-</div>
-
 <header>
   <div style="display:flex; flex-direction: column; align-items:center; gap:20px;">
-    <div id="profile-pic"><img src="img/foto-profilo.jpg" alt="Foto Luca"></div>
-    <h1 class="glitch" data-text="Luca Sessa">Luca Sessa</h1>
+    <!-- Cerchio per foto -->
+    <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; border:4px solid #00c6ff;">
+      <img src="img/foto-profilo.jpg" alt="Foto Luca" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <!-- Nome e descrizione -->
+    <h1>🚀 Luca Sessa</h1>
     <p>Web • Social • E-commerce</p>
     <a href="#progetti" class="btn">Guarda i miei lavori</a>
   </div>
 </header>
 
-<section class="hidden" id="chi-sono">
-  <h2 class="glitch" data-text="Cosa faccio">Cosa faccio</h2>
+<section class="hidden">
+  <h2>🔥 Cosa faccio</h2>
   <p>Creo siti web, gestisco social e sviluppo e-commerce completi con un tocco creativo.</p>
 </section>
 
 <section id="progetti" class="hidden">
-  <h2 class="glitch" data-text="I miei progetti">I miei progetti</h2>
+  <h2>📱 I miei progetti</h2>
   <div class="grid">
-    <div class="card"><img src="img/progetto1-mockup.jpg" alt="Gelosia Aboutoque"><div class="overlay"><h3>Gelosia Aboutoque</h3><p>Sito moderno + design UI</p></div></div>
-    <div class="card"><img src="img/progetto2-mockup.jpg" alt="Officina Luxury"><div class="overlay"><h3>Officina Luxury</h3><p>Negozio completo su Shopify</p></div></div>
-    <div class="card"><img src="img/progetto3-mockup.jpg" alt="Social Design"><div class="overlay"><h3>Social Design</h3><p>Post e grafiche Instagram</p></div></div>
+    <div class="card">
+      <img src="img/gelosiaboutique.jpg" alt="Gelosia Boutique">
+      <div class="overlay">
+        <h3>Gelosia Boutique</h3>
+        <p>Sito moderno + design UI</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="img/officinaluxury.jpg" alt="Officina Luxury">
+      <div class="overlay">
+        <h3>Officina Luxury</h3>
+        <p>Negozio completo su Shopify</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="img/progetto3-mockup.jpg" alt="Social Design">
+      <div class="overlay">
+        <h3>Social Design</h3>
+        <p>Post e grafiche Instagram</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="instagram" class="hidden">
-  <h2 class="glitch" data-text="Instagram">Seguimi su Instagram</h2>
+<section class="hidden">
+  <h2>📱 Seguimi su Instagram</h2>
   <div class="grid">
-    <div class="card"><a href="https://instagram.com/tuo_username" target="_blank"><img src="img/insta1.jpg" alt="Instagram post 1"></a></div>
-    <div class="card"><a href="https://instagram.com/tuo_username" target="_blank"><img src="img/insta2.jpg" alt="Instagram post 2"></a></div>
-    <div class="card"><a href="https://instagram.com/tuo_username" target="_blank"><img src="img/insta3.jpg" alt="Instagram post 3"></a></div>
-    <div class="card"><a href="https://instagram.com/tuo_username" target="_blank"><img src="img/insta4.jpg" alt="Instagram post 4"></a></div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta1.jpg" alt="Instagram post 1">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta2.jpg" alt="Instagram post 2">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta3.jpg" alt="Instagram post 3">
+      </a>
+    </div>
+    <div class="card">
+      <a href="https://instagram.com/lukse__" target="_blank">
+        <img src="img/insta4.jpg" alt="Instagram post 4">
+      </a>
+    </div>
   </div>
 </section>
 
-<section class="hidden" id="contatti">
-  <h2 class="glitch" data-text="Contatti">Contatti</h2>
-  <p>Puoi scrivermi a: <a href="mailto:tuaemail@example.com">tuaemail@example.com</a></p>
+<section class="hidden">
+  <h2>👤 Chi sono</h2>
+  <p>Mi occupo di creare esperienze digitali complete, unendo design, social media e sviluppo web per aiutare i brand a crescere online.</p>
 </section>
 
 <footer class="hidden">
-  <p>Seguimi su Instagram: <a href="https://instagram.com/tuo_username" target="_blank">@tuo_username</a></p>
+  <p>📩 Seguimi su Instagram</p>
+  <a href="https://instagram.com/lukse__" target="_blank">@lukse__</a>
 </footer>
 
 <script>
@@ -290,20 +193,8 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.2 });
+
 document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
-
-// Navbar toggle
-const navToggle = document.getElementById('nav-toggle');
-const bottomNav = document.getElementById('bottom-nav');
-navToggle.addEventListener('click', () => { bottomNav.classList.toggle('active'); });
-
-// Parallax semplice
-window.addEventListener('scroll', () => {
-  document.querySelectorAll('section').forEach(sec => {
-    const speed = 0.2;
-    sec.style.transform = translateY(${window.scrollY * speed}px);
-  });
-});
 </script>
 
 </body>
