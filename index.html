@@ -347,9 +347,14 @@
         <h1>Ciao, sono <span>Luca Sessa</span> 🚀</h1>
         <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
         
-        <a href="#progetti" class="btn">
-            Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
-        </a>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+    <a href="#progetti" class="btn">
+        Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
+    </a>
+    <a href="#contatti" class="btn" style="background: transparent; border: 2px solid var(--secondary); box-shadow: none;">
+        Parliamo del tuo progetto <i class="fa-brands fa-instagram"></i>
+    </a>
+</div>
     </header>
 
     <!-- CHI SONO -->
@@ -476,6 +481,33 @@
         </div>
     </section>
 
+    <!-- CONTATTI -->
+    <section id="contatti" class="hidden">
+        <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
+
+        <div class="contact-box" style="background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 20px; padding: 40px; max-width: 650px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+            <p style="text-align: center; color: var(--text-body); margin-bottom: 25px; font-size: 1rem;">
+                Vuoi realizzare un sito web, sviluppare uno store Shopify o richiedere una consulenza? Scrivimi direttamente su Instagram!
+            </p>
+
+            <form id="instaForm" onsubmit="sendToInstagram(event)" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                    <input type="text" id="name" placeholder="Il tuo nome o azienda" required style="width: 100%; padding: 14px 18px; background: #0a0c10; border: 1px solid var(--border-light); border-radius: 12px; color: #fff; font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.3s ease;">
+                </div>
+                <div>
+                    <input type="text" id="project" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required style="width: 100%; padding: 14px 18px; background: #0a0c10; border: 1px solid var(--border-light); border-radius: 12px; color: #fff; font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.3s ease;">
+                </div>
+                <div>
+                    <textarea id="message" placeholder="Descrivi brevemente la tua idea..." rows="4" required style="width: 100%; padding: 14px 18px; background: #0a0c10; border: 1px solid var(--border-light); border-radius: 12px; color: #fff; font-family: inherit; font-size: 0.95rem; outline: none; resize: none; transition: border-color 0.3s ease;"></textarea>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; justify-content: center; cursor: pointer; border: none; font-size: 1rem; margin-top: 10px;">
+                    Contattami su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="hidden">
         <p>© 2026 <strong>Luca Sessa</strong>. Realizzato con HTML, CSS e Passione.</p>
@@ -496,6 +528,26 @@
         }, { threshold: 0.15 });
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+        function sendToInstagram(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const project = document.getElementById('project').value;
+    const message = document.getElementById('message').value;
+
+    // Costruisci il testo da copiare/inviare
+    const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
+
+    // Copia il messaggio negli appunti per comodità dell'utente
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Messaggio preparato e copiato negli appunti! Incollalo nella chat di Instagram.");
+        window.open('https://instagram.com/lukse__', '_blank');
+    }).catch(() => {
+        // Fallback nel caso la copia negli appunti sia bloccata dal browser
+        window.open('https://instagram.com/lukse__', '_blank');
+    });
+}
     </script>
 </body>
 </html>
