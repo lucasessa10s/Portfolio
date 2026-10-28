@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | 3D Interactive Portfolio</title>
+    <title>Luca Sessa | 3D Device Showcase Portfolio</title>
 
     <!-- FONT & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,9 +16,9 @@
 
     <style>
         :root {
-            --bg-dark: #030407;
-            --bg-card: rgba(14, 18, 28, 0.75);
-            --bg-card-hover: rgba(28, 35, 52, 0.92);
+            --bg-dark: #05070b;
+            --bg-card: rgba(18, 22, 32, 0.75);
+            --bg-card-hover: rgba(28, 35, 52, 0.95);
             --primary: #7f00ff;
             --secondary: #00c6ff;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -51,17 +51,6 @@
 
         h1, h2, h3, .brand-font {
             font-family: 'Syne', sans-serif;
-        }
-
-        /* THREE.JS CANVAS BACKGROUND */
-        #webgl-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
         }
 
         /* CURSORE LUMINESCENTE DESKTOP */
@@ -119,7 +108,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(3, 4, 7, 0.95);
+            background: rgba(5, 7, 11, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             z-index: 99999;
@@ -228,7 +217,7 @@
             text-align: center;
             padding: 80px 20px 40px;
             position: relative;
-            z-index: 1;
+            background: radial-gradient(circle at 50% 20%, rgba(127, 0, 255, 0.25) 0%, var(--bg-dark) 75%);
         }
 
         .hero-content {
@@ -375,13 +364,12 @@
             box-shadow: none;
         }
 
-        /* SEZIONI GENERALI IN STRUTTURA 3D */
+        /* SEZIONI GENERALI */
         section {
-            padding: 100px 20px;
+            padding: 80px 20px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            z-index: 1;
         }
 
         .section-title {
@@ -389,7 +377,7 @@
             font-size: clamp(1.8rem, 6vw, 2.6rem);
             color: var(--text-title);
             font-weight: 800;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             letter-spacing: -0.5px;
         }
 
@@ -397,6 +385,75 @@
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        /* SEZIONE SHOWCASE DISPOSITIVO 3D INTERATTIVO */
+        .device-3d-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .device-instruction {
+            font-size: 0.88rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .device-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 420px;
+            background: radial-gradient(circle at center, rgba(127, 0, 255, 0.15) 0%, transparent 70%);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: grab;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .device-canvas-wrapper:active {
+            cursor: grabbing;
+        }
+
+        #device-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* CONTROLLI SITO SWITCHER PER IL DISPOSITIVO 3D */
+        .device-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .device-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-body);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .device-btn.active, .device-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 20px rgba(0, 198, 255, 0.4);
         }
 
         /* CHI SONO */
@@ -410,7 +467,7 @@
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
 
         .about-box p {
@@ -440,97 +497,6 @@
             color: var(--text-body);
             font-weight: 600;
             text-transform: uppercase;
-        }
-
-        /* PORTALI PROGETTI 3D / ROW */
-        .projects-3d-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-
-        .project-portal-card {
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 30px;
-            align-items: center;
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 24px;
-            padding: 28px;
-            transition: all 0.4s ease;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .project-portal-card:hover {
-            border-color: var(--secondary);
-            transform: scale(1.02) translateY(-6px);
-            box-shadow: 0 20px 45px rgba(0, 198, 255, 0.25);
-        }
-
-        .portal-img-container {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #090d14;
-        }
-
-        .portal-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .project-portal-card:hover .portal-img-container img {
-            transform: scale(1.08);
-        }
-
-        .portal-info h3 {
-            font-size: 1.8rem;
-            color: var(--text-title);
-            margin-bottom: 12px;
-        }
-
-        .portal-info p {
-            font-size: 0.95rem;
-            color: var(--text-body);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .portal-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 22px;
-        }
-
-        .tag-pill {
-            font-size: 0.72rem;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: rgba(127, 0, 255, 0.18);
-            color: var(--secondary);
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            font-weight: 600;
-        }
-
-        .portal-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: var(--text-title);
-            font-size: 0.92rem;
-        }
-
-        .portal-btn i {
-            color: var(--secondary);
         }
 
         /* TECH STACK */
@@ -633,8 +599,6 @@
             background: #030406;
             border-top: 1px solid var(--border-light);
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
 
         footer p {
@@ -659,13 +623,9 @@
             color: var(--secondary);
         }
 
-        @media (max-width: 850px) {
-            .project-portal-card { grid-template-columns: 1fr; }
-            .portal-img-container { height: 210px; }
-        }
-
         @media (max-width: 480px) {
-            section { padding: 60px 16px; }
+            section { padding: 50px 16px; }
+            .device-canvas-wrapper { height: 320px; }
             .btn-group { flex-direction: column; }
             .btn { width: 100%; }
             .stats-grid { grid-template-columns: 1fr; gap: 10px; }
@@ -675,9 +635,6 @@
 </head>
 
 <body>
-
-    <!-- THREE.JS WEBGL CANVAS -->
-    <canvas id="webgl-canvas"></canvas>
 
     <!-- CURSORE DESKTOP -->
     <div id="cursor-glow"></div>
@@ -703,8 +660,8 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
-                <a href="#progetti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Esplora i Progetti Web & Shopify</span>
+                <a href="#progetti3d" class="hub-card-link" onclick="toggleHub()">
+                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Prova il Dispositivo 3D Interattivo</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
@@ -735,8 +692,8 @@
             <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
             
             <div class="btn-group">
-                <a href="#progetti" class="btn">
-                    Esplora Spazio 3D <i class="fa-solid fa-arrow-down"></i>
+                <a href="#progetti3d" class="btn">
+                    Ruota Dispositivo 3D <i class="fa-solid fa-arrows-spin"></i>
                 </a>
                 <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
                     Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
@@ -768,80 +725,24 @@
         </div>
     </section>
 
-    <!-- PROGETTI IN TUNNEL 3D -->
-    <section id="progetti">
-        <h2 class="section-title">🛸 Portali <span>Progetti 3D</span></h2>
+    <!-- SEZIONE DISPOSITIVO 3D INTERATTIVO -->
+    <section id="progetti3d" class="device-3d-section">
+        <h2 class="section-title">📱 Dispositivo <span>3D Interattivo</span></h2>
+        
+        <div class="device-instruction">
+            <i class="fa-solid fa-hand-pointer"></i> Trascina con il mouse o con le dita per ruotare lo schermo in 3D
+        </div>
 
-        <div class="projects-3d-stack">
+        <div class="device-canvas-wrapper" id="canvasWrapper">
+            <canvas id="device-canvas"></canvas>
+        </div>
 
-            <!-- PROGETTO 1 -->
-            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
-                <div class="portal-img-container">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Saadiya.it" loading="lazy">
-                </div>
-                <div class="portal-info">
-                    <h3>Saadiya.it</h3>
-                    <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
-                    <div class="portal-tags">
-                        <span class="tag-pill">E-Commerce</span>
-                        <span class="tag-pill">Brand Identity</span>
-                        <span class="tag-pill">Fashion UI</span>
-                    </div>
-                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
-
-            <!-- PROGETTO 2 -->
-            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
-                <div class="portal-img-container">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="AirSafe.it" loading="lazy">
-                </div>
-                <div class="portal-info">
-                    <h3>AirSafe.it</h3>
-                    <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form di contatto.</p>
-                    <div class="portal-tags">
-                        <span class="tag-pill">HTML/CSS</span>
-                        <span class="tag-pill">UI Design</span>
-                        <span class="tag-pill">Corporate</span>
-                    </div>
-                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
-
-            <!-- PROGETTO 3 -->
-            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
-                <div class="portal-img-container">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Gelosia Boutique" loading="lazy">
-                </div>
-                <div class="portal-info">
-                    <h3>Gelosia Boutique</h3>
-                    <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
-                    <div class="portal-tags">
-                        <span class="tag-pill">Shopify</span>
-                        <span class="tag-pill">Mobile First</span>
-                        <span class="tag-pill">UX Research</span>
-                    </div>
-                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
-
-            <!-- PROGETTO 4 -->
-            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
-                <div class="portal-img-container">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Officina Luxury" loading="lazy">
-                </div>
-                <div class="portal-info">
-                    <h3>Officina Luxury</h3>
-                    <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione dei prodotti e nel layout di conversione.</p>
-                    <div class="portal-tags">
-                        <span class="tag-pill">Shopify Pro</span>
-                        <span class="tag-pill">E-Commerce</span>
-                        <span class="tag-pill">Luxury UI</span>
-                    </div>
-                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
-
+        <!-- TASTI PER CAMBIARE IL SITO SULLO SCHERMO 3D -->
+        <div class="device-controls">
+            <button class="device-btn active" onclick="switch3DProject('saadiya')">Saadiya.it</button>
+            <button class="device-btn" onclick="switch3DProject('airsafe')">AirSafe.it</button>
+            <button class="device-btn" onclick="switch3DProject('gelosia')">Gelosia Boutique</button>
+            <button class="device-btn" onclick="switch3DProject('officina')">Officina Luxury</button>
         </div>
     </section>
 
@@ -903,124 +804,140 @@
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 <strong>Luca Sessa</strong>. 3D WebGL Portfolio built with Three.js.</p>
+        <p>© 2026 <strong>Luca Sessa</strong>. Interactive 3D Device Showcase powered by Three.js.</p>
         <div class="social-links">
             <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
 
-    <!-- THREE.JS 3D TUNNEL ENGINE -->
+    <!-- SCRIPT THREE.JS PER DISPOSITIVO 3D RUOTABILE -->
     <script>
-        // 1. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030407, 0.0018);
+        // 1. CARICAMENTO TEXTURES SITI WEB SULLO SCHERMO 3D
+        const textureLoader = new THREE.TextureLoader();
+        const textures = {
+            saadiya: textureLoader.load('https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800'),
+            airsafe: textureLoader.load('https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800'),
+            gelosia: textureLoader.load('https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800'),
+            officina: textureLoader.load('https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800')
+        };
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 50;
+        // 2. IMPOSTAZIONE SCENA THREE.JS
+        const wrapper = document.getElementById('canvasWrapper');
+        const canvas = document.getElementById('device-canvas');
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
+        camera.position.z = 12;
 
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 2. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
-        const particleCount = 2000;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const colors = new Float32Array(particleCount * 3);
+        // LUCI PER L'OGGETTO 3D
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
 
-        const color1 = new THREE.Color(0x7f00ff); // Purple
-        const color2 = new THREE.Color(0x00c6ff); // Cyan
+        const pointLight1 = new THREE.PointLight(0x7f00ff, 2, 50);
+        pointLight1.position.set(10, 10, 10);
+        scene.add(pointLight1);
 
-        for (let i = 0; i < particleCount; i++) {
-            // Genera particelle in un cilindro/tunnel spaziale lungo l'asse Z
-            const radius = 25 + Math.random() * 40;
-            const angle = Math.random() * Math.PI * 2;
-            const z = (Math.random() - 0.5) * 1200;
+        const pointLight2 = new THREE.PointLight(0x00c6ff, 2, 50);
+        pointLight2.position.set(-10, -10, 10);
+        scene.add(pointLight2);
 
-            positions[i * 3] = Math.cos(angle) * radius;
-            positions[i * 3 + 1] = Math.sin(angle) * radius;
-            positions[i * 3 + 2] = z;
+        // 3. COSTRUZIONE DEL MODELLO DISPOSITIVO 3D (MONITOR / MOCKUP)
+        const deviceGroup = new THREE.Group();
 
-            const mixedColor = color1.clone().lerp(color2, Math.random());
-            colors[i * 3] = mixedColor.r;
-            colors[i * 3 + 1] = mixedColor.g;
-            colors[i * 3 + 2] = mixedColor.b;
+        // SCAGLIA DELLA CORNICE 3D
+        const frameGeo = new THREE.BoxGeometry(7, 4.2, 0.3);
+        const frameMat = new THREE.MeshStandardMaterial({
+            color: 0x121622,
+            metalness: 0.8,
+            roughness: 0.2
+        });
+        const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+        deviceGroup.add(frameMesh);
+
+        // SCHERMO 3D CON LA TEXTURE DEL PROGETTO
+        const screenGeo = new THREE.PlaneGeometry(6.6, 3.8);
+        const screenMat = new THREE.MeshBasicMaterial({
+            map: textures.saadiya
+        });
+        const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+        screenMesh.position.z = 0.16; // Posizionato subito davanti alla cornice
+        deviceGroup.add(screenMesh);
+
+        scene.add(deviceGroup);
+
+        // 4. INTERAZIONE DRAG / TOUCH PER RUOTARE IL DISPOSITIVO 3D
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        function onPointerDown(e) {
+            isDragging = true;
+            previousMousePosition = {
+                x: e.clientX || (e.touches && e.touches[0].clientX),
+                y: e.clientY || (e.touches && e.touches[0].clientY)
+            };
         }
 
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        function onPointerMove(e) {
+            if (!isDragging) return;
 
-        const material = new THREE.PointsMaterial({
-            size: 1.2,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.8
-        });
+            const currentX = e.clientX || (e.touches && e.touches[0].clientX);
+            const currentY = e.clientY || (e.touches && e.touches[0].clientY);
 
-        const tunnelParticles = new THREE.Points(geometry, material);
-        scene.add(tunnelParticles);
+            const deltaX = currentX - previousMousePosition.x;
+            const deltaY = currentY - previousMousePosition.y;
 
-        // 3. ANELLI NEON 3D NELLO SPAZIO
-        const rings = [];
-        for (let i = 0; i < 10; i++) {
-            const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
-            const ringMat = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x7f00ff : 0x00c6ff,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.35
-            });
-            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-            ringMesh.position.z = -i * 100;
-            scene.add(ringMesh);
-            rings.push(ringMesh);
+            deviceGroup.rotation.y += deltaX * 0.008;
+            deviceGroup.rotation.x += deltaY * 0.008;
+
+            previousMousePosition = { x: currentX, y: currentY };
         }
 
-        // 4. ANIMAZIONE CAMERA SU SCROLL
-        let scrollY = 0;
-        let targetZ = 50;
+        function onPointerUp() {
+            isDragging = false;
+        }
 
-        window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-            targetZ = 50 - (scrollY * 0.15); // Avanzamento fluido nel tunnel 3D
-        });
+        wrapper.addEventListener('mousedown', onPointerDown);
+        window.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('mouseup', onPointerUp);
 
-        // MOVIMENTO MOUSE/TOUCH
-        let mouseX = 0;
-        let mouseY = 0;
+        wrapper.addEventListener('touchstart', onPointerDown);
+        window.addEventListener('touchmove', onPointerMove);
+        window.addEventListener('touchend', onPointerUp);
 
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        // 5. ANIMATION LOOP
+        // 5. ANIMATION LOOP CON ROTAZIONE LENTA IN IDLE
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotazione continua delle particelle e degli anelli 3D
-            tunnelParticles.rotation.z += 0.0012;
-            
-            rings.forEach((ring, idx) => {
-                ring.rotation.z += 0.003 * (idx % 2 === 0 ? 1 : -1);
-            });
-
-            // Interpolazione fluida della telecamera
-            camera.position.z += (targetZ - camera.position.z) * 0.08;
-            camera.position.x += (mouseX * 4 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 4 - camera.position.y) * 0.05;
+            if (!isDragging) {
+                deviceGroup.rotation.y += 0.004; // Piccola oscillazione/rotazione automatica
+            }
 
             renderer.render(scene, camera);
         }
         animate();
 
-        // RESIZE WINDOW
+        // SWITCH TEXTURE PROGETTO SULLO SCHERMO 3D
+        function switch3DProject(key) {
+            const buttons = document.querySelectorAll('.device-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (textures[key]) {
+                screenMat.map = textures[key];
+                screenMat.needsUpdate = true;
+            }
+        }
+
+        // RESIZE CANVAS
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = wrapper.clientWidth / wrapper.clientHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
         });
 
         // REPLAY ANIMAZIONE SALUTO
