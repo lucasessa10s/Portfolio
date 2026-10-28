@@ -49,7 +49,7 @@
             font-family: 'Syne', sans-serif;
         }
 
-        /* CURSORE LUMINESCENTE ATTIVO SOLO DA DESKTOP */
+        /* CURSORE LUMINESCENTE (SOLO DESKTOP) */
         #cursor-glow {
             position: fixed;
             width: 280px;
@@ -68,7 +68,7 @@
             }
         }
 
-        /* HERO HEADER RESPONSIVE CON GRADIENTE PULITO (NO CANVAS BLOCCANTI) */
+        /* HERO HEADER RESPONSIVE */
         header {
             min-height: 100vh;
             display: flex;
@@ -193,14 +193,14 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* CHI SONO */
+        /* CHI SONO CON BADGE STATISTICHE */
         .about-box {
             background: var(--bg-card);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border-light);
             border-radius: 20px;
-            padding: 28px 20px;
+            padding: 32px 24px;
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
@@ -210,6 +210,58 @@
         .about-box p {
             font-size: clamp(0.95rem, 3.5vw, 1.1rem);
             color: var(--text-body);
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            border-top: 1px solid var(--border-light);
+            padding-top: 20px;
+        }
+
+        .stat-item h4 {
+            font-size: 1.5rem;
+            color: var(--text-title);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-item span {
+            font-size: 0.78rem;
+            color: var(--text-body);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* FILTRI PROGETTI */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-body);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(127, 0, 255, 0.3);
         }
 
         /* GRID SYSTEM RESPONSIVE */
@@ -219,17 +271,21 @@
             gap: 20px;
         }
 
-        /* PASSIONI CARD */
-        .hobby-card {
+        /* PASSIONI & PROGETTI CARD CON EFFETTO TILT 3D */
+        .hobby-card, .project-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border-light);
-            border-radius: 18px;
+            border-radius: 20px;
+            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .hobby-card {
             padding: 24px 18px;
             text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
         }
 
         .hobby-icon {
@@ -246,27 +302,14 @@
             margin-bottom: 8px;
         }
 
-        .hobby-card p {
+        .hobby-card p, .project-info p {
             font-size: 0.88rem;
             color: var(--text-body);
         }
 
-        .hobby-card:active, .hobby-card:hover {
-            transform: translateY(-5px);
-            background: var(--bg-card-hover);
-            border-color: rgba(0, 198, 255, 0.4);
-            box-shadow: 0 10px 25px rgba(0, 198, 255, 0.15);
-        }
-
         /* PROGETTI CARD */
         .project-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
         }
@@ -286,7 +329,6 @@
             transition: transform 0.5s ease;
         }
 
-        .project-card:active .project-img-wrapper img,
         .project-card:hover .project-img-wrapper img {
             transform: scale(1.06);
         }
@@ -305,8 +347,6 @@
         }
 
         .project-info p {
-            font-size: 0.88rem;
-            color: var(--text-body);
             margin-bottom: 16px;
             flex-grow: 1;
         }
@@ -342,18 +382,16 @@
             color: var(--secondary);
         }
 
-        .project-card:active, .project-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(127, 0, 255, 0.5);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+        /* CLASSE PER FILTRO NASCOSTO */
+        .project-card.filtered-out {
+            display: none !important;
         }
 
-        /* ANIMAZIONI SCROLL REVEAL */
+        /* ANIMAZIONI SCROLL REVEAL FLUIDE */
         .hidden {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-            will-change: opacity, transform;
+            transform: translateY(25px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
 
         .show {
@@ -426,12 +464,12 @@
             color: var(--secondary);
         }
 
-        /* MEDIA QUERIES PER TELEFONI PICCOLI */
         @media (max-width: 480px) {
             section { padding: 45px 16px; }
             .btn-group { flex-direction: column; }
             .btn { width: 100%; }
             .project-img-wrapper { height: 160px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
         }
     </style>
 </head>
@@ -467,6 +505,21 @@
         <div class="about-box">
             <h2 class="section-title" style="margin-bottom: 15px;">👤 Chi <span>Sono</span></h2>
             <p>Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h4>4+</h4>
+                    <span>Store & Siti Attivi</span>
+                </div>
+                <div class="stat-item">
+                    <h4>100%</h4>
+                    <span>Mobile Optimized</span>
+                </div>
+                <div class="stat-item">
+                    <h4>24/7</h4>
+                    <span>Performance Top</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -475,25 +528,25 @@
         <h2 class="section-title">🚀 Le Mie <span>Passioni</span></h2>
 
         <div class="grid">
-            <div class="hobby-card">
+            <div class="hobby-card tilt-card">
                 <i class="fa-solid fa-code hobby-icon"></i>
                 <h3>Web Development</h3>
                 <p>Sviluppo di siti responsive, landing page veloci e interazioni con HTML, CSS e JavaScript.</p>
             </div>
 
-            <div class="hobby-card">
+            <div class="hobby-card tilt-card">
                 <i class="fa-solid fa-palette hobby-icon"></i>
                 <h3>Grafica & UI Design</h3>
                 <p>Progettazione di interfacce pulite, moderne e incentrate sulla migliore esperienza utente.</p>
             </div>
 
-            <div class="hobby-card">
+            <div class="hobby-card tilt-card">
                 <i class="fa-solid fa-hashtag hobby-icon"></i>
                 <h3>Social Media</h3>
                 <p>Creazione di contenuti ingaggianti e gestione di profili social per fare crescere la community.</p>
             </div>
 
-            <div class="hobby-card">
+            <div class="hobby-card tilt-card">
                 <i class="fa-solid fa-chart-line hobby-icon"></i>
                 <h3>Digital Marketing</h3>
                 <p>Studio di strategie digitali per rafforzare il posizionamento del brand ed aumentare la visibilità.</p>
@@ -505,10 +558,17 @@
     <section id="progetti" class="hidden">
         <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
 
-        <div class="grid">
+        <!-- FILTRI PROGETTI -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProjects('all')">Tutti</button>
+            <button class="filter-btn" onclick="filterProjects('ecommerce')">E-commerce</button>
+            <button class="filter-btn" onclick="filterProjects('web')">Siti Vetrina</button>
+        </div>
 
-            <!-- PROGETTO 1 -->
-            <div class="project-card">
+        <div class="grid" id="projectsGrid">
+
+            <!-- PROGETTO 1 (Vetrina) -->
+            <div class="project-card tilt-card" data-category="web">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="Anteprima AirSafe.it" loading="lazy">
                 </div>
@@ -518,7 +578,6 @@
                     <div class="project-tags">
                         <span class="tag">HTML/CSS</span>
                         <span class="tag">UI Design</span>
-                        <span class="tag">AOS Motion</span>
                     </div>
                     <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -526,8 +585,8 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 2 -->
-            <div class="project-card">
+            <!-- PROGETTO 2 (E-commerce) -->
+            <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Anteprima Saadiya.it" loading="lazy">
                 </div>
@@ -537,7 +596,6 @@
                     <div class="project-tags">
                         <span class="tag">E-Commerce</span>
                         <span class="tag">Brand Identity</span>
-                        <span class="tag">UX/UI</span>
                     </div>
                     <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -545,8 +603,8 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 3 -->
-            <div class="project-card">
+            <!-- PROGETTO 3 (E-commerce) -->
+            <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Anteprima Gelosia Boutique" loading="lazy">
                 </div>
@@ -555,7 +613,6 @@
                     <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
                     <div class="project-tags">
                         <span class="tag">Shopify</span>
-                        <span class="tag">Pro Theme</span>
                         <span class="tag">Fashion UI</span>
                     </div>
                     <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-link">
@@ -564,8 +621,8 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 4 -->
-            <div class="project-card">
+            <!-- PROGETTO 4 (E-commerce) -->
+            <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Anteprima Officina Luxury" loading="lazy">
                 </div>
@@ -575,7 +632,6 @@
                     <div class="project-tags">
                         <span class="tag">Shopify</span>
                         <span class="tag">E-Commerce</span>
-                        <span class="tag">UX/UI</span>
                     </div>
                     <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -616,9 +672,9 @@
         </div>
     </footer>
 
-    <!-- SCRIPT PULITI -->
+    <!-- SCRIPT AVANZATI E PERFORMANTI -->
     <script>
-        // 1. CURSORE DESKTOP (DISATTIVATO SU MOBILE)
+        // 1. CURSORE DESKTOP
         const cursorGlow = document.getElementById('cursor-glow');
         if (window.innerWidth > 768) {
             window.addEventListener('mousemove', (e) => {
@@ -627,7 +683,42 @@
             });
         }
 
-        // 2. SCROLL REVEAL FLUIDO
+        // 2. EFFETTO TILT 3D SULLE CARD (FLUIDO E OTTIMIZZATO)
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+            });
+        });
+
+        // 3. FILTRO PROGETTI DINAMICO
+        function filterProjects(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('filtered-out');
+                } else {
+                    card.classList.add('filtered-out');
+                }
+            });
+        }
+
+        // 4. SCROLL REVEAL PER LE SEZIONI
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -638,7 +729,7 @@
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-        // 3. INVIO INSTAGRAM
+        // 5. INVIO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
