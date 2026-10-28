@@ -3,25 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | Portfolio & Digital Creator</title>
+    <title>Luca Sessa | Digital Architect & Portfolio</title>
 
-    <!-- FONT & ICONS -->
+    <!-- FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-dark: #05070b;
-            --bg-card: rgba(18, 22, 32, 0.75);
-            --bg-card-hover: rgba(28, 35, 52, 0.95);
+            --bg-dark: #030509;
+            --bg-card: rgba(13, 17, 28, 0.7);
+            --bg-card-hover: rgba(22, 28, 45, 0.85);
             --primary: #7f00ff;
             --secondary: #00c6ff;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --accent: #ff007f;
+            --gradient-primary: linear-gradient(135deg, #7f00ff 0%, #00c6ff 50%, #ff007f 100%);
+            --gradient-glow: linear-gradient(135deg, rgba(127, 0, 255, 0.4), rgba(0, 198, 255, 0.4));
             --text-title: #ffffff;
             --text-body: #94a3b8;
-            --border-light: rgba(255, 255, 255, 0.12);
+            --border-glow: rgba(0, 198, 255, 0.25);
+            --border-light: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -41,74 +44,85 @@
             background-color: var(--bg-dark);
             color: var(--text-body);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.5;
+            line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
         }
 
         h1, h2, h3, .brand-font {
             font-family: 'Syne', sans-serif;
         }
 
-        /* CURSORE LUMINESCENTE (DESKTOP) */
+        /* BACKGROUND INTERACTIVE CANVAS MATRIX */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* GLOW CURSOR (DESKTOP ONLY) */
         #cursor-glow {
             position: fixed;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(127, 0, 255, 0.22) 0%, rgba(0, 198, 255, 0.08) 50%, transparent 70%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(127, 0, 255, 0.2) 0%, rgba(0, 198, 255, 0.1) 40%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            z-index: 9999;
+            z-index: 1;
             will-change: transform;
+            transition: width 0.3s, height 0.3s;
         }
 
         @media (max-width: 768px) {
-            #cursor-glow {
-                display: none !important;
-            }
+            #cursor-glow { display: none !important; }
         }
 
-        /* EXPANDABLE DOT */
-        .expand-dot-trigger {
+        /* EXPANDABLE NEON ORB HUB */
+        .expand-orb-trigger {
             position: fixed;
             bottom: 28px;
             right: 28px;
-            width: 58px;
-            height: 58px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
-            background: var(--gradient);
-            box-shadow: 0 0 25px rgba(0, 198, 255, 0.6);
+            background: var(--gradient-primary);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             cursor: pointer;
             z-index: 9000;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: dotPulse 2.5s infinite;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: orbAura 3s infinite alternate;
         }
 
-        @keyframes dotPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 35px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
+        @keyframes orbAura {
+            0% { box-shadow: 0 0 20px rgba(127, 0, 255, 0.6), 0 0 40px rgba(0, 198, 255, 0.3); transform: scale(1); }
+            100% { box-shadow: 0 0 35px rgba(255, 0, 127, 0.8), 0 0 60px rgba(0, 198, 255, 0.6); transform: scale(1.08); }
         }
 
-        .expand-dot-trigger:hover {
-            transform: scale(1.15) rotate(12deg);
+        .expand-orb-trigger:hover {
+            transform: scale(1.18) rotate(15deg);
         }
 
-        /* HUB OVERLAY */
+        /* FULLSCREEN EXPANDED HUB */
         .expanded-hub {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(5, 7, 11, 0.95);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(3, 5, 9, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             z-index: 99999;
             display: flex;
             flex-direction: column;
@@ -117,27 +131,27 @@
             padding: 30px;
             opacity: 0;
             pointer-events: none;
-            clip-path: circle(0px at calc(100vw - 57px) calc(100vh - 57px));
-            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+            clip-path: circle(0px at calc(100vw - 60px) calc(100vh - 60px));
+            transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
         }
 
         .expanded-hub.active {
             opacity: 1;
             pointer-events: all;
-            clip-path: circle(150% at calc(100vw - 57px) calc(100vh - 57px));
+            clip-path: circle(160% at calc(100vw - 60px) calc(100vh - 60px));
         }
 
         .hub-close-btn {
             position: absolute;
-            top: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
+            top: 35px;
+            right: 35px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border-glow);
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -146,8 +160,8 @@
         }
 
         .hub-close-btn:hover {
-            background: var(--primary);
-            transform: rotate(90deg);
+            background: var(--accent);
+            transform: rotate(90deg) scale(1.1);
         }
 
         .hub-content {
@@ -157,55 +171,124 @@
         }
 
         .hub-content h2 {
-            font-size: clamp(2rem, 6vw, 3rem);
+            font-size: clamp(2.2rem, 7vw, 3.5rem);
             color: var(--text-title);
             margin-bottom: 12px;
+            font-weight: 900;
         }
 
         .hub-content h2 span {
-            background: var(--gradient);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hub-content p {
             color: var(--text-body);
-            font-size: 1.05rem;
-            margin-bottom: 30px;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
         }
 
         .hub-links {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
         }
 
         .hub-card-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px 24px;
+            padding: 20px 28px;
             background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
             color: white;
             text-decoration: none;
             font-weight: 700;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .hub-card-link:hover {
             background: var(--bg-card-hover);
             border-color: var(--secondary);
-            transform: translateX(6px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 198, 255, 0.25);
         }
 
         .hub-card-link i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--secondary);
+            transition: transform 0.3s ease;
         }
 
-        /* HERO HEADER */
+        .hub-card-link:hover i {
+            transform: translateX(6px);
+            color: var(--accent);
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 22px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(3, 5, 9, 0.6);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-body);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            nav { padding: 18px 20px; }
+        }
+
+        /* HERO HEADER - HYPER ANIMATED */
         header {
             min-height: 100vh;
             display: flex;
@@ -213,33 +296,65 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 60px 20px 40px;
-            position: relative;
-            background: radial-gradient(circle at 50% 20%, rgba(127, 0, 255, 0.25) 0%, var(--bg-dark) 75%);
-        }
-
-        .hero-content {
+            padding: 120px 20px 60px;
             position: relative;
             z-index: 2;
-            width: 100%;
-            max-width: 850px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            background: rgba(127, 0, 255, 0.12);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            color: var(--secondary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.2);
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 198, 255, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 127, 0.5); }
+        }
+
+        .profile-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+        }
+
+        .profile-ring {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            animation: spinRing 8s linear infinite;
+            filter: blur(2px);
+        }
+
+        @keyframes spinRing {
+            100% { transform: rotate(360deg); }
         }
 
         .profile-box {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            padding: 3px;
-            background: var(--gradient);
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.4);
-            animation: floatProfile 3.5s ease-in-out infinite;
-        }
-
-        @keyframes floatProfile {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            padding: 4px;
+            background: var(--bg-dark);
+            overflow: hidden;
         }
 
         .profile-img {
@@ -247,196 +362,261 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            background: var(--bg-dark);
+            background: #0f131f;
         }
 
-        /* ANIMAZIONE SALUTO 3D SLIDE + NEON GLITCH */
-        .hero-title-container {
-            font-size: clamp(2rem, 7.5vw, 4rem);
-            font-weight: 800;
-            color: var(--text-title);
-            letter-spacing: -0.5px;
-            margin-bottom: 14px;
-            line-height: 1.2;
-            perspective: 1000px;
+        /* 3D INTERACTIVE HERO TITLE PARALLAX */
+        .hero-title-wrap {
+            perspective: 1200px;
+            margin-bottom: 20px;
             cursor: pointer;
         }
 
-        .split-line {
-            display: block;
-            overflow: hidden;
-            padding: 6px 0;
+        .hero-title-3d {
+            font-size: clamp(2.4rem, 8.5vw, 5.2rem);
+            font-weight: 900;
+            color: var(--text-title);
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out;
         }
 
-        .slide-text {
+        .hero-title-3d .neon-word {
             display: inline-block;
-            transform: translateY(120%) rotateX(-60deg);
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        /* CLASSE ATTIVATA VIA SCRIPT ALL'AVVIO */
-        .animate-in .slide-text {
-            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-in .slide-text.delayed {
-            animation-delay: 0.25s;
-        }
-
-        @keyframes slideIn3D {
-            0% {
-                transform: translateY(120%) rotateX(-60deg);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0) rotateX(0deg);
-                opacity: 1;
-            }
-        }
-
-        /* NEON GLITCH EFFECT */
-        .neon-glitch-name {
-            position: relative;
-            display: inline-block;
-            background: var(--gradient);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: neonGlowPulse 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(0, 198, 255, 0.4);
+            animation: textNeonPulse 3s infinite alternate;
         }
 
-        @keyframes neonGlowPulse {
-            0% { text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2); }
-            100% { text-shadow: 0 0 22px rgba(127, 0, 255, 0.8), 0 0 38px rgba(0, 198, 255, 0.7); }
-        }
-
-        .glitch-flash {
-            animation: glitchAnimation 0.4s steps(2, start) 1;
-        }
-
-        @keyframes glitchAnimation {
-            0% { transform: translate(0); filter: hue-rotate(0deg); }
-            20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); }
-            40% { transform: translate(-3px, -3px); filter: hue-rotate(180deg); }
-            60% { transform: translate(3px, 2px); filter: hue-rotate(270deg); }
-            80% { transform: translate(2px, -3px); filter: hue-rotate(360deg); }
-            100% { transform: translate(0); filter: hue-rotate(0deg); }
+        @keyframes textNeonPulse {
+            0% { filter: drop-shadow(0 0 15px rgba(127, 0, 255, 0.4)); }
+            100% { filter: drop-shadow(0 0 35px rgba(255, 0, 127, 0.8)); }
         }
 
         header p {
-            font-size: clamp(0.95rem, 3.8vw, 1.2rem);
+            font-size: clamp(1rem, 4vw, 1.35rem);
             color: var(--text-body);
-            max-width: 600px;
-            margin: 0 auto 28px;
-            padding: 0 10px;
+            max-width: 680px;
+            margin: 0 auto 35px;
+            font-weight: 400;
         }
 
         .btn-group {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
+            max-width: 500px;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--gradient);
-            border-radius: 30px;
+            gap: 10px;
+            padding: 15px 32px;
+            background: var(--gradient-primary);
+            border-radius: 40px;
             text-decoration: none;
             color: white;
-            font-weight: 700;
-            font-size: 0.88rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(127, 0, 255, 0.35);
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(127, 0, 255, 0.4);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:active {
-            transform: scale(0.96);
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 198, 255, 0.6);
         }
 
         .btn-outline {
             background: transparent;
             border: 2px solid var(--secondary);
-            box-shadow: none;
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
         }
 
-        /* SEZIONI GENERALI */
+        .btn-outline:hover {
+            background: rgba(0, 198, 255, 0.15);
+            border-color: #fff;
+        }
+
+        /* MAIN SECTIONS */
         section {
-            padding: 60px 20px;
-            max-width: 1200px;
+            padding: 90px 20px;
+            max-width: 1240px;
             margin: 0 auto;
             position: relative;
+            z-index: 2;
         }
 
         .section-title {
             text-align: center;
-            font-size: clamp(1.6rem, 6vw, 2.4rem);
+            font-size: clamp(2rem, 6.5vw, 3.2rem);
             color: var(--text-title);
-            font-weight: 800;
-            margin-bottom: 35px;
-            letter-spacing: -0.5px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            letter-spacing: -1px;
         }
 
         .section-title span {
-            background: var(--gradient);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* CHI SONO */
-        .about-box {
+        /* ABOUT SECTION & METRIC BADGES */
+        .about-card {
             background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 32px 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 45px 35px;
             text-align: center;
-            max-width: 800px;
+            max-width: 880px;
             margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
         }
 
-        .about-box p {
-            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 198, 255, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .about-card p {
+            font-size: clamp(1.05rem, 3.8vw, 1.25rem);
             color: var(--text-body);
-            margin-bottom: 24px;
+            margin-bottom: 35px;
+            line-height: 1.7;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 20px;
             border-top: 1px solid var(--border-light);
-            padding-top: 20px;
+            padding-top: 30px;
         }
 
-        .stat-item h4 {
-            font-size: 1.5rem;
-            color: var(--text-title);
-            background: var(--gradient);
+        .stat-box h4 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 900;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
         }
 
-        .stat-item span {
-            font-size: 0.78rem;
+        .stat-box span {
+            font-size: 0.82rem;
             color: var(--text-body);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* FILTRI PROGETTI */
+        /* TILT CARDS GRID SYSTEM (3D IRIDESCENT HOVER) */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .tilt-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            transition: transform 0.15s ease-out, border-color 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Specular Specular Glow Highlight */
+        .tilt-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.08), transparent 40%);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .tilt-card:hover {
+            border-color: rgba(0, 198, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2);
+        }
+
+        .hobby-card {
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .hobby-icon {
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hobby-card h3 {
+            color: var(--text-title);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .hobby-card p {
+            font-size: 0.92rem;
+            color: var(--text-body);
+        }
+
+        /* PROJECT FILTER & CARDS */
         .filter-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
 
@@ -444,90 +624,48 @@
             background: var(--bg-card);
             border: 1px solid var(--border-light);
             color: var(--text-body);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .filter-btn.active, .filter-btn:hover {
-            background: var(--gradient);
+            background: var(--gradient-primary);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 15px rgba(127, 0, 255, 0.3);
-        }
-
-        /* GRID SYSTEM */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        .hobby-card, .project-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            transform-style: preserve-3d;
-            will-change: transform;
-        }
-
-        .hobby-card {
-            padding: 24px 18px;
-            text-align: center;
-        }
-
-        .hobby-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hobby-card h3 {
-            color: var(--text-title);
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-
-        .hobby-card p, .project-info p {
-            font-size: 0.88rem;
-            color: var(--text-body);
+            box-shadow: 0 5px 20px rgba(127, 0, 255, 0.4);
         }
 
         .project-card {
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .project-img-wrapper {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 200px;
             overflow: hidden;
-            background: #0f131a;
+            background: #0b0f19;
         }
 
         .project-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .project-card:hover .project-img-wrapper img {
-            transform: scale(1.06);
+            transform: scale(1.08);
         }
 
         .project-info {
-            padding: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -535,149 +673,171 @@
 
         .project-info h3 {
             color: var(--text-title);
-            font-size: 1.25rem;
-            margin-bottom: 8px;
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            font-weight: 800;
         }
 
         .project-info p {
-            margin-bottom: 16px;
+            font-size: 0.92rem;
+            color: var(--text-body);
+            margin-bottom: 20px;
             flex-grow: 1;
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 18px;
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
         .tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 14px;
-            background: rgba(127, 0, 255, 0.18);
+            font-size: 0.72rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(127, 0, 255, 0.15);
             color: var(--secondary);
             border: 1px solid rgba(0, 198, 255, 0.3);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .project-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: var(--text-title);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.88rem;
+            font-weight: 800;
+            font-size: 0.92rem;
+            transition: color 0.3s ease;
         }
 
         .project-link i {
             color: var(--secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--secondary);
+        }
+
+        .project-link:hover i {
+            transform: translate(3px, -3px);
         }
 
         .project-card.filtered-out {
             display: none !important;
         }
 
-        /* SCROLL REVEAL */
-        .hidden {
+        /* SCROLL REVEAL ANIMATIONS */
+        .reveal-element {
             opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(35px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
         }
 
-        .show {
+        .reveal-element.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* CONTATTI */
+        /* CONTACT FORM */
         .contact-box {
             background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 28px 20px;
-            max-width: 650px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: 28px;
+            padding: 40px 30px;
+            max-width: 680px;
             margin: 0 auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 16px;
-            background: rgba(10, 12, 16, 0.85);
+            padding: 16px 20px;
+            background: rgba(6, 9, 16, 0.85);
             border: 1px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: 14px;
             color: #fff;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.3s ease;
-            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 18px;
         }
 
         .form-control:focus {
             border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.3);
         }
 
         textarea.form-control {
             resize: none;
-            height: 120px;
+            height: 130px;
         }
 
         /* FOOTER */
         footer {
-            padding: 40px 20px;
-            background: #030406;
+            padding: 45px 20px;
+            background: #020306;
             border-top: 1px solid var(--border-light);
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         footer p {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-body);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 22px;
         }
 
         .social-links a {
             color: var(--text-title);
-            font-size: 1.3rem;
-            transition: color 0.3s ease;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .social-links a:hover {
             color: var(--secondary);
+            transform: translateY(-4px) scale(1.15);
         }
 
         @media (max-width: 480px) {
-            section { padding: 45px 16px; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
-            .project-img-wrapper { height: 160px; }
-            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-            .expand-dot-trigger { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            section { padding: 60px 16px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+            .expand-orb-trigger { bottom: 20px; right: 20px; width: 55px; height: 55px; font-size: 1.3rem; }
+            .contact-box { padding: 30px 20px; }
+            .about-card { padding: 30px 20px; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- CURSORE DESKTOP -->
+    <!-- CANVAS INTERATTIVO AD ALTE PRESTAZIONI -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- CURSORE LUMINESCENTE (DESKTOP) -->
     <div id="cursor-glow"></div>
 
-    <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
-    <div class="expand-dot-trigger" id="dotTrigger" onclick="toggleHub()" title="Svela Hub Rapido">
+    <!-- EXPANDABLE NEON ORB HUB TRIGGER -->
+    <div class="expand-orb-trigger" id="orbTrigger" onclick="toggleHub()" title="Esplora Hub Rapido">
         <i class="fa-solid fa-bolt"></i>
     </div>
 
-    <!-- HUB OVERLAY -->
+    <!-- FULLSCREEN EXPANDED HUB -->
     <div class="expanded-hub" id="expandedHub">
         <div class="hub-close-btn" onclick="toggleHub()">
             <i class="fa-solid fa-xmark"></i>
@@ -685,115 +845,129 @@
 
         <div class="hub-content">
             <h2>Hub Rapido <span>Luca Sessa</span> ⚡</h2>
-            <p>Accedi rapidamente ai miei canali principali e ai progetti più recenti.</p>
+            <p>Accedi direttamente ai miei canali ufficiali e avvia la tua idea in pochi secondo.</p>
 
             <div class="hub-links">
                 <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-card-link">
-                    <span><i class="fa-brands fa-instagram" style="margin-right: 10px; color: #e1306c;"></i> Profilo Instagram ufficiale</span>
+                    <span><i class="fa-brands fa-instagram" style="margin-right: 12px; color: #e1306c;"></i> Profilo Instagram Ufficiale</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
                 <a href="#progetti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Esplora i Progetti Web & Shopify</span>
+                    <span><i class="fa-solid fa-layer-group" style="margin-right: 12px; color: var(--secondary);"></i> Progetti Web & Store Shopify</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
 
                 <a href="#contatti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 10px; color: var(--primary);"></i> Richiedi Preventivo / Consulenza</span>
+                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 12px; color: var(--accent);"></i> Richiedi Preventivo Rapido</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
         </div>
     </div>
 
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a href="#" class="nav-logo">LUCA <span>SESSA</span> 🚀</a>
+        <ul class="nav-links">
+            <li><a href="#chi-sono">Chi Sono</a></li>
+            <li><a href="#passioni">Passioni</a></li>
+            <li><a href="#progetti">Progetti</a></li>
+            <li><a href="#contatti">Contatti</a></li>
+        </ul>
+    </nav>
+
     <!-- HERO HEADER -->
     <header>
-        <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fa-solid fa-fire"></i> Available for New Digital Projects
+        </div>
+
+        <div class="profile-container">
+            <div class="profile-ring"></div>
             <div class="profile-box">
-                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
+                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/0d111c/00c6ff?text=Luca+Sessa'">
             </div>
+        </div>
 
-            <!-- SALUTO ANIMATO IN AUTOMATICO -->
-            <h1 class="hero-title-container animate-in" id="heroTitle" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
-                <span class="split-line">
-                    <span class="slide-text">Ciao, sono</span>
-                </span>
-                <span class="split-line">
-                    <span class="slide-text delayed neon-glitch-name glitch-flash" id="heroName">Luca Sessa 🚀</span>
-                </span>
+        <!-- HERO TITLE WITH 3D TILT PARALLAX -->
+        <div class="hero-title-wrap" id="heroWrap">
+            <h1 class="hero-title-3d" id="heroTitle">
+                Ciao, sono <br><span class="neon-word">Luca Sessa</span> ⚡
             </h1>
+        </div>
 
-            <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
-            
-            <div class="btn-group">
-                <a href="#progetti" class="btn">
-                    Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
-                    Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
-                </a>
-            </div>
+        <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
+
+        <div class="btn-group">
+            <a href="#progetti" class="btn">
+                I Miei Lavori <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
+                Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
+            </a>
         </div>
     </header>
 
-    <!-- CHI SONO -->
-    <section class="hidden">
-        <div class="about-box">
-            <h2 class="section-title" style="margin-bottom: 15px;">👤 Chi <span>Sono</span></h2>
-            <p>Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.</p>
-            
+    <!-- CHI SONO SECTION -->
+    <section id="chi-sono" class="reveal-element">
+        <div class="about-card">
+            <h2 class="section-title" style="margin-bottom: 20px;">👤 Chi <span>Sono</span></h2>
+            <p>Sviluppo esperienze digitali ad alte prestazioni e dal design futuristico. Unisco codice pulito, strategie social ad alto impatto ed e-commerce ad alta conversione per trasformare ogni idea in un brand memorabile.</p>
+
             <div class="stats-grid">
-                <div class="stat-item">
-                    <h4>4+</h4>
+                <div class="stat-box">
+                    <h4 class="counter" data-target="4">0</h4>
                     <span>Store & Siti Attivi</span>
                 </div>
-                <div class="stat-item">
-                    <h4>100%</h4>
-                    <span>Mobile Optimized</span>
+                <div class="stat-box">
+                    <h4 class="counter" data-target="100">0</h4>
+                    <span>% Mobile Fluidity</span>
                 </div>
-                <div class="stat-item">
-                    <h4>24/7</h4>
-                    <span>Performance Top</span>
+                <div class="stat-box">
+                    <h4 class="counter" data-target="24">0</h4>
+                    <span>/7 Speed Optimization</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PASSIONI -->
-    <section class="hidden">
+    <!-- PASSIONI SECTION -->
+    <section id="passioni" class="reveal-element">
         <h2 class="section-title">🚀 Le Mie <span>Passioni</span></h2>
 
         <div class="grid">
-            <div class="hobby-card tilt-card">
+            <div class="tilt-card hobby-card">
                 <i class="fa-solid fa-code hobby-icon"></i>
                 <h3>Web Development</h3>
-                <p>Sviluppo di siti responsive, landing page veloci e interazioni con HTML, CSS e JavaScript.</p>
+                <p>Sviluppo di landing page veloci, siti responsive ed esperienze web moderne con HTML, CSS e JavaScript pulito.</p>
             </div>
 
-            <div class="hobby-card tilt-card">
+            <div class="tilt-card hobby-card">
                 <i class="fa-solid fa-palette hobby-icon"></i>
-                <h3>Grafica & UI Design</h3>
-                <p>Progettazione di interfacce pulite, moderne e incentrate sulla migliore esperienza utente.</p>
+                <h3>Grafica & UI/UX</h3>
+                <p>Progettazione di interfacce scure, eleganti ed intuitive, curate nei dettagli visivi per la massima conversion rate.</p>
             </div>
 
-            <div class="hobby-card tilt-card">
+            <div class="tilt-card hobby-card">
                 <i class="fa-solid fa-hashtag hobby-icon"></i>
                 <h3>Social Media</h3>
-                <p>Creazione di contenuti ingaggianti e gestione di profili social per fare crescere la community.</p>
+                <p>Strategie di contenuto ingaggianti e gestione completa di profili per fare scalare la community del brand.</p>
             </div>
 
-            <div class="hobby-card tilt-card">
+            <div class="tilt-card hobby-card">
                 <i class="fa-solid fa-chart-line hobby-icon"></i>
                 <h3>Digital Marketing</h3>
-                <p>Studio di strategie digitali per rafforzare il posizionamento del brand ed aumentare la visibilità.</p>
+                <p>Ottimizzazione del posizionamento online e analisi di conversione per garantire la crescita del business.</p>
             </div>
         </div>
     </section>
 
-    <!-- PROGETTI -->
-    <section id="progetti" class="hidden">
+    <!-- PROGETTI SECTION -->
+    <section id="progetti" class="reveal-element">
         <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
 
+        <!-- FILTRI CATEGORIA -->
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="filterProjects('all')">Tutti</button>
             <button class="filter-btn" onclick="filterProjects('ecommerce')">E-commerce</button>
@@ -803,16 +977,17 @@
         <div class="grid" id="projectsGrid">
 
             <!-- PROGETTO 1 -->
-            <div class="project-card tilt-card" data-category="web">
+            <div class="tilt-card project-card" data-category="web">
                 <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="Anteprima AirSafe.it" loading="lazy">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="AirSafe.it" loading="lazy">
                 </div>
                 <div class="project-info">
                     <h3>AirSafe.it</h3>
-                    <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form di contatto.</p>
+                    <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form dinamico.</p>
                     <div class="project-tags">
                         <span class="tag">HTML/CSS</span>
                         <span class="tag">UI Design</span>
+                        <span class="tag">AOS Motion</span>
                     </div>
                     <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -821,16 +996,17 @@
             </div>
 
             <!-- PROGETTO 2 -->
-            <div class="project-card tilt-card" data-category="ecommerce">
+            <div class="tilt-card project-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Anteprima Saadiya.it" loading="lazy">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Saadiya.it" loading="lazy">
                 </div>
                 <div class="project-info">
                     <h3>Saadiya.it</h3>
-                    <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
+                    <p>E-commerce di moda elegante con layout altamente responsive, vetrina prodotti curata ed esperienza acquisto fluida.</p>
                     <div class="project-tags">
                         <span class="tag">E-Commerce</span>
                         <span class="tag">Brand Identity</span>
+                        <span class="tag">UX/UI</span>
                     </div>
                     <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -839,15 +1015,16 @@
             </div>
 
             <!-- PROGETTO 3 -->
-            <div class="project-card tilt-card" data-category="ecommerce">
+            <div class="tilt-card project-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Anteprima Gelosia Boutique" loading="lazy">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Gelosia Boutique" loading="lazy">
                 </div>
                 <div class="project-info">
                     <h3>Gelosia Boutique</h3>
-                    <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
+                    <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto veloce da smartphone.</p>
                     <div class="project-tags">
                         <span class="tag">Shopify</span>
+                        <span class="tag">Pro Theme</span>
                         <span class="tag">Fashion UI</span>
                     </div>
                     <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-link">
@@ -859,14 +1036,15 @@
             <!-- PROGETTO 4 -->
             <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Anteprima Officina Luxury" loading="lazy">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Officina Luxury" loading="lazy">
                 </div>
                 <div class="project-info">
                     <h3>Officina Luxury</h3>
-                    <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione dei prodotti e nel layout di conversione.</p>
+                    <p>Store Shopify completo personalizzato nei dettagli visivi, navigazione catalogo e imbuto di conversione.</p>
                     <div class="project-tags">
                         <span class="tag">Shopify</span>
                         <span class="tag">E-Commerce</span>
+                        <span class="tag">UX/UI</span>
                     </div>
                     <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-link">
                         Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -877,13 +1055,13 @@
         </div>
     </section>
 
-    <!-- CONTATTI -->
-    <section id="contatti" class="hidden">
+    <!-- CONTATTI SECTION -->
+    <section id="contatti" class="reveal-element">
         <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
 
         <div class="contact-box">
-            <p style="text-align: center; color: var(--text-body); margin-bottom: 20px; font-size: 0.95rem;">
-                Vuoi realizzare un sito web, sviluppare uno store Shopify o richiedere una consulenza? Compila i campi e scrivimi su Instagram!
+            <p style="text-align: center; color: var(--text-body); margin-bottom: 25px; font-size: 1rem;">
+                Vuoi sviluppare un nuovo sito, avviare uno store Shopify o richiedere una consulenza? Compila i campi e scrivimi direttamente su Instagram!
             </p>
 
             <form id="instaForm" onsubmit="sendToInstagram(event)">
@@ -891,65 +1069,151 @@
                 <input type="text" id="project" class="form-control" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required>
                 <textarea id="message" class="form-control" placeholder="Descrivi brevemente la tua idea..." required></textarea>
 
-                <button type="submit" class="btn" style="width: 100%; justify-content: center; cursor: pointer; border: none; font-size: 0.95rem;">
-                    Invia messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i>
+                <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 10px;">
+                    Invia Messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.2rem;"></i>
                 </button>
             </form>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="hidden">
-        <p>© 2026 <strong>Luca Sessa</strong>. Creato con HTML, CSS e JavaScript.</p>
+    <footer>
+        <p>© 2026 <strong>Luca Sessa</strong>. Designed & Crafted with Passion.</p>
         <div class="social-links">
             <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
 
-    <!-- SCRIPT -->
+    <!-- INTERACTIVE JAVASCRIPT ENGINE -->
     <script>
-        // 1. REPLAY ANIMAZIONE TITOLO SALUTO
-        function replayHeroAnimation() {
-            const titleContainer = document.getElementById('heroTitle');
-            const name = document.getElementById('heroName');
-            
-            titleContainer.classList.remove('animate-in');
-            name.classList.remove('glitch-flash');
-            
-            void titleContainer.offsetWidth; // Trigger reflow per riavviare l'animazione
-            
-            titleContainer.classList.add('animate-in');
-            name.classList.add('glitch-flash');
+        // 1. HIGH-PERFORMANCE INTERACTIVE MATRIX CANVAS
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
+                this.color = Math.random() > 0.5 ? 'rgba(0, 198, 255, ' : 'rgba(127, 0, 255, ';
+                this.opacity = Math.random() * 0.6 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = this.color + this.opacity + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        // 2. TOGGLE EXPANDABLE HUB
+        const particleCount = window.innerWidth < 768 ? 35 : 70;
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+
+                // Connect particles close to each other
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 110) {
+                        ctx.strokeStyle = `rgba(0, 198, 255, ${0.15 - dist / 1100})`;
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // 2. CURSOR & TOUCH GLOW ENGINE
+        const cursorGlow = document.getElementById('cursor-glow');
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (cursorGlow) {
+                cursorGlow.style.left = `${mouseX}px`;
+                cursorGlow.style.top = `${mouseY}px`;
+            }
+        });
+
+        // 3. 3D HERO TITLE TILT PARALLAX
+        const heroWrap = document.getElementById('heroWrap');
+        const heroTitle = document.getElementById('heroTitle');
+
+        if (heroWrap) {
+            heroWrap.addEventListener('mousemove', (e) => {
+                const rect = heroWrap.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                heroTitle.style.transform = `rotateY(${x * 0.08}deg) rotateX(${-y * 0.08}deg)`;
+            });
+
+            heroWrap.addEventListener('mouseleave', () => {
+                heroTitle.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
+        }
+
+        // 4. EXPANDABLE NEON ORB HUB TOGGLE
         function toggleHub() {
             const hub = document.getElementById('expandedHub');
             hub.classList.toggle('active');
         }
 
-        // 3. CURSORE DESKTOP
-        const cursorGlow = document.getElementById('cursor-glow');
-        if (window.innerWidth > 768) {
-            window.addEventListener('mousemove', (e) => {
-                cursorGlow.style.left = `${e.clientX}px`;
-                cursorGlow.style.top = `${e.clientY}px`;
-            });
-        }
-
-        // 4. TILT 3D SULLE CARD
+        // 5. TILT 3D CARDS & IRIDESCENT SPECULAR GLOW
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -6;
-                const rotateY = ((x - centerX) / centerX) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+                const rotateX = ((y - centerY) / centerY) * -7;
+                const rotateY = ((x - centerX) / centerX) * 7;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
             });
 
             card.addEventListener('mouseleave', () => {
@@ -957,7 +1221,7 @@
             });
         });
 
-        // 5. FILTRO PROGETTI
+        // 6. CATEGORY FILTER
         function filterProjects(category) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -973,18 +1237,37 @@
             });
         }
 
-        // 6. SCROLL REVEAL
+        // 7. ANIMATED STAT COUNTERS & SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
+                    entry.target.classList.add('active');
+
+                    // Trigger Counters
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const speed = target / 30;
+
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(updateCount, 40);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.15 });
 
-        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
 
-        // 7. INVIO INSTAGRAM
+        // 8. SEND FORM TO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
@@ -993,12 +1276,15 @@
 
             const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
 
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Messaggio copiato negli appunti! Incollalo nella chat di Instagram.");
-                window.open('https://instagram.com/lukse__', '_blank');
-            }).catch(() => {
-                window.open('https://instagram.com/lukse__', '_blank');
-            });
+            // Copy to clipboard fallback
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            window.open('https://instagram.com/lukse__', '_blank');
         }
     </script>
 </body>
