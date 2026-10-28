@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | Portfolio & Digital Creator</title>
+    <title>Luca Sessa — Digital Creator & Web Developer</title>
 
-    <!-- FONT & ICONS -->
+    <!-- FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-dark: #05070b;
-            --bg-card: rgba(18, 22, 32, 0.75);
-            --bg-card-hover: rgba(28, 35, 52, 0.95);
-            --primary: #7f00ff;
-            --secondary: #00c6ff;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --text-title: #ffffff;
-            --text-body: #94a3b8;
-            --border-light: rgba(255, 255, 255, 0.12);
+            --bg: #070709;
+            --bg-card: rgba(18, 18, 22, 0.65);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(255, 255, 255, 0.25);
+            --text-main: #f3f3f6;
+            --text-muted: #8e8e9a;
+            --accent: #e2e2e8;
+            --accent-glow: rgba(255, 255, 255, 0.15);
+            --font-serif: 'Instrument Serif', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
         }
 
         * {
@@ -33,1271 +34,729 @@
 
         html {
             scroll-behavior: smooth;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-sans);
         }
 
         body {
             width: 100%;
             min-height: 100vh;
-            background-color: var(--bg-dark);
-            color: var(--text-body);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            line-height: 1.5;
             overflow-x: hidden;
             position: relative;
+            background-color: var(--bg);
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Syne', sans-serif;
+        /* CURSORE PERSONALIZZATO DINETICO (DESKTOP) */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 18px;
+            height: 18px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+            mix-blend-mode: difference;
         }
 
-        /* CANVAS PARTICELLE SFONDO */
-        #heroCanvas {
+        #custom-cursor.hovering {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.95);
+            mix-blend-mode: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #custom-cursor.hovering::after {
+            content: 'VIEW';
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #000;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 992px) {
+            #custom-cursor { display: none !important; }
+        }
+
+        /* NAVIGATION BAR MINIMALE */
+        nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
         }
 
-        /* CURSORE LUMINESCENTE (DESKTOP) */
-        #cursor-glow {
-            position: fixed;
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(127, 0, 255, 0.22) 0%, rgba(0, 198, 255, 0.08) 50%, transparent 70%);
+        .nav-brand {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--text-main);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .nav-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            will-change: transform;
+            background-color: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulseDot 2s infinite;
         }
 
-        @media (max-width: 768px) {
-            #cursor-glow {
-                display: none !important;
-            }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
         }
 
-        /* PUNTINO FLUTTUANTE ESPANDIBILE */
-        .expand-dot-trigger {
+        /* PUNTINO FLUTTUANTE EXPANDABLE (STUDIO HUB) */
+        .hub-trigger {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            width: 58px;
-            height: 58px;
+            bottom: 35px;
+            right: 35px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
-            background: var(--gradient);
-            box-shadow: 0 0 25px rgba(0, 198, 255, 0.6);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-hover);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.4rem;
+            color: #fff;
             cursor: pointer;
             z-index: 9000;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: dotPulse 2.5s infinite;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes dotPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 35px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
+        .hub-trigger:hover {
+            transform: scale(1.12);
+            background: #ffffff;
+            color: #000;
         }
 
-        .expand-dot-trigger:hover {
-            transform: scale(1.15) rotate(12deg);
-        }
-
-        /* HUB OVERLAY FULLSCREEN */
+        /* EXPANDED HUB FULLSCREEN (VENIELLO STYLE) */
         .expanded-hub {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(5, 7, 11, 0.95);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(7, 7, 9, 0.96);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 30px;
+            padding: 60px 10%;
             opacity: 0;
             pointer-events: none;
-            clip-path: circle(0px at calc(100vw - 57px) calc(100vh - 57px));
-            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+            clip-path: circle(0px at calc(100vw - 62px) calc(100vh - 62px));
+            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease;
         }
 
         .expanded-hub.active {
             opacity: 1;
             pointer-events: all;
-            clip-path: circle(150% at calc(100vw - 57px) calc(100vh - 57px));
+            clip-path: circle(150% at calc(100vw - 62px) calc(100vh - 62px));
         }
 
-        .hub-close-btn {
+        .hub-close {
             position: absolute;
-            top: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-light);
-            color: white;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            top: 35px;
+            right: 35px;
+            font-size: 1.8rem;
+            color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        .hub-close-btn:hover {
-            background: var(--primary);
+        .hub-close:hover {
+            color: #fff;
             transform: rotate(90deg);
         }
 
-        .hub-content {
-            max-width: 650px;
-            width: 100%;
-            text-align: center;
+        .hub-menu-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-style: italic;
+            margin-bottom: 40px;
+            color: var(--text-main);
         }
 
-        .hub-content h2 {
-            font-size: clamp(2rem, 6vw, 3rem);
-            color: var(--text-title);
-            margin-bottom: 12px;
-        }
-
-        .hub-content h2 span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hub-content p {
-            color: var(--text-body);
-            font-size: 1.05rem;
-            margin-bottom: 30px;
-        }
-
-        .hub-links {
+        .hub-nav-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            max-width: 600px;
         }
 
-        .hub-card-link {
+        .hub-nav-item {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 18px 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            color: white;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
-        .hub-card-link:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--secondary);
-            transform: translateX(6px);
+        .hub-nav-item:hover {
+            padding-left: 15px;
+            color: #fff;
+            border-color: #fff;
         }
 
-        .hub-card-link i {
-            font-size: 1.2rem;
-            color: var(--secondary);
-        }
-
-        /* HERO HEADER */
+        /* HERO SECTION ED EDITORIAL STYLE */
         header {
             min-height: 100vh;
+            padding: 160px 8% 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 20px 40px;
             position: relative;
-            z-index: 1;
-            background: radial-gradient(circle at 50% 20%, rgba(127, 0, 255, 0.25) 0%, var(--bg-dark) 75%);
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 850px;
-        }
-
-        .profile-box {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            padding: 3px;
-            background: var(--gradient);
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.4);
-            animation: floatProfile 3.5s ease-in-out infinite;
-        }
-
-        @keyframes floatProfile {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--bg-dark);
-        }
-
-        /* ANIMAZIONE SALUTO 3D SLIDE + NEON GLITCH */
-        .hero-title-container {
-            font-size: clamp(2.2rem, 8vw, 4.2rem);
-            font-weight: 800;
-            color: var(--text-title);
-            letter-spacing: -0.5px;
-            margin-bottom: 14px;
-            line-height: 1.2;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .split-line {
-            display: block;
-            overflow: hidden;
-            padding: 6px 0;
-        }
-
-        .slide-text {
-            display: inline-block;
-            transform: translateY(120%) rotateX(-60deg);
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        .animate-in .slide-text {
-            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-in .slide-text.delayed {
-            animation-delay: 0.25s;
-        }
-
-        @keyframes slideIn3D {
-            0% {
-                transform: translateY(120%) rotateX(-60deg);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0) rotateX(0deg);
-                opacity: 1;
-            }
-        }
-
-        .neon-glitch-name {
-            position: relative;
-            display: inline-block;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: neonGlowPulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes neonGlowPulse {
-            0% { text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2); }
-            100% { text-shadow: 0 0 22px rgba(127, 0, 255, 0.8), 0 0 38px rgba(0, 198, 255, 0.7); }
-        }
-
-        .glitch-flash {
-            animation: glitchAnimation 0.4s steps(2, start) 1;
-        }
-
-        @keyframes glitchAnimation {
-            0% { transform: translate(0); filter: hue-rotate(0deg); }
-            20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); }
-            40% { transform: translate(-3px, -3px); filter: hue-rotate(180deg); }
-            60% { transform: translate(3px, 2px); filter: hue-rotate(270deg); }
-            80% { transform: translate(2px, -3px); filter: hue-rotate(360deg); }
-            100% { transform: translate(0); filter: hue-rotate(0deg); }
-        }
-
-        header p {
-            font-size: clamp(0.95rem, 3.8vw, 1.2rem);
-            color: var(--text-body);
-            max-width: 600px;
-            margin: 0 auto 28px;
-            padding: 0 10px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: var(--gradient);
-            border-radius: 30px;
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 0.88rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(127, 0, 255, 0.35);
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--secondary);
-            box-shadow: none;
-        }
-
-        /* SEZIONI GENERALI */
-        section {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.8rem, 6vw, 2.6rem);
-            color: var(--text-title);
-            font-weight: 800;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
-        }
-
-        .section-title span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* CHI SONO */
-        .about-box {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 32px 24px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-
-        .about-box p {
-            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
-            color: var(--text-body);
+        .hero-tag {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
             margin-bottom: 24px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            border-top: 1px solid var(--border-light);
-            padding-top: 20px;
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 9vw, 7.5rem);
+            font-weight: 400;
+            line-height: 0.98;
+            letter-spacing: -1.5px;
+            color: var(--text-main);
+            margin-bottom: 35px;
+            max-width: 1100px;
         }
 
-        .stat-item h4 {
-            font-size: 1.6rem;
-            color: var(--text-title);
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero-title i {
+            font-family: var(--font-serif);
+            font-style: italic;
+            color: var(--text-muted);
         }
 
-        .stat-item span {
-            font-size: 0.78rem;
-            color: var(--text-body);
-            font-weight: 600;
-            text-transform: uppercase;
+        .hero-bio {
+            font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+            color: var(--text-muted);
+            max-width: 650px;
+            line-height: 1.6;
+            margin-bottom: 45px;
+            font-weight: 300;
         }
 
-        /* SEZIONE ROADMAP / TIMELINE ESPERIENZA */
-        .timeline-container {
-            position: relative;
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 20px 0;
-        }
-
-        .timeline-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 3px;
-            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
-            transform: translateX(-50%);
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.6);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 40px;
-            width: 50%;
-            padding: 0 30px;
-            box-sizing: border-box;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-            text-align: left;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            top: 20px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--secondary);
-            border: 3px solid var(--bg-dark);
-            box-shadow: 0 0 12px var(--secondary);
-            z-index: 2;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-dot {
-            right: -9px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -9px;
-        }
-
-        .timeline-content {
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-light);
-            border-radius: 18px;
-            padding: 22px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            border-color: var(--secondary);
-            box-shadow: 0 10px 25px rgba(0, 198, 255, 0.2);
-        }
-
-        .timeline-date {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .timeline-title {
-            color: var(--text-title);
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-
-        .timeline-desc {
-            font-size: 0.88rem;
-            color: var(--text-body);
-        }
-
-        /* SEZIONE TECH STACK & SKILLS MATRIX 3D */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .skill-category-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 26px 22px;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category-card h3 {
-            color: var(--text-title);
-            font-size: 1.2rem;
-            margin-bottom: 18px;
+        .hero-actions {
             display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .skill-category-card h3 i {
-            color: var(--secondary);
-        }
-
-        .skill-tags-wrapper {
-            display: flex;
+            gap: 20px;
             flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .skill-pill {
+        .btn-editorial {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: rgba(127, 0, 255, 0.12);
-            border: 1px solid rgba(0, 198, 255, 0.25);
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
+            gap: 12px;
+            padding: 16px 32px;
+            border-radius: 40px;
+            background: var(--text-main);
+            color: #000;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-editorial:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-editorial-outline {
+            background: transparent;
+            border: 1px solid var(--border-hover);
+            color: var(--text-main);
+        }
+
+        .btn-editorial-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #fff;
             color: #fff;
-            transition: all 0.3s ease;
-            cursor: default;
         }
 
-        .skill-pill:hover {
-            background: var(--gradient);
-            border-color: transparent;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+        /* SEZIONI EDITORIALI */
+        section {
+            padding: 120px 8%;
+            border-top: 1px solid var(--border);
         }
 
-        /* FILTRI PROGETTI */
-        .filter-buttons {
+        .section-header {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 70px;
             flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            color: var(--text-body);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--gradient);
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 4px 15px rgba(127, 0, 255, 0.3);
-        }
-
-        /* GRID SYSTEM */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
         }
 
-        .hobby-card, .project-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            transform-style: preserve-3d;
-            will-change: transform;
+        .section-num {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: block;
         }
 
-        .hobby-card {
-            padding: 24px 18px;
-            text-align: center;
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 400;
+            letter-spacing: -0.5px;
         }
 
-        .hobby-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hobby-card h3 {
-            color: var(--text-title);
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-
-        .hobby-card p, .project-info p {
-            font-size: 0.88rem;
-            color: var(--text-body);
-        }
-
-        .project-card {
-            overflow: hidden;
+        /* VETRINA PROGETTI FULL-WIDTH (VENIELLO STYLE) */
+        .projects-list {
             display: flex;
             flex-direction: column;
+            gap: 60px;
         }
 
-        .project-img-wrapper {
+        .project-item {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            padding-bottom: 60px;
+            border-bottom: 1px solid var(--border);
+            transition: border-color 0.4s ease;
+        }
+
+        .project-item:hover {
+            border-color: var(--border-hover);
+        }
+
+        .project-cover {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 380px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #0f131a;
+            background: #121216;
         }
 
-        .project-img-wrapper img {
+        .project-cover img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(20%);
         }
 
-        .project-card:hover .project-img-wrapper img {
-            transform: scale(1.06);
+        .project-item:hover .project-cover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
         }
 
-        .project-info {
-            padding: 20px;
+        .project-meta {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            justify-content: center;
         }
 
-        .project-info h3 {
-            color: var(--text-title);
-            font-size: 1.25rem;
-            margin-bottom: 8px;
+        .project-index {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
         }
 
-        .project-info p {
+        .project-name {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 400;
             margin-bottom: 16px;
-            flex-grow: 1;
+            line-height: 1.1;
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 300;
         }
 
         .project-tags {
             display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 18px;
         }
 
-        .tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 14px;
-            background: rgba(127, 0, 255, 0.18);
-            color: var(--secondary);
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            font-weight: 600;
+        .tag-pill {
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .project-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-title);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.88rem;
+        /* TECH STACK GRID */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
-        .project-link i {
-            color: var(--secondary);
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px 28px;
+            transition: all 0.3s ease;
         }
 
-        .project-card.filtered-out {
-            display: none !important;
+        .service-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
         }
 
-        /* ANIMAZIONI SCROLL REVEAL */
-        .hidden {
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        .service-num {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            display: block;
         }
 
-        .show {
-            opacity: 1;
-            transform: translateY(0);
+        .service-title {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+
+        .service-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 300;
         }
 
         /* CONTATTI */
         .contact-box {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 28px 20px;
-            max-width: 650px;
+            max-width: 700px;
             margin: 0 auto;
+            text-align: center;
         }
 
-        .form-control {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(10, 12, 16, 0.85);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.92rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-            margin-bottom: 15px;
+        .contact-title {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 400;
+            margin-bottom: 20px;
         }
 
-        .form-control:focus {
-            border-color: var(--secondary);
-        }
-
-        textarea.form-control {
-            resize: none;
-            height: 120px;
+        .contact-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 300;
         }
 
         /* FOOTER */
         footer {
-            padding: 40px 20px;
-            background: #030406;
-            border-top: 1px solid var(--border-light);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        footer p {
+            padding: 40px 8%;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
             font-size: 0.85rem;
-            color: var(--text-body);
-            margin-bottom: 16px;
+            color: var(--text-muted);
         }
 
         .social-links {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .social-links a {
-            color: var(--text-title);
-            font-size: 1.3rem;
+            color: var(--text-main);
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .social-links a:hover {
-            color: var(--secondary);
+            color: var(--text-muted);
         }
 
-        /* MEDIA QUERIES MOBILE TIMELINE & LAYOUT */
-        @media (max-width: 768px) {
-            .timeline-line { left: 20px; }
-            .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; text-align: left !important; }
-            .timeline-item:nth-child(even) { left: 0; }
-            .timeline-dot { left: 11px !important; }
-        }
-
-        @media (max-width: 480px) {
-            section { padding: 50px 16px; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
-            .project-img-wrapper { height: 160px; }
-            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-            .expand-dot-trigger { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+        /* MEDIA QUERIES MOBILE */
+        @media (max-width: 900px) {
+            nav { padding: 20px 24px; }
+            header { padding: 130px 24px 60px; }
+            section { padding: 80px 24px; }
+            .project-item { grid-template-columns: 1fr; gap: 24px; }
+            .project-cover { height: 260px; }
+            .hub-trigger { bottom: 24px; right: 24px; width: 48px; height: 48px; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- CANVAS PARTICELLE SFONDO -->
-    <canvas id="heroCanvas"></canvas>
+    <!-- CURSORE KINETICO -->
+    <div id="custom-cursor"></div>
 
-    <!-- CURSORE LUMINESCENTE DESKTOP -->
-    <div id="cursor-glow"></div>
+    <!-- NAVIGATION BAR -->
+    <nav>
+        <a href="#" class="nav-brand">Luca Sessa</a>
+        <div class="nav-status">
+            <span class="status-dot"></span> Available for projects
+        </div>
+    </nav>
 
-    <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
-    <div class="expand-dot-trigger" id="dotTrigger" onclick="toggleHub()" title="Svela Hub Rapido">
-        <i class="fa-solid fa-bolt"></i>
+    <!-- PUNTINO FLUTTUANTE (EXPANDABLE STUDIO HUB) -->
+    <div class="hub-trigger" id="hubBtn" onclick="toggleHub()" title="Open Studio Hub">
+        <i class="fa-solid fa-plus"></i>
     </div>
 
-    <!-- HUB OVERLAY FULLSCREEN -->
+    <!-- EXPANDED STUDIO HUB OVERLAY -->
     <div class="expanded-hub" id="expandedHub">
-        <div class="hub-close-btn" onclick="toggleHub()">
+        <div class="hub-close" onclick="toggleHub()">
             <i class="fa-solid fa-xmark"></i>
         </div>
 
-        <div class="hub-content">
-            <h2>Hub Rapido <span>Luca Sessa</span> ⚡</h2>
-            <p>Accedi rapidamente ai miei canali principali e ai progetti più recenti.</p>
+        <div class="hub-menu-title">Studio Hub & Direct Access</div>
 
-            <div class="hub-links">
-                <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-card-link">
-                    <span><i class="fa-brands fa-instagram" style="margin-right: 10px; color: #e1306c;"></i> Profilo Instagram ufficiale</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-                <a href="#progetti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Esplora i Progetti Web & Shopify</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-
-                <a href="#contatti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 10px; color: var(--primary);"></i> Richiedi Preventivo / Consulenza</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+        <div class="hub-nav-list">
+            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-nav-item">
+                <span>Instagram Profile (@lukse__)</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <a href="#progetti" class="hub-nav-item" onclick="toggleHub()">
+                <span>Selected Works (2026)</span>
+                <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" class="hub-nav-item">
+                <span>LinkedIn Network</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <a href="#contatti" class="hub-nav-item" onclick="toggleHub()">
+                <span>Start a Project</span>
+                <i class="fa-solid fa-envelope"></i>
+            </a>
         </div>
     </div>
 
     <!-- HERO HEADER -->
     <header>
-        <div class="hero-content">
-            <div class="profile-box">
-                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
-            </div>
-
-            <!-- SALUTO ANIMATO IN AUTOMATICO -->
-            <h1 class="hero-title-container animate-in" id="heroTitle" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
-                <span class="split-line">
-                    <span class="slide-text">Ciao, sono</span>
-                </span>
-                <span class="split-line">
-                    <span class="slide-text delayed neon-glitch-name glitch-flash" id="heroName">Luca Sessa 🚀</span>
-                </span>
-            </h1>
-
-            <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
-            
-            <div class="btn-group">
-                <a href="#progetti" class="btn">
-                    Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
-                    Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
-                </a>
-            </div>
+        <div class="hero-tag">Digital Creator & Web Developer</div>
+        <h1 class="hero-title">Crafting digital <i>experiences</i> with code, design & strategy.</h1>
+        <p class="hero-bio">Sviluppo store e-commerce performanti, interfacce web su misura e automazioni digitali per brand che vogliono distinguersi con uno stile unico.</p>
+        
+        <div class="hero-actions">
+            <a href="#progetti" class="btn-editorial">Esplora i lavori <i class="fa-solid fa-arrow-down"></i></a>
+            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="btn-editorial btn-editorial-outline">Instagram <i class="fa-brands fa-instagram"></i></a>
         </div>
     </header>
 
-    <!-- CHI SONO -->
-    <section class="hidden">
-        <div class="about-box">
-            <h2 class="section-title" style="margin-bottom: 15px;">👤 Chi <span>Sono</span></h2>
-            <p>Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.</p>
-            
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h4>4+</h4>
-                    <span>Store & Siti Attivi</span>
-                </div>
-                <div class="stat-item">
-                    <h4>100%</h4>
-                    <span>Mobile Optimized</span>
-                </div>
-                <div class="stat-item">
-                    <h4>24/7</h4>
-                    <span>Performance Top</span>
-                </div>
+    <!-- SEZIONE PROGETTI -->
+    <section id="progetti">
+        <div class="section-header">
+            <div>
+                <span class="section-num">01 / Selected Works</span>
+                <h2 class="section-title">Progetti In Evidenza</h2>
             </div>
         </div>
-    </section>
 
-    <!-- BACHECA TECH STACK & SKILLS MATRIX 3D -->
-    <section class="hidden">
-        <h2 class="section-title">⚡ Tech Stack & <span>Competenze</span></h2>
-
-        <div class="skills-grid">
-            <div class="skill-category-card tilt-card">
-                <h3><i class="fa-solid fa-code"></i> Frontend & Web</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-brands fa-html5"></i> HTML5</span>
-                    <span class="skill-pill"><i class="fa-brands fa-css3-alt"></i> CSS3 / Modern CSS</span>
-                    <span class="skill-pill"><i class="fa-brands fa-js"></i> JavaScript ES6+</span>
-                    <span class="skill-pill"><i class="fa-brands fa-shopify"></i> Shopify Liquid</span>
-                    <span class="skill-pill"><i class="fa-solid fa-mobile-screen"></i> Responsive UI</span>
-                </div>
-            </div>
-
-            <div class="skill-category-card tilt-card">
-                <h3><i class="fa-solid fa-robot"></i> Automation & Python</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-brands fa-python"></i> Python Automation</span>
-                    <span class="skill-pill"><i class="fa-solid fa-paper-plane"></i> Telegram Bots & API</span>
-                    <span class="skill-pill"><i class="fa-solid fa-database"></i> Web Scraping</span>
-                    <span class="skill-pill"><i class="fa-solid fa-gears"></i> Process Automation</span>
-                </div>
-            </div>
-
-            <div class="skill-category-card tilt-card">
-                <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Design & Strategy</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-solid fa-palette"></i> UI / UX Design</span>
-                    <span class="skill-pill"><i class="fa-brands fa-instagram"></i> Social Media Growth</span>
-                    <span class="skill-pill"><i class="fa-solid fa-store"></i> E-Commerce Setup</span>
-                    <span class="skill-pill"><i class="fa-solid fa-bullhorn"></i> Digital Branding</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ROADMAP / TIMELINE ESPERIENZA -->
-    <section class="hidden">
-        <h2 class="section-title">🗺️ Il Mio <span>Percorso</span></h2>
-
-        <div class="timeline-container">
-            <div class="timeline-line"></div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content tilt-card">
-                    <div class="timeline-date">2026 - Presente</div>
-                    <h3 class="timeline-title">Sviluppo E-Commerce & Progetti Web</h3>
-                    <p class="timeline-desc">Realizzazione e restyling di store Shopify ad alte prestazioni (Saadiya, Gelosia Boutique, Officina Luxury) e siti aziendali su misura.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content tilt-card">
-                    <div class="timeline-date">2026</div>
-                    <h3 class="timeline-title">Fast Review & Soluzioni NFC</h3>
-                    <p class="timeline-desc">Ideazione di soluzioni per la crescita dei brand locali tramite card NFC trasparenti personalizzate per recensioni Google rapide.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content tilt-card">
-                    <div class="timeline-date">2026</div>
-                    <h3 class="timeline-title">Automation & Scripting Avanzato</h3>
-                    <p class="timeline-desc">Sviluppo di bot Python personalizzati e sistemi automatici per il monitoraggio dei dati tramite API Telegram.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PASSIONI -->
-    <section class="hidden">
-        <h2 class="section-title">🚀 Le Mie <span>Passioni</span></h2>
-
-        <div class="grid">
-            <div class="hobby-card tilt-card">
-                <i class="fa-solid fa-code hobby-icon"></i>
-                <h3>Web Development</h3>
-                <p>Sviluppo di siti responsive, landing page veloci e interazioni con HTML, CSS e JavaScript.</p>
-            </div>
-
-            <div class="hobby-card tilt-card">
-                <i class="fa-solid fa-palette hobby-icon"></i>
-                <h3>Grafica & UI Design</h3>
-                <p>Progettazione di interfacce pulite, moderne e incentrate sulla migliore esperienza utente.</p>
-            </div>
-
-            <div class="hobby-card tilt-card">
-                <i class="fa-solid fa-hashtag hobby-icon"></i>
-                <h3>Social Media</h3>
-                <p>Creazione di contenuti ingaggianti e gestione di profili social per fare crescere la community.</p>
-            </div>
-
-            <div class="hobby-card tilt-card">
-                <i class="fa-solid fa-chart-line hobby-icon"></i>
-                <h3>Digital Marketing</h3>
-                <p>Studio di strategie digitali per rafforzare il posizionamento del brand ed aumentare la visibilità.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROGETTI -->
-    <section id="progetti" class="hidden">
-        <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
-
-        <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterProjects('all')">Tutti</button>
-            <button class="filter-btn" onclick="filterProjects('ecommerce')">E-commerce</button>
-            <button class="filter-btn" onclick="filterProjects('web')">Siti Vetrina</button>
-        </div>
-
-        <div class="grid" id="projectsGrid">
+        <div class="projects-list">
 
             <!-- PROGETTO 1 -->
-            <div class="project-card tilt-card" data-category="web">
-                <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="Anteprima AirSafe.it" loading="lazy">
+            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-item hover-target">
+                <div class="project-cover">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=1000" alt="Saadiya.it" loading="lazy">
                 </div>
-                <div class="project-info">
-                    <h3>AirSafe.it</h3>
-                    <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form di contatto.</p>
+                <div class="project-meta">
+                    <span class="project-index">01 — E-COMMERCE</span>
+                    <h3 class="project-name">Saadiya.it</h3>
+                    <p class="project-desc">Store e-commerce di moda elegante curato nei minimi dettagli visivi, con layout responsive ed esperienza di acquisto fluida.</p>
                     <div class="project-tags">
-                        <span class="tag">HTML/CSS</span>
-                        <span class="tag">UI Design</span>
+                        <span class="tag-pill">E-Commerce</span>
+                        <span class="tag-pill">Fashion UI</span>
+                        <span class="tag-pill">Brand Identity</span>
                     </div>
-                    <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-link">
-                        Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
                 </div>
-            </div>
+            </a>
 
             <!-- PROGETTO 2 -->
-            <div class="project-card tilt-card" data-category="ecommerce">
-                <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Anteprima Saadiya.it" loading="lazy">
+            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-item hover-target">
+                <div class="project-cover">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=1000" alt="AirSafe.it" loading="lazy">
                 </div>
-                <div class="project-info">
-                    <h3>Saadiya.it</h3>
-                    <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
+                <div class="project-meta">
+                    <span class="project-index">02 — CORPORATE WEB</span>
+                    <h3 class="project-name">AirSafe.it</h3>
+                    <p class="project-desc">Piattaforma aziendale per bonifiche e coperture industriali con layout scuro, preventivatore interattivo e form dedicato.</p>
                     <div class="project-tags">
-                        <span class="tag">E-Commerce</span>
-                        <span class="tag">Brand Identity</span>
+                        <span class="tag-pill">Corporate</span>
+                        <span class="tag-pill">UI Design</span>
+                        <span class="tag-pill">Frontend</span>
                     </div>
-                    <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-link">
-                        Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
                 </div>
-            </div>
+            </a>
 
             <!-- PROGETTO 3 -->
-            <div class="project-card tilt-card" data-category="ecommerce">
-                <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Anteprima Gelosia Boutique" loading="lazy">
+            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-item hover-target">
+                <div class="project-cover">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=1000" alt="Gelosia Boutique" loading="lazy">
                 </div>
-                <div class="project-info">
-                    <h3>Gelosia Boutique</h3>
-                    <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
+                <div class="project-meta">
+                    <span class="project-index">03 — SHOPIFY STORE</span>
+                    <h3 class="project-name">Gelosia Boutique</h3>
+                    <p class="project-desc">E-commerce realizzato su Shopify con tema Pro altamente personalizzato e ottimizzato per le conversioni da smartphone.</p>
                     <div class="project-tags">
-                        <span class="tag">Shopify</span>
-                        <span class="tag">Fashion UI</span>
+                        <span class="tag-pill">Shopify</span>
+                        <span class="tag-pill">UX Research</span>
+                        <span class="tag-pill">Mobile First</span>
                     </div>
-                    <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-link">
-                        Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
                 </div>
-            </div>
+            </a>
 
             <!-- PROGETTO 4 -->
-            <div class="project-card tilt-card" data-category="ecommerce">
-                <div class="project-img-wrapper">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Anteprima Officina Luxury" loading="lazy">
+            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-item hover-target">
+                <div class="project-cover">
+                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=1000" alt="Officina Luxury" loading="lazy">
                 </div>
-                <div class="project-info">
-                    <h3>Officina Luxury</h3>
-                    <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione dei prodotti e nel layout di conversione.</p>
+                <div class="project-meta">
+                    <span class="project-index">04 — SHOPIFY PRO</span>
+                    <h3 class="project-name">Officina Luxury</h3>
+                    <p class="project-desc">Store online completo con navigazione personalizzata dei prodotti, grafica luxury e integrazione catalogo.</p>
                     <div class="project-tags">
-                        <span class="tag">Shopify</span>
-                        <span class="tag">E-Commerce</span>
+                        <span class="tag-pill">Shopify</span>
+                        <span class="tag-pill">E-Commerce</span>
+                        <span class="tag-pill">Custom Layout</span>
                     </div>
-                    <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-link">
-                        Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    </a>
                 </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- SERVIZI / COMPETENZE -->
+    <section>
+        <div class="section-header">
+            <div>
+                <span class="section-num">02 / Expertise</span>
+                <h2 class="section-title">Servizi & Competenze</h2>
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="service-num">01</span>
+                <h3 class="service-title">Web Development</h3>
+                <p class="service-text">Sviluppo di siti web moderni, veloci e completamente responsive utilizzando HTML, CSS, JavaScript e Shopify Liquid.</p>
             </div>
 
+            <div class="service-card">
+                <span class="service-num">02</span>
+                <h3 class="service-title">UI / UX Design</h3>
+                <p class="service-text">Progettazione di interfacce utente pulite, funzionali ed esteticamente curate, studiate per migliorare l'esperienza di navigazione.</p>
+            </div>
+
+            <div class="service-card">
+                <span class="service-num">03</span>
+                <h3 class="service-title">Digital Strategy & Social</h3>
+                <p class="service-text">Strategie per rafforzare la presenza online dei brand, gestione di profili social e creazione di contenuti ingaggianti.</p>
+            </div>
         </div>
     </section>
 
     <!-- CONTATTI -->
-    <section id="contatti" class="hidden">
-        <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
-
+    <section id="contatti">
         <div class="contact-box">
-            <p style="text-align: center; color: var(--text-body); margin-bottom: 20px; font-size: 0.95rem;">
-                Vuoi realizzare un sito web, sviluppare uno store Shopify o richiedere una consulenza? Compila i campi e scrivimi su Instagram!
-            </p>
-
-            <form id="instaForm" onsubmit="sendToInstagram(event)">
-                <input type="text" id="name" class="form-control" placeholder="Il tuo nome o azienda" required>
-                <input type="text" id="project" class="form-control" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required>
-                <textarea id="message" class="form-control" placeholder="Descrivi brevemente la tua idea..." required></textarea>
-
-                <button type="submit" class="btn" style="width: 100%; justify-content: center; cursor: pointer; border: none; font-size: 0.95rem;">
-                    Invia messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i>
-                </button>
-            </form>
+            <span class="section-num" style="display: block; margin-bottom: 15px;">03 / Get in Touch</span>
+            <h2 class="contact-title">Parliamo del tuo progetto</h2>
+            <p class="contact-desc">Vuoi realizzare un nuovo sito web, sviluppare uno store Shopify o richiedere una consulenza digitale?</p>
+            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="btn-editorial">Scrivimi su Instagram <i class="fa-brands fa-instagram"></i></a>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="hidden">
-        <p>© 2026 <strong>Luca Sessa</strong>. Creato con HTML, CSS e JavaScript.</p>
+    <footer>
+        <p>© 2026 Luca Sessa. All rights reserved.</p>
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
     </footer>
 
-    <!-- SCRIPT INTERATTIVI E SFONDO -->
+    <!-- SCRIPT INTERATTIVI -->
     <script>
-        // 1. CANVAS PARTICELLE INTERATTIVO
-        const canvas = document.getElementById('heroCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        // 1. CURSORE DINETICO PERSONALIZZATO (DESKTOP)
+        const cursor = document.getElementById('custom-cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target');
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.8 + 0.4;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(0, 198, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < (window.innerWidth < 768 ? 25 : 45); i++) {
-            particles.push(new Particle());
-        }
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+        if (window.innerWidth > 992) {
+            window.addEventListener('mousemove', (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
             });
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
 
-        // 2. REPLAY ANIMAZIONE TITOLO SALUTO
-        function replayHeroAnimation() {
-            const titleContainer = document.getElementById('heroTitle');
-            const name = document.getElementById('heroName');
-            
-            titleContainer.classList.remove('animate-in');
-            name.classList.remove('glitch-flash');
-            
-            void titleContainer.offsetWidth; // Trigger reflow
-            
-            titleContainer.classList.add('animate-in');
-            name.classList.add('glitch-flash');
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+                target.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+            });
         }
 
-        // 3. TOGGLE EXPANDABLE HUB
+        // 2. TOGGLE STUDIO HUB OVERLAY
         function toggleHub() {
             const hub = document.getElementById('expandedHub');
             hub.classList.toggle('active');
         }
-
-        // 4. CURSORE DESKTOP
-        const cursorGlow = document.getElementById('cursor-glow');
-        if (window.innerWidth > 768) {
-            window.addEventListener('mousemove', (e) => {
-                cursorGlow.style.left = `${e.clientX}px`;
-                cursorGlow.style.top = `${e.clientY}px`;
-            });
-        }
-
-        // 5. TILT 3D SULLE CARD
-        const tiltCards = document.querySelectorAll('.tilt-card');
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -6;
-                const rotateY = ((x - centerX) / centerX) * 6;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-            });
-        });
-
-        // 6. FILTRO PROGETTI
-        function filterProjects(category) {
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const cards = document.querySelectorAll('.project-card');
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.classList.remove('filtered-out');
-                } else {
-                    card.classList.add('filtered-out');
-                }
-            });
-        }
-
-        // 7. SCROLL REVEAL
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
-
-        // 8. INVIO INSTAGRAM
-        function sendToInstagram(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const project = document.getElementById('project').value;
-            const message = document.getElementById('message').value;
-
-            const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
-
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Messaggio copiato negli appunti! Incollalo nella chat di Instagram.");
-                window.open('https://instagram.com/lukse__', '_blank');
-            }).catch(() => {
-                window.open('https://instagram.com/lukse__', '_blank');
-            });
-        }
     </script>
+
 </body>
 </html>
