@@ -99,7 +99,7 @@
             transform: scale(1.15) rotate(12deg);
         }
 
-        /* HUB EXPANDED OVERLAY */
+        /* HUB OVERLAY */
         .expanded-hub {
             position: fixed;
             top: 0;
@@ -250,7 +250,7 @@
             background: var(--bg-dark);
         }
 
-        /* ANIMAZIONE SALUTO MORPHING 3D + NEON GLITCH */
+        /* ANIMAZIONE SALUTO 3D SLIDE + NEON GLITCH */
         .hero-title-container {
             font-size: clamp(2rem, 7.5vw, 4rem);
             font-weight: 800;
@@ -265,18 +265,22 @@
         .split-line {
             display: block;
             overflow: hidden;
-            padding: 4px 0;
+            padding: 6px 0;
         }
 
         .slide-text {
             display: inline-block;
             transform: translateY(120%) rotateX(-60deg);
             opacity: 0;
-            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             will-change: transform, opacity;
         }
 
-        .slide-text.delayed {
+        /* CLASSE ATTIVATA VIA SCRIPT ALL'AVVIO */
+        .animate-in .slide-text {
+            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-in .slide-text.delayed {
             animation-delay: 0.25s;
         }
 
@@ -291,7 +295,7 @@
             }
         }
 
-        /* NEON GLITCH EFFECT SU "LUCA SESSA" */
+        /* NEON GLITCH EFFECT */
         .neon-glitch-name {
             position: relative;
             display: inline-block;
@@ -302,25 +306,20 @@
         }
 
         @keyframes neonGlowPulse {
-            0% {
-                text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2);
-            }
-            100% {
-                text-shadow: 0 0 18px rgba(127, 0, 255, 0.8), 0 0 35px rgba(0, 198, 255, 0.6);
-            }
+            0% { text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2); }
+            100% { text-shadow: 0 0 22px rgba(127, 0, 255, 0.8), 0 0 38px rgba(0, 198, 255, 0.7); }
         }
 
-        /* EFFETTO GLITCH LAMPO AL CARICAMENTO */
-        .neon-glitch-name.glitch-flash {
-            animation: glitchAnimation 0.4s steps(2, start) 1s 2;
+        .glitch-flash {
+            animation: glitchAnimation 0.4s steps(2, start) 1;
         }
 
         @keyframes glitchAnimation {
             0% { transform: translate(0); filter: hue-rotate(0deg); }
-            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-            40% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
-            60% { transform: translate(2px, 1px); filter: hue-rotate(270deg); }
-            80% { transform: translate(1px, -2px); filter: hue-rotate(360deg); }
+            20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); }
+            40% { transform: translate(-3px, -3px); filter: hue-rotate(180deg); }
+            60% { transform: translate(3px, 2px); filter: hue-rotate(270deg); }
+            80% { transform: translate(2px, -3px); filter: hue-rotate(360deg); }
             100% { transform: translate(0); filter: hue-rotate(0deg); }
         }
 
@@ -460,14 +459,13 @@
             box-shadow: 0 4px 15px rgba(127, 0, 255, 0.3);
         }
 
-        /* GRID SYSTEM RESPONSIVE */
+        /* GRID SYSTEM */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
         }
 
-        /* PASSIONI & PROGETTI CARD CON TILT */
         .hobby-card, .project-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
@@ -581,7 +579,7 @@
             display: none !important;
         }
 
-        /* ANIMAZIONI SCROLL REVEAL */
+        /* SCROLL REVEAL */
         .hidden {
             opacity: 0;
             transform: translateY(25px);
@@ -671,7 +669,7 @@
 
 <body>
 
-    <!-- CURSORE LUMINESCENTE (DESKTOP) -->
+    <!-- CURSORE DESKTOP -->
     <div id="cursor-glow"></div>
 
     <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
@@ -679,7 +677,7 @@
         <i class="fa-solid fa-bolt"></i>
     </div>
 
-    <!-- HUB ESPANSO FULLSCREEN -->
+    <!-- HUB OVERLAY -->
     <div class="expanded-hub" id="expandedHub">
         <div class="hub-close-btn" onclick="toggleHub()">
             <i class="fa-solid fa-xmark"></i>
@@ -708,15 +706,15 @@
         </div>
     </div>
 
-    <!-- HERO HEADER CON ANIMAZIONE TITLE 3D + NEON GLITCH -->
+    <!-- HERO HEADER -->
     <header>
         <div class="hero-content">
             <div class="profile-box">
                 <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
             </div>
 
-            <!-- INTESTAZIONE ANIMATA CON MIX 3D SLIDE & NEON GLITCH -->
-            <h1 class="hero-title-container" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
+            <!-- SALUTO ANIMATO IN AUTOMATICO -->
+            <h1 class="hero-title-container animate-in" id="heroTitle" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
                 <span class="split-line">
                     <span class="slide-text">Ciao, sono</span>
                 </span>
@@ -909,21 +907,19 @@
         </div>
     </footer>
 
-    <!-- SCRIPT INTERATTIVI -->
+    <!-- SCRIPT -->
     <script>
         // 1. REPLAY ANIMAZIONE TITOLO SALUTO
         function replayHeroAnimation() {
-            const texts = document.querySelectorAll('.slide-text');
+            const titleContainer = document.getElementById('heroTitle');
             const name = document.getElementById('heroName');
             
-            texts.forEach(el => {
-                el.style.animation = 'none';
-                el.offsetHeight; // Trigger reflow
-                el.style.animation = null;
-            });
-
+            titleContainer.classList.remove('animate-in');
             name.classList.remove('glitch-flash');
-            void name.offsetWidth;
+            
+            void titleContainer.offsetWidth; // Trigger reflow per riavviare l'animazione
+            
+            titleContainer.classList.add('animate-in');
             name.classList.add('glitch-flash');
         }
 
