@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | Portfolio & Digital Creator</title>
+    <title>Luca Sessa | 3D Interactive Portfolio</title>
 
     <!-- FONT & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,11 +11,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- THREE.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
         :root {
-            --bg-dark: #05070b;
-            --bg-card: rgba(18, 22, 32, 0.75);
-            --bg-card-hover: rgba(28, 35, 52, 0.95);
+            --bg-dark: #030407;
+            --bg-card: rgba(14, 18, 28, 0.75);
+            --bg-card-hover: rgba(28, 35, 52, 0.92);
             --primary: #7f00ff;
             --secondary: #00c6ff;
             --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -36,6 +39,7 @@
             background-color: var(--bg-dark);
             color: var(--text-body);
             font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
         }
 
         body {
@@ -49,13 +53,13 @@
             font-family: 'Syne', sans-serif;
         }
 
-        /* CANVAS PARTICELLE SFONDO */
-        #heroCanvas {
+        /* THREE.JS CANVAS BACKGROUND */
+        #webgl-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 0;
             pointer-events: none;
         }
@@ -65,7 +69,7 @@
             position: fixed;
             width: 280px;
             height: 280px;
-            background: radial-gradient(circle, rgba(127, 0, 255, 0.22) 0%, rgba(0, 198, 255, 0.08) 50%, transparent 70%);
+            background: radial-gradient(circle, rgba(127, 0, 255, 0.25) 0%, rgba(0, 198, 255, 0.08) 50%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -115,7 +119,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(5, 7, 11, 0.95);
+            background: rgba(3, 4, 7, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             z-index: 99999;
@@ -225,7 +229,6 @@
             padding: 80px 20px 40px;
             position: relative;
             z-index: 1;
-            background: radial-gradient(circle at 50% 20%, rgba(127, 0, 255, 0.25) 0%, var(--bg-dark) 75%);
         }
 
         .hero-content {
@@ -235,7 +238,6 @@
             max-width: 850px;
         }
 
-        /* FOTO PROFILO */
         .profile-box {
             position: relative;
             width: 130px;
@@ -261,7 +263,6 @@
             background: var(--bg-dark);
         }
 
-        /* ANIMAZIONE SALUTO 3D SLIDE + NEON GLITCH */
         .hero-title-container {
             font-size: clamp(2.2rem, 8vw, 4.2rem);
             font-weight: 800;
@@ -374,9 +375,9 @@
             box-shadow: none;
         }
 
-        /* SEZIONI GENERALI */
+        /* SEZIONI GENERALI IN STRUTTURA 3D */
         section {
-            padding: 80px 20px;
+            padding: 100px 20px;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
@@ -388,7 +389,7 @@
             font-size: clamp(1.8rem, 6vw, 2.6rem);
             color: var(--text-title);
             font-weight: 800;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             letter-spacing: -0.5px;
         }
 
@@ -409,7 +410,7 @@
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
         .about-box p {
@@ -441,14 +442,14 @@
             text-transform: uppercase;
         }
 
-        /* PROGETTI LISTA ED EDITORIAL (VENIELLO INSPIRATION) */
-        .projects-stack {
+        /* PORTALI PROGETTI 3D / ROW */
+        .projects-3d-stack {
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 50px;
         }
 
-        .project-row {
+        .project-portal-card {
             display: grid;
             grid-template-columns: 1.1fr 1fr;
             gap: 30px;
@@ -457,56 +458,56 @@
             backdrop-filter: blur(15px);
             border: 1px solid var(--border-light);
             border-radius: 24px;
-            padding: 24px;
-            transition: all 0.3s ease;
+            padding: 28px;
+            transition: all 0.4s ease;
             text-decoration: none;
             color: inherit;
         }
 
-        .project-row:hover {
+        .project-portal-card:hover {
             border-color: var(--secondary);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 198, 255, 0.15);
+            transform: scale(1.02) translateY(-6px);
+            box-shadow: 0 20px 45px rgba(0, 198, 255, 0.25);
         }
 
-        .project-preview-wrapper {
+        .portal-img-container {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 280px;
             border-radius: 16px;
             overflow: hidden;
-            background: #0d1117;
+            background: #090d14;
         }
 
-        .project-preview-wrapper img {
+        .portal-img-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
 
-        .project-row:hover .project-preview-wrapper img {
-            transform: scale(1.06);
+        .project-portal-card:hover .portal-img-container img {
+            transform: scale(1.08);
         }
 
-        .project-row-info h3 {
+        .portal-info h3 {
             font-size: 1.8rem;
             color: var(--text-title);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        .project-row-info p {
-            font-size: 0.92rem;
+        .portal-info p {
+            font-size: 0.95rem;
             color: var(--text-body);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        .project-tags {
+        .portal-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .tag-pill {
@@ -519,20 +520,20 @@
             font-weight: 600;
         }
 
-        .project-link-btn {
+        .portal-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             font-weight: 700;
             color: var(--text-title);
-            font-size: 0.9rem;
+            font-size: 0.92rem;
         }
 
-        .project-link-btn i {
+        .portal-btn i {
             color: var(--secondary);
         }
 
-        /* BACHECA TECH STACK */
+        /* TECH STACK */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -546,6 +547,11 @@
             border-radius: 20px;
             padding: 26px 22px;
             transition: all 0.3s ease;
+        }
+
+        .skill-category-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-5px);
         }
 
         .skill-category-card h3 {
@@ -585,18 +591,6 @@
             background: var(--gradient);
             border-color: transparent;
             transform: translateY(-3px);
-        }
-
-        /* ANIMAZIONI SCROLL REVEAL */
-        .hidden {
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .show {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         /* CONTATTI */
@@ -666,12 +660,12 @@
         }
 
         @media (max-width: 850px) {
-            .project-row { grid-template-columns: 1fr; }
-            .project-preview-wrapper { height: 200px; }
+            .project-portal-card { grid-template-columns: 1fr; }
+            .portal-img-container { height: 210px; }
         }
 
         @media (max-width: 480px) {
-            section { padding: 50px 16px; }
+            section { padding: 60px 16px; }
             .btn-group { flex-direction: column; }
             .btn { width: 100%; }
             .stats-grid { grid-template-columns: 1fr; gap: 10px; }
@@ -682,10 +676,10 @@
 
 <body>
 
-    <!-- CANVAS PARTICELLE SFONDO -->
-    <canvas id="heroCanvas"></canvas>
+    <!-- THREE.JS WEBGL CANVAS -->
+    <canvas id="webgl-canvas"></canvas>
 
-    <!-- CURSORE LUMINESCENTE DESKTOP -->
+    <!-- CURSORE DESKTOP -->
     <div id="cursor-glow"></div>
 
     <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
@@ -725,12 +719,10 @@
     <!-- HERO HEADER -->
     <header>
         <div class="hero-content">
-            <!-- FOTO PROFILO -->
             <div class="profile-box">
                 <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
             </div>
 
-            <!-- SALUTO ANIMATO IN AUTOMATICO -->
             <h1 class="hero-title-container animate-in" id="heroTitle" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
                 <span class="split-line">
                     <span class="slide-text">Ciao, sono</span>
@@ -744,7 +736,7 @@
             
             <div class="btn-group">
                 <a href="#progetti" class="btn">
-                    Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
+                    Esplora Spazio 3D <i class="fa-solid fa-arrow-down"></i>
                 </a>
                 <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
                     Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
@@ -754,7 +746,7 @@
     </header>
 
     <!-- CHI SONO -->
-    <section class="hidden">
+    <section>
         <div class="about-box">
             <h2 class="section-title" style="margin-bottom: 15px;">👤 Chi <span>Sono</span></h2>
             <p>Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.</p>
@@ -776,85 +768,85 @@
         </div>
     </section>
 
-    <!-- PROGETTI EDITORIALI -->
-    <section id="progetti" class="hidden">
-        <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
+    <!-- PROGETTI IN TUNNEL 3D -->
+    <section id="progetti">
+        <h2 class="section-title">🛸 Portali <span>Progetti 3D</span></h2>
 
-        <div class="projects-stack">
+        <div class="projects-3d-stack">
 
             <!-- PROGETTO 1 -->
-            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
+                <div class="portal-img-container">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Saadiya.it" loading="lazy">
                 </div>
-                <div class="project-row-info">
+                <div class="portal-info">
                     <h3>Saadiya.it</h3>
                     <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
-                    <div class="project-tags">
+                    <div class="portal-tags">
                         <span class="tag-pill">E-Commerce</span>
                         <span class="tag-pill">Brand Identity</span>
                         <span class="tag-pill">Fashion UI</span>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
             <!-- PROGETTO 2 -->
-            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
+                <div class="portal-img-container">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="AirSafe.it" loading="lazy">
                 </div>
-                <div class="project-row-info">
+                <div class="portal-info">
                     <h3>AirSafe.it</h3>
                     <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form di contatto.</p>
-                    <div class="project-tags">
+                    <div class="portal-tags">
                         <span class="tag-pill">HTML/CSS</span>
                         <span class="tag-pill">UI Design</span>
                         <span class="tag-pill">Corporate</span>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
             <!-- PROGETTO 3 -->
-            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
+                <div class="portal-img-container">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Gelosia Boutique" loading="lazy">
                 </div>
-                <div class="project-row-info">
+                <div class="portal-info">
                     <h3>Gelosia Boutique</h3>
                     <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
-                    <div class="project-tags">
+                    <div class="portal-tags">
                         <span class="tag-pill">Shopify</span>
                         <span class="tag-pill">Mobile First</span>
                         <span class="tag-pill">UX Research</span>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
             <!-- PROGETTO 4 -->
-            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-portal-card">
+                <div class="portal-img-container">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Officina Luxury" loading="lazy">
                 </div>
-                <div class="project-row-info">
+                <div class="portal-info">
                     <h3>Officina Luxury</h3>
                     <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione dei prodotti e nel layout di conversione.</p>
-                    <div class="project-tags">
+                    <div class="portal-tags">
                         <span class="tag-pill">Shopify Pro</span>
                         <span class="tag-pill">E-Commerce</span>
                         <span class="tag-pill">Luxury UI</span>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="portal-btn">Entra nel sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
         </div>
     </section>
 
-    <!-- BACHECA TECH STACK -->
-    <section class="hidden">
+    <!-- TECH STACK -->
+    <section>
         <h2 class="section-title">⚡ Tech Stack & <span>Competenze</span></h2>
 
         <div class="skills-grid">
@@ -889,7 +881,7 @@
     </section>
 
     <!-- CONTATTI -->
-    <section id="contatti" class="hidden">
+    <section id="contatti">
         <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
 
         <div class="contact-box">
@@ -910,68 +902,128 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="hidden">
-        <p>© 2026 <strong>Luca Sessa</strong>. Creato con HTML, CSS e JavaScript.</p>
+    <footer>
+        <p>© 2026 <strong>Luca Sessa</strong>. 3D WebGL Portfolio built with Three.js.</p>
         <div class="social-links">
             <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
 
-    <!-- SCRIPT INTERATTIVI E SFONDO -->
+    <!-- THREE.JS 3D TUNNEL ENGINE -->
     <script>
-        // 1. CANVAS PARTICELLE SFONDO
-        const canvas = document.getElementById('heroCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        // 1. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        const canvas = document.getElementById('webgl-canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030407, 0.0018);
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.8 + 0.4;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(0, 198, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        for (let i = 0; i < (window.innerWidth < 768 ? 25 : 45); i++) {
-            particles.push(new Particle());
+        // 2. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
+        const particleCount = 2000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+
+        const color1 = new THREE.Color(0x7f00ff); // Purple
+        const color2 = new THREE.Color(0x00c6ff); // Cyan
+
+        for (let i = 0; i < particleCount; i++) {
+            // Genera particelle in un cilindro/tunnel spaziale lungo l'asse Z
+            const radius = 25 + Math.random() * 40;
+            const angle = Math.random() * Math.PI * 2;
+            const z = (Math.random() - 0.5) * 1200;
+
+            positions[i * 3] = Math.cos(angle) * radius;
+            positions[i * 3 + 1] = Math.sin(angle) * radius;
+            positions[i * 3 + 2] = z;
+
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            colors[i * 3] = mixedColor.r;
+            colors[i * 3 + 1] = mixedColor.g;
+            colors[i * 3 + 2] = mixedColor.b;
         }
 
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 1.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const tunnelParticles = new THREE.Points(geometry, material);
+        scene.add(tunnelParticles);
+
+        // 3. ANELLI NEON 3D NELLO SPAZIO
+        const rings = [];
+        for (let i = 0; i < 10; i++) {
+            const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
+            const ringMat = new THREE.MeshBasicMaterial({
+                color: i % 2 === 0 ? 0x7f00ff : 0x00c6ff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.35
             });
-            requestAnimationFrame(animateCanvas);
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+            ringMesh.position.z = -i * 100;
+            scene.add(ringMesh);
+            rings.push(ringMesh);
         }
-        animateCanvas();
 
-        // 2. REPLAY ANIMAZIONE SALUTO
+        // 4. ANIMAZIONE CAMERA SU SCROLL
+        let scrollY = 0;
+        let targetZ = 50;
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+            targetZ = 50 - (scrollY * 0.15); // Avanzamento fluido nel tunnel 3D
+        });
+
+        // MOVIMENTO MOUSE/TOUCH
+        let mouseX = 0;
+        let mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
+
+        // 5. ANIMATION LOOP
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotazione continua delle particelle e degli anelli 3D
+            tunnelParticles.rotation.z += 0.0012;
+            
+            rings.forEach((ring, idx) => {
+                ring.rotation.z += 0.003 * (idx % 2 === 0 ? 1 : -1);
+            });
+
+            // Interpolazione fluida della telecamera
+            camera.position.z += (targetZ - camera.position.z) * 0.08;
+            camera.position.x += (mouseX * 4 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 4 - camera.position.y) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // RESIZE WINDOW
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // REPLAY ANIMAZIONE SALUTO
         function replayHeroAnimation() {
             const titleContainer = document.getElementById('heroTitle');
             const name = document.getElementById('heroName');
@@ -985,13 +1037,13 @@
             name.classList.add('glitch-flash');
         }
 
-        // 3. TOGGLE EXPANDABLE HUB
+        // TOGGLE EXPANDABLE HUB
         function toggleHub() {
             const hub = document.getElementById('expandedHub');
             hub.classList.toggle('active');
         }
 
-        // 4. CURSORE DESKTOP
+        // CURSORE DESKTOP
         const cursorGlow = document.getElementById('cursor-glow');
         if (window.innerWidth > 768) {
             window.addEventListener('mousemove', (e) => {
@@ -1000,18 +1052,7 @@
             });
         }
 
-        // 5. SCROLL REVEAL
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
-
-        // 6. INVIO INSTAGRAM
+        // INVIO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
