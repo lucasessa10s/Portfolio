@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Luca Sessa | Portfolio & Digital Creator</title>
 
     <!-- FONT & ICONS -->
@@ -32,21 +32,30 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        html {
             width: 100%;
-            max-width: 100%;
-            overflow-x: hidden !important;
             background-color: var(--bg-dark);
             color: var(--text-body);
             font-family: 'Plus Jakarta Sans', sans-serif;
             line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        body {
+            width: 100%;
+            position: relative;
+            background-color: var(--bg-dark);
+            color: var(--text-body);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            /* Rimosso l'overflow-x restrittivo su body che bloccava lo scroll mobile */
         }
 
         h1, h2, h3, .brand-font {
             font-family: 'Syne', sans-serif;
         }
 
-        /* ALONE LUMINOSO (DESKTOP & MOBILE TOUCH) */
+        /* ALONE LUMINOSO (DISATTIVATO SU MOBILE PER EVITARE BLOCCHI TOUCH) */
         #cursor-glow {
             position: fixed;
             width: 280px;
@@ -60,7 +69,13 @@
             will-change: transform;
         }
 
-        /* CANVAS PARTICELLE SEMPRE ATTIVO */
+        @media (max-width: 768px) {
+            #cursor-glow {
+                display: none !important; /* Disattivato su mobile per garantire fluidità di scorrimento */
+            }
+        }
+
+        /* CANVAS PARTICELLE SEMPRE ATTIVO MA NON BLOCCANTE */
         #heroCanvas {
             position: absolute;
             top: 0;
@@ -117,7 +132,6 @@
             background: var(--bg-dark);
         }
 
-        /* TESTI RIDIMENSIONATI PER MOBILE */
         header h1 {
             font-size: clamp(1.8rem, 7vw, 3.8rem);
             font-weight: 800;
@@ -257,7 +271,6 @@
             color: var(--text-body);
         }
 
-        /* EFFETTI HOVER E TOUCH SU CARD */
         .hobby-card:active, .hobby-card:hover {
             transform: translateY(-5px);
             background: var(--bg-card-hover);
@@ -355,7 +368,7 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
         }
 
-        /* ANIMAZIONI SCROLL REVEAL SCORREVOLI PER MOBILE */
+        /* ANIMAZIONI SCROLL REVEAL */
         .hidden {
             opacity: 0;
             transform: translateY(30px);
@@ -445,7 +458,7 @@
 
 <body>
 
-    <!-- CURSORE LUMINESCENTE (SUPPORTA ANCHE IL TOUCH MOBILE) -->
+    <!-- CURSORE LUMINESCENTE (ATTIVO SOLO DA DESKTOP) -->
     <div id="cursor-glow"></div>
 
     <!-- HERO HEADER -->
@@ -624,24 +637,19 @@
         </div>
     </footer>
 
-    <!-- SCRIPT INTERATTIVI E ANIMAZIONI ATTIVE ANCHE SU MOBILE -->
+    <!-- SCRIPT CORRETTI -->
     <script>
-        // 1. CURSORE / TOUCH GLOW ATTIVO SIA DA MOUSE CHE DA TOUCHSCREEN
+        // 1. CURSORE LUMINESCENTE ATTIVO SOLO SU DESKTOP (EVITA BLOCCHI TOUCH)
         const cursorGlow = document.getElementById('cursor-glow');
         
-        function updateGlowPosition(x, y) {
-            cursorGlow.style.left = `${x}px`;
-            cursorGlow.style.top = `${y}px`;
+        if (window.innerWidth > 768) {
+            window.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = `${e.clientX}px`;
+                cursorGlow.style.top = `${e.clientY}px`;
+            });
         }
 
-        window.addEventListener('mousemove', (e) => updateGlowPosition(e.clientX, e.clientY));
-        window.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                updateGlowPosition(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        });
-
-        // 2. CANVAS PARTICELLE SFONDO HERO (FLUIDO SU TUTTI I DISPOSITIVI)
+        // 2. CANVAS PARTICELLE SFONDO HERO
         const canvas = document.getElementById('heroCanvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -678,7 +686,7 @@
             }
         }
 
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < (window.innerWidth < 768 ? 20 : 40); i++) {
             particles.push(new Particle());
         }
 
@@ -692,8 +700,9 @@
         }
         animateCanvas();
 
-        // 3. SCROLL REVEAL PER MOSTRARE GLI ELEMENTI DURANTE LO SCROLL
+        // 3. SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
+            entries.preventDefaultObject = true;
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
@@ -716,7 +725,7 @@
                 alert("Messaggio copiato negli appunti! Incollalo nella chat di Instagram.");
                 window.open('https://instagram.com/lukse__', '_blank');
             }).catch(() => {
-                window.open('https://instagram.com/lukse__', '_blank');
+                window.open('https://instagram.com/lukse++', '_blank');
             });
         }
     </script>
