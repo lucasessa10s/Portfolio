@@ -28,12 +28,16 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            scroll-behavior: smooth;
             -webkit-tap-highlight-color: transparent;
         }
 
         html {
+            scroll-behavior: smooth;
+        }
+
+        body {
             width: 100%;
+            min-height: 100vh;
             background-color: var(--bg-dark);
             color: var(--text-body);
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -41,21 +45,11 @@
             overflow-x: hidden;
         }
 
-        body {
-            width: 100%;
-            position: relative;
-            background-color: var(--bg-dark);
-            color: var(--text-body);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-            /* Rimosso l'overflow-x restrittivo su body che bloccava lo scroll mobile */
-        }
-
         h1, h2, h3, .brand-font {
             font-family: 'Syne', sans-serif;
         }
 
-        /* ALONE LUMINOSO (DISATTIVATO SU MOBILE PER EVITARE BLOCCHI TOUCH) */
+        /* CURSORE LUMINESCENTE ATTIVO SOLO DA DESKTOP */
         #cursor-glow {
             position: fixed;
             width: 280px;
@@ -65,28 +59,16 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 9999;
-            transition: transform 0.05s linear;
             will-change: transform;
         }
 
         @media (max-width: 768px) {
             #cursor-glow {
-                display: none !important; /* Disattivato su mobile per garantire fluidità di scorrimento */
+                display: none !important;
             }
         }
 
-        /* CANVAS PARTICELLE SEMPRE ATTIVO MA NON BLOCCANTE */
-        #heroCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* HERO HEADER RESPONSIVE */
+        /* HERO HEADER RESPONSIVE CON GRADIENTE PULITO (NO CANVAS BLOCCANTI) */
         header {
             min-height: 100vh;
             display: flex;
@@ -96,7 +78,6 @@
             text-align: center;
             padding: 60px 20px 40px;
             position: relative;
-            overflow: hidden;
             background: radial-gradient(circle at 50% 20%, rgba(127, 0, 255, 0.25) 0%, var(--bg-dark) 75%);
         }
 
@@ -249,7 +230,6 @@
             text-align: center;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
         }
 
         .hobby-icon {
@@ -458,12 +438,11 @@
 
 <body>
 
-    <!-- CURSORE LUMINESCENTE (ATTIVO SOLO DA DESKTOP) -->
+    <!-- CURSORE LUMINESCENTE (SOLO DESKTOP) -->
     <div id="cursor-glow"></div>
 
     <!-- HERO HEADER -->
     <header>
-        <canvas id="heroCanvas"></canvas>
         <div class="hero-content">
             <div class="profile-box">
                 <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
@@ -637,11 +616,10 @@
         </div>
     </footer>
 
-    <!-- SCRIPT CORRETTI -->
+    <!-- SCRIPT PULITI -->
     <script>
-        // 1. CURSORE LUMINESCENTE ATTIVO SOLO SU DESKTOP (EVITA BLOCCHI TOUCH)
+        // 1. CURSORE DESKTOP (DISATTIVATO SU MOBILE)
         const cursorGlow = document.getElementById('cursor-glow');
-        
         if (window.innerWidth > 768) {
             window.addEventListener('mousemove', (e) => {
                 cursorGlow.style.left = `${e.clientX}px`;
@@ -649,60 +627,8 @@
             });
         }
 
-        // 2. CANVAS PARTICELLE SFONDO HERO
-        const canvas = document.getElementById('heroCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.8 + 0.4;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(0, 198, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < (window.innerWidth < 768 ? 20 : 40); i++) {
-            particles.push(new Particle());
-        }
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
-
-        // 3. SCROLL REVEAL
+        // 2. SCROLL REVEAL FLUIDO
         const observer = new IntersectionObserver((entries) => {
-            entries.preventDefaultObject = true;
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
@@ -712,7 +638,7 @@
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-        // 4. INVIO WHATSAPP / INSTAGRAM
+        // 3. INVIO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
@@ -725,7 +651,7 @@
                 alert("Messaggio copiato negli appunti! Incollalo nella chat di Instagram.");
                 window.open('https://instagram.com/lukse__', '_blank');
             }).catch(() => {
-                window.open('https://instagram.com/lukse++', '_blank');
+                window.open('https://instagram.com/lukse__', '_blank');
             });
         }
     </script>
