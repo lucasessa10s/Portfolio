@@ -8,7 +8,7 @@
     <!-- FONT & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- THREE.JS -->
@@ -442,6 +442,85 @@
             text-transform: uppercase;
         }
 
+        /* OROLOGIO NEON DIGITALE 3D */
+        .clock-section {
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+
+        .clock-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 28px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(127, 0, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .clock-container:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 45px rgba(0, 198, 255, 0.35);
+        }
+
+        .clock-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .clock-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(2.2rem, 8vw, 3.8rem);
+            font-weight: 700;
+            color: var(--text-title);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(0, 198, 255, 0.6);
+        }
+
+        .clock-digit-box {
+            background: rgba(5, 7, 11, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 16px;
+            border-radius: 12px;
+            min-width: 70px;
+            display: inline-block;
+        }
+
+        .clock-colon {
+            color: var(--primary);
+            animation: clockBlink 1s infinite;
+        }
+
+        @keyframes clockBlink {
+            0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--primary); }
+            50% { opacity: 0.2; text-shadow: none; }
+        }
+
+        .clock-date {
+            margin-top: 15px;
+            font-size: 0.88rem;
+            color: var(--text-body);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: capitalize;
+        }
+
         /* PROGETTI EDITORIALI */
         .projects-stack {
             display: flex;
@@ -668,6 +747,7 @@
             .btn { width: 100%; }
             .stats-grid { grid-template-columns: 1fr; gap: 10px; }
             .expand-dot-trigger { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            .clock-digit-box { min-width: 50px; padding: 8px 10px; }
         }
     </style>
 </head>
@@ -763,6 +843,25 @@
                     <span>Performance Top</span>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- OROLOGIO DIGITALE 3D / ORA ESATTA -->
+    <section class="clock-section">
+        <div class="clock-container">
+            <div class="clock-title">
+                <i class="fa-solid fa-clock"></i> Ora Esatta in Tempo Reale
+            </div>
+
+            <div class="clock-display">
+                <span class="clock-digit-box" id="clock-hours">00</span>
+                <span class="clock-colon">:</span>
+                <span class="clock-digit-box" id="clock-minutes">00</span>
+                <span class="clock-colon">:</span>
+                <span class="clock-digit-box" id="clock-seconds">00</span>
+            </div>
+
+            <div class="clock-date" id="clock-date-text">Caricamento data...</div>
         </div>
     </section>
 
@@ -888,7 +987,7 @@
             </p>
 
             <form id="instaForm" onsubmit="sendToInstagram(event)">
-                <input type="text" id="name" class="form-control" placeholder="Il tuo nome o azienda" required>
+                <input type="text" id="name" class="form-control" placeholder="Il tuo nome oazienda" required>
                 <input type="text" id="project" class="form-control" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required>
                 <textarea id="message" class="form-control" placeholder="Descrivi brevemente la tua idea..." required></textarea>
 
@@ -908,9 +1007,26 @@
         </div>
     </footer>
 
-    <!-- SCRIPT THREE.JS PER TUNNEL SPAZIALE 3D -->
+    <!-- SCRIPT THREE.JS & OROLOGIO -->
     <script>
-        // 1. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        // 1. OROLOGIO DIGITALE IN TEMPO REALE
+        function updateLiveClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById('clock-hours').textContent = hours;
+            document.getElementById('clock-minutes').textContent = minutes;
+            document.getElementById('clock-seconds').textContent = seconds;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('clock-date-text').textContent = now.toLocaleDateString('it-IT', options);
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // 2. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x030407, 0.0018);
@@ -922,7 +1038,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 2. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
+        // 3. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
         const particleCount = 2200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -959,7 +1075,7 @@
         const tunnelParticles = new THREE.Points(geometry, material);
         scene.add(tunnelParticles);
 
-        // 3. ANELLI NEON 3D NELLO SPAZIO
+        // 4. ANELLI NEON 3D NELLO SPAZIO
         const rings = [];
         for (let i = 0; i < 10; i++) {
             const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
@@ -975,13 +1091,13 @@
             rings.push(ringMesh);
         }
 
-        // 4. ANIMAZIONE CAMERA SU SCROLL
+        // 5. ANIMAZIONE CAMERA SU SCROLL
         let scrollY = 0;
         let targetZ = 50;
 
         window.addEventListener('scroll', () => {
             scrollY = window.scrollY;
-            targetZ = 50 - (scrollY * 0.15); // Avanzamento della fotocamera nel tunnel 3D
+            targetZ = 50 - (scrollY * 0.15);
         });
 
         // MOVIMENTO MOUSE/TOUCH
@@ -993,7 +1109,7 @@
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        // 5. ANIMATION LOOP
+        // 6. ANIMATION LOOP
         function animate() {
             requestAnimationFrame(animate);
 
