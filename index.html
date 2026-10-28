@@ -68,7 +68,144 @@
             }
         }
 
-        /* HERO HEADER RESPONSIVE */
+        /* PUNTINO FLUTTUANTE / EXPANDABLE DOT */
+        .expand-dot-trigger {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--gradient);
+            box-shadow: 0 0 25px rgba(0, 198, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 9000;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: dotPulse 2.5s infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 35px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
+        }
+
+        .expand-dot-trigger:hover {
+            transform: scale(1.15) rotate(12deg);
+        }
+
+        /* HUB EXPANDED OVERLAY (EFFETTO VENIELLO STUDIO) */
+        .expanded-hub {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 7, 11, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            opacity: 0;
+            pointer-events: none;
+            clip-path: circle(0px at calc(100vw - 57px) calc(100vh - 57px));
+            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+        }
+
+        .expanded-hub.active {
+            opacity: 1;
+            pointer-events: all;
+            clip-path: circle(150% at calc(100vw - 57px) calc(100vh - 57px));
+        }
+
+        .hub-close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
+            color: white;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hub-close-btn:hover {
+            background: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .hub-content {
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .hub-content h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: var(--text-title);
+            margin-bottom: 12px;
+        }
+
+        .hub-content h2 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hub-content p {
+            color: var(--text-body);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+        }
+
+        .hub-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .hub-card-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .hub-card-link:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--secondary);
+            transform: translateX(6px);
+        }
+
+        .hub-card-link i {
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        /* HERO HEADER */
         header {
             min-height: 100vh;
             display: flex;
@@ -193,7 +330,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* CHI SONO CON BADGE STATISTICHE */
+        /* CHI SONO */
         .about-box {
             background: var(--bg-card);
             backdrop-filter: blur(15px);
@@ -271,7 +408,7 @@
             gap: 20px;
         }
 
-        /* PASSIONI & PROGETTI CARD CON EFFETTO TILT 3D */
+        /* PASSIONI & PROGETTI CARD CON TILT */
         .hobby-card, .project-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
@@ -307,7 +444,6 @@
             color: var(--text-body);
         }
 
-        /* PROGETTI CARD */
         .project-card {
             overflow: hidden;
             display: flex;
@@ -382,12 +518,11 @@
             color: var(--secondary);
         }
 
-        /* CLASSE PER FILTRO NASCOSTO */
         .project-card.filtered-out {
             display: none !important;
         }
 
-        /* ANIMAZIONI SCROLL REVEAL FLUIDE */
+        /* ANIMAZIONI SCROLL REVEAL */
         .hidden {
             opacity: 0;
             transform: translateY(25px);
@@ -470,14 +605,49 @@
             .btn { width: 100%; }
             .project-img-wrapper { height: 160px; }
             .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+            .expand-dot-trigger { bottom: 20px; right: 20px; width: 50px; height: 50px; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- CURSORE LUMINESCENTE (SOLO DESKTOP) -->
+    <!-- CURSORE LUMINESCENTE (DESKTOP) -->
     <div id="cursor-glow"></div>
+
+    <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
+    <div class="expand-dot-trigger" id="dotTrigger" onclick="toggleHub()" title="Svela Hub Rapido">
+        <i class="fa-solid fa-bolt"></i>
+    </div>
+
+    <!-- HUB ESPANSO (EFFETTO MORPHING FULLSCREEN) -->
+    <div class="expanded-hub" id="expandedHub">
+        <div class="hub-close-btn" onclick="toggleHub()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+
+        <div class="hub-content">
+            <h2>Hub Rapido <span>Luca Sessa</span> ⚡</h2>
+            <p>Accedi rapidamente ai miei canali principali e ai progetti più recenti.</p>
+
+            <div class="hub-links">
+                <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-card-link">
+                    <span><i class="fa-brands fa-instagram" style="margin-right: 10px; color: #e1306c;"></i> Profilo Instagram ufficiale</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a href="#progetti" class="hub-card-link" onclick="toggleHub()">
+                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Esplora i Progetti Web & Shopify</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+                <a href="#contatti" class="hub-card-link" onclick="toggleHub()">
+                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 10px; color: var(--primary);"></i> Richiedi Preventivo / Consulenza</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- HERO HEADER -->
     <header>
@@ -493,8 +663,8 @@
                 <a href="#progetti" class="btn">
                     Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
                 </a>
-                <a href="#contatti" class="btn btn-outline">
-                    Parliamo del tuo progetto <i class="fa-brands fa-instagram"></i>
+                <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
+                    Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
                 </a>
             </div>
         </div>
@@ -558,7 +728,6 @@
     <section id="progetti" class="hidden">
         <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
 
-        <!-- FILTRI PROGETTI -->
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="filterProjects('all')">Tutti</button>
             <button class="filter-btn" onclick="filterProjects('ecommerce')">E-commerce</button>
@@ -567,7 +736,7 @@
 
         <div class="grid" id="projectsGrid">
 
-            <!-- PROGETTO 1 (Vetrina) -->
+            <!-- PROGETTO 1 -->
             <div class="project-card tilt-card" data-category="web">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="Anteprima AirSafe.it" loading="lazy">
@@ -585,7 +754,7 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 2 (E-commerce) -->
+            <!-- PROGETTO 2 -->
             <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Anteprima Saadiya.it" loading="lazy">
@@ -603,7 +772,7 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 3 (E-commerce) -->
+            <!-- PROGETTO 3 -->
             <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Anteprima Gelosia Boutique" loading="lazy">
@@ -621,7 +790,7 @@
                 </div>
             </div>
 
-            <!-- PROGETTO 4 (E-commerce) -->
+            <!-- PROGETTO 4 -->
             <div class="project-card tilt-card" data-category="ecommerce">
                 <div class="project-img-wrapper">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Anteprima Officina Luxury" loading="lazy">
@@ -672,9 +841,15 @@
         </div>
     </footer>
 
-    <!-- SCRIPT AVANZATI E PERFORMANTI -->
+    <!-- SCRIPT INTERATTIVI -->
     <script>
-        // 1. CURSORE DESKTOP
+        // 1. TOGGLE EXPANDABLE HUB (MORPHING DOT EFFECT)
+        function toggleHub() {
+            const hub = document.getElementById('expandedHub');
+            hub.classList.toggle('active');
+        }
+
+        // 2. CURSORE DESKTOP
         const cursorGlow = document.getElementById('cursor-glow');
         if (window.innerWidth > 768) {
             window.addEventListener('mousemove', (e) => {
@@ -683,7 +858,7 @@
             });
         }
 
-        // 2. EFFETTO TILT 3D SULLE CARD (FLUIDO E OTTIMIZZATO)
+        // 3. TILT 3D SULLE CARD
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -702,7 +877,7 @@
             });
         });
 
-        // 3. FILTRO PROGETTI DINAMICO
+        // 4. FILTRO PROGETTI
         function filterProjects(category) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -718,7 +893,7 @@
             });
         }
 
-        // 4. SCROLL REVEAL PER LE SEZIONI
+        // 5. SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -729,7 +904,7 @@
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-        // 5. INVIO INSTAGRAM
+        // 6. INVIO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
