@@ -49,7 +49,7 @@
             font-family: 'Syne', sans-serif;
         }
 
-        /* CURSORE LUMINESCENTE (SOLO DESKTOP) */
+        /* CURSORE LUMINESCENTE (DESKTOP) */
         #cursor-glow {
             position: fixed;
             width: 280px;
@@ -68,7 +68,7 @@
             }
         }
 
-        /* PUNTINO FLUTTUANTE / EXPANDABLE DOT */
+        /* EXPANDABLE DOT */
         .expand-dot-trigger {
             position: fixed;
             bottom: 28px;
@@ -99,7 +99,7 @@
             transform: scale(1.15) rotate(12deg);
         }
 
-        /* HUB EXPANDED OVERLAY (EFFETTO VENIELLO STUDIO) */
+        /* HUB EXPANDED OVERLAY */
         .expanded-hub {
             position: fixed;
             top: 0;
@@ -222,7 +222,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
         }
 
         .profile-box {
@@ -250,19 +250,78 @@
             background: var(--bg-dark);
         }
 
-        header h1 {
-            font-size: clamp(1.8rem, 7vw, 3.8rem);
+        /* ANIMAZIONE SALUTO MORPHING 3D + NEON GLITCH */
+        .hero-title-container {
+            font-size: clamp(2rem, 7.5vw, 4rem);
             font-weight: 800;
             color: var(--text-title);
             letter-spacing: -0.5px;
-            margin-bottom: 12px;
-            line-height: 1.25;
+            margin-bottom: 14px;
+            line-height: 1.2;
+            perspective: 1000px;
+            cursor: pointer;
         }
 
-        header h1 span {
+        .split-line {
+            display: block;
+            overflow: hidden;
+            padding: 4px 0;
+        }
+
+        .slide-text {
+            display: inline-block;
+            transform: translateY(120%) rotateX(-60deg);
+            opacity: 0;
+            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            will-change: transform, opacity;
+        }
+
+        .slide-text.delayed {
+            animation-delay: 0.25s;
+        }
+
+        @keyframes slideIn3D {
+            0% {
+                transform: translateY(120%) rotateX(-60deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) rotateX(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* NEON GLITCH EFFECT SU "LUCA SESSA" */
+        .neon-glitch-name {
+            position: relative;
+            display: inline-block;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: neonGlowPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlowPulse {
+            0% {
+                text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2);
+            }
+            100% {
+                text-shadow: 0 0 18px rgba(127, 0, 255, 0.8), 0 0 35px rgba(0, 198, 255, 0.6);
+            }
+        }
+
+        /* EFFETTO GLITCH LAMPO AL CARICAMENTO */
+        .neon-glitch-name.glitch-flash {
+            animation: glitchAnimation 0.4s steps(2, start) 1s 2;
+        }
+
+        @keyframes glitchAnimation {
+            0% { transform: translate(0); filter: hue-rotate(0deg); }
+            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            40% { transform: translate(-2px, -2px); filter: hue-rotate(180deg); }
+            60% { transform: translate(2px, 1px); filter: hue-rotate(270deg); }
+            80% { transform: translate(1px, -2px); filter: hue-rotate(360deg); }
+            100% { transform: translate(0); filter: hue-rotate(0deg); }
         }
 
         header p {
@@ -620,7 +679,7 @@
         <i class="fa-solid fa-bolt"></i>
     </div>
 
-    <!-- HUB ESPANSO (EFFETTO MORPHING FULLSCREEN) -->
+    <!-- HUB ESPANSO FULLSCREEN -->
     <div class="expanded-hub" id="expandedHub">
         <div class="hub-close-btn" onclick="toggleHub()">
             <i class="fa-solid fa-xmark"></i>
@@ -649,14 +708,23 @@
         </div>
     </div>
 
-    <!-- HERO HEADER -->
+    <!-- HERO HEADER CON ANIMAZIONE TITLE 3D + NEON GLITCH -->
     <header>
         <div class="hero-content">
             <div class="profile-box">
                 <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
             </div>
 
-            <h1>Ciao, sono <span>Luca Sessa</span> 🚀</h1>
+            <!-- INTESTAZIONE ANIMATA CON MIX 3D SLIDE & NEON GLITCH -->
+            <h1 class="hero-title-container" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
+                <span class="split-line">
+                    <span class="slide-text">Ciao, sono</span>
+                </span>
+                <span class="split-line">
+                    <span class="slide-text delayed neon-glitch-name glitch-flash" id="heroName">Luca Sessa 🚀</span>
+                </span>
+            </h1>
+
             <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
             
             <div class="btn-group">
@@ -843,13 +911,29 @@
 
     <!-- SCRIPT INTERATTIVI -->
     <script>
-        // 1. TOGGLE EXPANDABLE HUB (MORPHING DOT EFFECT)
+        // 1. REPLAY ANIMAZIONE TITOLO SALUTO
+        function replayHeroAnimation() {
+            const texts = document.querySelectorAll('.slide-text');
+            const name = document.getElementById('heroName');
+            
+            texts.forEach(el => {
+                el.style.animation = 'none';
+                el.offsetHeight; // Trigger reflow
+                el.style.animation = null;
+            });
+
+            name.classList.remove('glitch-flash');
+            void name.offsetWidth;
+            name.classList.add('glitch-flash');
+        }
+
+        // 2. TOGGLE EXPANDABLE HUB
         function toggleHub() {
             const hub = document.getElementById('expandedHub');
             hub.classList.toggle('active');
         }
 
-        // 2. CURSORE DESKTOP
+        // 3. CURSORE DESKTOP
         const cursorGlow = document.getElementById('cursor-glow');
         if (window.innerWidth > 768) {
             window.addEventListener('mousemove', (e) => {
@@ -858,7 +942,7 @@
             });
         }
 
-        // 3. TILT 3D SULLE CARD
+        // 4. TILT 3D SULLE CARD
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -877,7 +961,7 @@
             });
         });
 
-        // 4. FILTRO PROGETTI
+        // 5. FILTRO PROGETTI
         function filterProjects(category) {
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -893,7 +977,7 @@
             });
         }
 
-        // 5. SCROLL REVEAL
+        // 6. SCROLL REVEAL
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -904,7 +988,7 @@
 
         document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-        // 6. INVIO INSTAGRAM
+        // 7. INVIO INSTAGRAM
         function sendToInstagram(event) {
             event.preventDefault();
             const name = document.getElementById('name').value;
