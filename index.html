@@ -306,13 +306,30 @@
             }
         }
 
+        /* NOME HERO GLITCH NEON */
+        .hero-name-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .neon-glitch-name {
             position: relative;
-            display: inline-block;
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: neonGlowPulse 2s ease-in-out infinite alternate;
+        }
+
+        .hero-rocket-emoji {
+            -webkit-text-fill-color: initial;
+            display: inline-block;
+            animation: rocketFloat 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes rocketFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(12deg); }
         }
 
         @keyframes neonGlowPulse {
@@ -363,6 +380,8 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
             box-shadow: 0 8px 20px rgba(127, 0, 255, 0.35);
+            cursor: pointer;
+            border: none;
         }
 
         .btn:active {
@@ -672,38 +691,96 @@
             transform: translateY(-3px);
         }
 
-        /* CONTATTI */
+        /* CONTATTI INTERATTIVI POTENZIATI */
         .contact-box {
             background: var(--bg-card);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 32px 24px;
-            max-width: 650px;
+            border-radius: 24px;
+            padding: 36px 28px;
+            max-width: 680px;
             margin: 0 auto;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+        }
+
+        .quick-presets-label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-body);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .quick-preset-chips {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .preset-chip {
+            background: rgba(127, 0, 255, 0.12);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preset-chip:hover {
+            background: var(--gradient);
+            border-color: transparent;
+            transform: translateY(-2px);
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 16px;
-            background: rgba(10, 12, 16, 0.85);
+            padding: 14px 18px;
+            background: rgba(5, 7, 11, 0.85);
             border: 1px solid var(--border-light);
-            border-radius: 12px;
+            border-radius: 14px;
             color: #fff;
             font-family: inherit;
             font-size: 0.92rem;
             outline: none;
-            transition: border-color 0.3s ease;
-            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
         }
 
         .form-control:focus {
             border-color: var(--secondary);
+            box-shadow: 0 0 15px rgba(0, 198, 255, 0.25);
         }
 
         textarea.form-control {
             resize: none;
             height: 120px;
+        }
+
+        .contact-status-toast {
+            display: none;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #10b981;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* FOOTER */
@@ -806,7 +883,10 @@
                     <span class="slide-text">Ciao, sono</span>
                 </span>
                 <span class="split-line">
-                    <span class="slide-text delayed neon-glitch-name glitch-flash" id="heroName">Luca Sessa 🚀</span>
+                    <span class="slide-text delayed hero-name-wrapper glitch-flash" id="heroName">
+                        <span class="neon-glitch-name">Luca Sessa</span>
+                        <span class="hero-rocket-emoji">🚀</span>
+                    </span>
                 </span>
             </h1>
 
@@ -816,9 +896,9 @@
                 <a href="#progetti" class="btn">
                     Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
                 </a>
-                <a href="javascript:void(0)" onclick="toggleHub()" class="btn btn-outline">
+                <button type="button" onclick="toggleHub()" class="btn btn-outline">
                     Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
-                </a>
+                </button>
             </div>
         </div>
     </header>
@@ -977,21 +1057,33 @@
         </div>
     </section>
 
-    <!-- CONTATTI -->
+    <!-- CONTATTI INTERATTIVI -->
     <section id="contatti">
         <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
 
         <div class="contact-box">
             <p style="text-align: center; color: var(--text-body); margin-bottom: 20px; font-size: 0.95rem;">
-                Vuoi realizzare un sito web, sviluppare uno store Shopify o richiedere una consulenza? Compila i campi e scrivimi su Instagram!
+                Scegli una richiesta rapida o compila il modulo per inviarmi direttamente un messaggio su Instagram:
             </p>
 
+            <!-- TASTI RAPIDI DI PRE-COMPILAZIONE INTERATTIVI -->
+            <div class="quick-presets-label">Selezione rapida argomento:</div>
+            <div class="quick-preset-chips">
+                <button type="button" class="preset-chip" onclick="setPreset('Nuovo Sito Web / E-Commerce', 'Vorrei realizzare un nuovo sito web o uno store e-commerce per la mia attività.')">🛍️ Sito Web / Shopify</button>
+                <button type="button" class="preset-chip" onclick="setPreset('Restyling e Grafica UI', 'Vorrei migliorare il design del mio sito attuale con una grafica più moderna.')">🎨 Restyling Grafico</button>
+                <button type="button" class="preset-chip" onclick="setPreset('Consulenza Social & Bot Automation', 'Sarei interessato a strategie per la crescita social e automazioni.')">🤖 Bot & Growth Social</button>
+            </div>
+
+            <div class="contact-status-toast" id="toastMsg">
+                <i class="fa-solid fa-check-circle"></i> Messaggio coperto negli appunti! Apertura Instagram...
+            </div>
+
             <form id="instaForm" onsubmit="sendToInstagram(event)">
-                <input type="text" id="name" class="form-control" placeholder="Il tuo nome oazienda" required>
+                <input type="text" id="name" class="form-control" placeholder="Il tuo nome o azienda" required>
                 <input type="text" id="project" class="form-control" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required>
                 <textarea id="message" class="form-control" placeholder="Descrivi brevemente la tua idea..." required></textarea>
 
-                <button type="submit" class="btn" style="width: 100%; justify-content: center; cursor: pointer; border: none; font-size: 0.95rem;">
+                <button type="submit" id="submitBtn" class="btn" style="width: 100%; justify-content: center; font-size: 0.95rem;">
                     Invia messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i>
                 </button>
             </form>
@@ -1007,9 +1099,44 @@
         </div>
     </footer>
 
-    <!-- SCRIPT THREE.JS & OROLOGIO -->
+    <!-- SCRIPT THREE.JS, CONTATTI & OROLOGIO -->
     <script>
-        // 1. OROLOGIO DIGITALE IN TEMPO REALE
+        // 1. FORM CONTATTI INTERATTIVO PRESET & COPIRIGHT
+        function setPreset(projectType, desc) {
+            document.getElementById('project').value = projectType;
+            document.getElementById('message').value = desc;
+            document.getElementById('name').focus();
+        }
+
+        function sendToInstagram(event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const toast = document.getElementById('toastMsg');
+            const name = document.getElementById('name').value;
+            const project = document.getElementById('project').value;
+            const message = document.getElementById('message').value;
+
+            const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
+
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Copia in corso...';
+
+            navigator.clipboard.writeText(text).then(() => {
+                toast.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiato!';
+
+                setTimeout(() => {
+                    window.open('https://instagram.com/lukse__', '_blank');
+                    submitBtn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
+                    toast.style.display = 'none';
+                }, 1200);
+            }).catch(() => {
+                window.open('https://instagram.com/lukse__', '_blank');
+                submitBtn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
+            });
+        }
+
+        // 2. OROLOGIO DIGITALE IN TEMPO REALE
         function updateLiveClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -1026,7 +1153,7 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        // 2. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        // 3. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x030407, 0.0018);
@@ -1038,7 +1165,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 3. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
+        // 4. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
         const particleCount = 2200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -1075,7 +1202,7 @@
         const tunnelParticles = new THREE.Points(geometry, material);
         scene.add(tunnelParticles);
 
-        // 4. ANELLI NEON 3D NELLO SPAZIO
+        // 5. ANELLI NEON 3D NELLO SPAZIO
         const rings = [];
         for (let i = 0; i < 10; i++) {
             const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
@@ -1091,7 +1218,7 @@
             rings.push(ringMesh);
         }
 
-        // 5. ANIMAZIONE CAMERA SU SCROLL
+        // 6. ANIMAZIONE CAMERA SU SCROLL
         let scrollY = 0;
         let targetZ = 50;
 
@@ -1109,7 +1236,7 @@
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        // 6. ANIMATION LOOP
+        // 7. ANIMATION LOOP
         function animate() {
             requestAnimationFrame(animate);
 
@@ -1160,23 +1287,6 @@
             window.addEventListener('mousemove', (e) => {
                 cursorGlow.style.left = `${e.clientX}px`;
                 cursorGlow.style.top = `${e.clientY}px`;
-            });
-        }
-
-        // INVIO INSTAGRAM
-        function sendToInstagram(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const project = document.getElementById('project').value;
-            const message = document.getElementById('message').value;
-
-            const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
-
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Messaggio copiato negli appunti! Incollalo nella chat di Instagram.");
-                window.open('https://instagram.com/lukse__', '_blank');
-            }).catch(() => {
-                window.open('https://instagram.com/lukse__', '_blank');
             });
         }
     </script>
