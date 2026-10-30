@@ -322,7 +322,6 @@
             animation: neonGlowPulse 2s ease-in-out infinite alternate;
         }
 
-        /* RAZZO ANIMATO FLUTTUANTE SCROLL-TRACKED */
         #flyingRocket {
             display: inline-block;
             position: relative;
@@ -442,7 +441,6 @@
             font-weight: 500;
         }
 
-        /* PAROLE LETTE DAL RAZZO CON GLOW NEON */
         .about-reading-text span.word {
             display: inline-block;
             transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
@@ -921,7 +919,7 @@
         </div>
     </header>
 
-    <!-- CHI SONO CONLETTURA ANIMATA DEL RAZZO -->
+    <!-- CHI SONO CON LETTURA NEON DEL RAZZO & COUNTER ANIMATO -->
     <section id="chiSonoSection">
         <div class="about-box">
             <h2 class="section-title" style="margin-bottom: 20px;">👤 Chi <span>Sono</span></h2>
@@ -932,15 +930,15 @@
             
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h4>4+</h4>
+                    <h4 class="counter" data-target="4" data-suffix="+">0</h4>
                     <span>Store & Siti Attivi</span>
                 </div>
                 <div class="stat-item">
-                    <h4>100%</h4>
+                    <h4 class="counter" data-target="100" data-suffix="%">0</h4>
                     <span>Mobile Optimized</span>
                 </div>
                 <div class="stat-item">
-                    <h4>24/7</h4>
+                    <h4 class="counter" data-target="24" data-suffix="/7">0</h4>
                     <span>Performance Top</span>
                 </div>
             </div>
@@ -1095,7 +1093,7 @@
             </div>
 
             <div class="contact-status-toast" id="toastMsg">
-                <i class="fa-solid fa-check-circle"></i> Messaggio coperto negli appunti! Apertura Instagram...
+                <i class="fa-solid fa-check-circle"></i> Messaggio copiato negli appunti! Apertura Instagram...
             </div>
 
             <form id="instaForm" onsubmit="sendToInstagram(event)">
@@ -1119,9 +1117,43 @@
         </div>
     </footer>
 
-    <!-- SCRIPT ANIMAZIONE RAZZO, THREE.JS & OROLOGIO -->
+    <!-- SCRIPT ANIMAZIONI & THREE.JS -->
     <script>
-        // 1. DYSPLIT TESTO "CHI SONO" IN SPAN SINGOLI PER LA LETTURA DEL RAZZO
+        // 1. ANIMAZIONE COUNTER STATISTICHE AL VISIBLE SCROLL
+        let counted = false;
+        const statsSection = document.getElementById('chiSonoSection');
+
+        function runCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const suffix = counter.getAttribute('data-suffix');
+                let count = 0;
+                const speed = 40; // Velocità animazione
+
+                const updateCount = () => {
+                    const increment = target / speed;
+                    if (count < target) {
+                        count += increment;
+                        counter.textContent = Math.ceil(count) + suffix;
+                        setTimeout(updateCount, 30);
+                    } else {
+                        counter.textContent = target + suffix;
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const rect = statsSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight && !counted) {
+                runCounters();
+                counted = true;
+            }
+        });
+
+        // 2. DISPLIT TESTO "CHI SONO" PER LETTURA DEL RAZZO
         const readingContainer = document.getElementById('readingTarget');
         const textContent = readingContainer.textContent.trim();
         const wordsArray = textContent.split(' ');
@@ -1133,23 +1165,18 @@
         const wordElements = document.querySelectorAll('.word');
         const totalWords = wordElements.length;
 
-        // 2. ANIMAZIONE RAZZO VOLANTE GUIDATO DALLO SCROLL
+        // 3. ANIMAZIONE RAZZO VOLANTE GUIDATO DALLO SCROLL
         const rocket = document.getElementById('flyingRocket');
-        const chiSonoSec = document.getElementById('chiSonoSection');
 
         window.addEventListener('scroll', () => {
             const scrollPos = window.scrollY;
-            const chiSonoRect = chiSonoSec.getBoundingClientRect();
-            const chiSonoTop = chiSonoSec.offsetTop;
-            const chiSonoHeight = chiSonoSec.offsetHeight;
+            const chiSonoTop = statsSection.offsetTop;
+            const chiSonoHeight = statsSection.offsetHeight;
 
-            // Se l'utente è vicino o dentro la sezione Chi Sono
             if (scrollPos > chiSonoTop - window.innerHeight * 0.7 && scrollPos < chiSonoTop + chiSonoHeight) {
-                // Calcola progresso di avanzamento dello scroll nella sezione (0.0 a 1.0)
                 let progress = (scrollPos - (chiSonoTop - window.innerHeight * 0.5)) / (chiSonoHeight * 0.8);
                 progress = Math.max(0, Math.min(1, progress));
 
-                // Calcolo parola corrente letta
                 const activeIndex = Math.floor(progress * totalWords);
 
                 wordElements.forEach((wordEl, idx) => {
@@ -1160,7 +1187,6 @@
                     }
                 });
 
-                // Posiziona il razzo sopra la parola corrente se visibile
                 if (wordElements[activeIndex]) {
                     const wordRect = wordElements[activeIndex].getBoundingClientRect();
                     const rocketHomeRect = rocket.parentElement.getBoundingClientRect();
@@ -1171,13 +1197,12 @@
                     rocket.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(45deg) scale(1.15)`;
                 }
             } else if (scrollPos <= chiSonoTop - window.innerHeight * 0.7) {
-                // Ritorno in posizione originale nella Hero
                 rocket.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
                 wordElements.forEach(w => w.classList.remove('read'));
             }
         });
 
-        // 3. FORM CONTATTI INTERATTIVO
+        // 4. FORM CONTATTI INTERATTIVO
         function setPreset(projectType, desc) {
             document.getElementById('project').value = projectType;
             document.getElementById('message').value = desc;
@@ -1212,7 +1237,7 @@
             });
         }
 
-        // 4. OROLOGIO DIGITALE IN TEMPO REALE
+        // 5. OROLOGIO DIGITALE IN TEMPO REALE
         function updateLiveClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -1229,7 +1254,7 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        // 5. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        // 6. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x030407, 0.0018);
@@ -1241,7 +1266,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 6. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
+        // 7. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
         const particleCount = 2200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -1278,7 +1303,7 @@
         const tunnelParticles = new THREE.Points(geometry, material);
         scene.add(tunnelParticles);
 
-        // 7. ANELLI NEON 3D NELLO SPAZIO
+        // 8. ANELLI NEON 3D NELLO SPAZIO
         const rings = [];
         for (let i = 0; i < 10; i++) {
             const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
@@ -1294,7 +1319,7 @@
             rings.push(ringMesh);
         }
 
-        // 8. ANIMAZIONE CAMERA SU SCROLL
+        // 9. ANIMAZIONE CAMERA SU SCROLL
         let scrollY = 0;
         let targetZ = 50;
 
@@ -1312,7 +1337,7 @@
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        // 9. ANIMATION LOOP
+        // 10. ANIMATION LOOP
         function animate() {
             requestAnimationFrame(animate);
 
