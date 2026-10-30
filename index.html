@@ -306,11 +306,12 @@
             }
         }
 
-        /* NOME HERO GLITCH NEON */
+        /* NOME HERO GLITCH NEON CON RAZZO FLUTTUANTE GUIDATO DALLO SCROLL */
         .hero-name-wrapper {
             display: inline-flex;
             align-items: center;
             gap: 12px;
+            position: relative;
         }
 
         .neon-glitch-name {
@@ -321,15 +322,15 @@
             animation: neonGlowPulse 2s ease-in-out infinite alternate;
         }
 
-        .hero-rocket-emoji {
-            -webkit-text-fill-color: initial;
+        /* RAZZO ANIMATO FLUTTUANTE SCROLL-TRACKED */
+        #flyingRocket {
             display: inline-block;
-            animation: rocketFloat 2.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes rocketFloat {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-8px) rotate(12deg); }
+            position: relative;
+            z-index: 8000;
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            font-size: 1.1em;
+            will-change: transform;
+            filter: drop-shadow(0 0 12px rgba(0, 198, 255, 0.8));
         }
 
         @keyframes neonGlowPulse {
@@ -418,7 +419,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* CHI SONO */
+        /* CHI SONO CON LETTURA NEON PAROLA PER PAROLA */
         .about-box {
             background: var(--bg-card);
             backdrop-filter: blur(15px);
@@ -430,12 +431,29 @@
             max-width: 800px;
             margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative;
         }
 
-        .about-box p {
-            font-size: clamp(0.95rem, 3.5vw, 1.1rem);
-            color: var(--text-body);
-            margin-bottom: 24px;
+        .about-reading-text {
+            font-size: clamp(1rem, 3.8vw, 1.2rem);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        /* PAROLE LETTE DAL RAZZO CON GLOW NEON */
+        .about-reading-text span.word {
+            display: inline-block;
+            transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
+            margin: 0 3px;
+        }
+
+        .about-reading-text span.word.read {
+            color: #ffffff;
+            text-shadow: 0 0 12px var(--secondary), 0 0 20px var(--primary);
+            font-weight: 700;
+            transform: scale(1.05);
         }
 
         .stats-grid {
@@ -885,7 +903,7 @@
                 <span class="split-line">
                     <span class="slide-text delayed hero-name-wrapper glitch-flash" id="heroName">
                         <span class="neon-glitch-name">Luca Sessa</span>
-                        <span class="hero-rocket-emoji">🚀</span>
+                        <span id="flyingRocket">🚀</span>
                     </span>
                 </span>
             </h1>
@@ -903,11 +921,14 @@
         </div>
     </header>
 
-    <!-- CHI SONO -->
-    <section>
+    <!-- CHI SONO CONLETTURA ANIMATA DEL RAZZO -->
+    <section id="chiSonoSection">
         <div class="about-box">
-            <h2 class="section-title" style="margin-bottom: 15px;">👤 Chi <span>Sono</span></h2>
-            <p>Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.</p>
+            <h2 class="section-title" style="margin-bottom: 20px;">👤 Chi <span>Sono</span></h2>
+            
+            <p class="about-reading-text" id="readingTarget">
+                Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.
+            </p>
             
             <div class="stats-grid">
                 <div class="stat-item">
@@ -1066,7 +1087,6 @@
                 Scegli una richiesta rapida o compila il modulo per inviarmi direttamente un messaggio su Instagram:
             </p>
 
-            <!-- TASTI RAPIDI DI PRE-COMPILAZIONE INTERATTIVI -->
             <div class="quick-presets-label">Selezione rapida argomento:</div>
             <div class="quick-preset-chips">
                 <button type="button" class="preset-chip" onclick="setPreset('Nuovo Sito Web / E-Commerce', 'Vorrei realizzare un nuovo sito web o uno store e-commerce per la mia attività.')">🛍️ Sito Web / Shopify</button>
@@ -1099,9 +1119,65 @@
         </div>
     </footer>
 
-    <!-- SCRIPT THREE.JS, CONTATTI & OROLOGIO -->
+    <!-- SCRIPT ANIMAZIONE RAZZO, THREE.JS & OROLOGIO -->
     <script>
-        // 1. FORM CONTATTI INTERATTIVO PRESET & COPIRIGHT
+        // 1. DYSPLIT TESTO "CHI SONO" IN SPAN SINGOLI PER LA LETTURA DEL RAZZO
+        const readingContainer = document.getElementById('readingTarget');
+        const textContent = readingContainer.textContent.trim();
+        const wordsArray = textContent.split(' ');
+        
+        readingContainer.innerHTML = wordsArray
+            .map((w, index) => `<span class="word" id="word-${index}">${w}</span>`)
+            .join(' ');
+
+        const wordElements = document.querySelectorAll('.word');
+        const totalWords = wordElements.length;
+
+        // 2. ANIMAZIONE RAZZO VOLANTE GUIDATO DALLO SCROLL
+        const rocket = document.getElementById('flyingRocket');
+        const chiSonoSec = document.getElementById('chiSonoSection');
+
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+            const chiSonoRect = chiSonoSec.getBoundingClientRect();
+            const chiSonoTop = chiSonoSec.offsetTop;
+            const chiSonoHeight = chiSonoSec.offsetHeight;
+
+            // Se l'utente è vicino o dentro la sezione Chi Sono
+            if (scrollPos > chiSonoTop - window.innerHeight * 0.7 && scrollPos < chiSonoTop + chiSonoHeight) {
+                // Calcola progresso di avanzamento dello scroll nella sezione (0.0 a 1.0)
+                let progress = (scrollPos - (chiSonoTop - window.innerHeight * 0.5)) / (chiSonoHeight * 0.8);
+                progress = Math.max(0, Math.min(1, progress));
+
+                // Calcolo parola corrente letta
+                const activeIndex = Math.floor(progress * totalWords);
+
+                wordElements.forEach((wordEl, idx) => {
+                    if (idx <= activeIndex) {
+                        wordEl.classList.add('read');
+                    } else {
+                        wordEl.classList.remove('read');
+                    }
+                });
+
+                // Posiziona il razzo sopra la parola corrente se visibile
+                if (wordElements[activeIndex]) {
+                    const wordRect = wordElements[activeIndex].getBoundingClientRect();
+                    const rocketHomeRect = rocket.parentElement.getBoundingClientRect();
+
+                    const deltaX = wordRect.left - rocketHomeRect.left;
+                    const deltaY = wordRect.top - rocketHomeRect.top - 25;
+
+                    rocket.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(45deg) scale(1.15)`;
+                }
+            } else if (scrollPos <= chiSonoTop - window.innerHeight * 0.7) {
+                // Ritorno in posizione originale nella Hero
+                rocket.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
+                wordElements.forEach(w => w.classList.remove('read'));
+            }
+        });
+
+        // 3. FORM CONTATTI INTERATTIVO
         function setPreset(projectType, desc) {
             document.getElementById('project').value = projectType;
             document.getElementById('message').value = desc;
@@ -1136,7 +1212,7 @@
             });
         }
 
-        // 2. OROLOGIO DIGITALE IN TEMPO REALE
+        // 4. OROLOGIO DIGITALE IN TEMPO REALE
         function updateLiveClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -1153,7 +1229,7 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        // 3. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        // 5. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x030407, 0.0018);
@@ -1165,7 +1241,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 4. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
+        // 6. CREAZIONE DEL TUNNEL DI PARTICELLE 3D
         const particleCount = 2200;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
@@ -1202,7 +1278,7 @@
         const tunnelParticles = new THREE.Points(geometry, material);
         scene.add(tunnelParticles);
 
-        // 5. ANELLI NEON 3D NELLO SPAZIO
+        // 7. ANELLI NEON 3D NELLO SPAZIO
         const rings = [];
         for (let i = 0; i < 10; i++) {
             const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
@@ -1218,7 +1294,7 @@
             rings.push(ringMesh);
         }
 
-        // 6. ANIMAZIONE CAMERA SU SCROLL
+        // 8. ANIMAZIONE CAMERA SU SCROLL
         let scrollY = 0;
         let targetZ = 50;
 
@@ -1236,7 +1312,7 @@
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        // 7. ANIMATION LOOP
+        // 9. ANIMATION LOOP
         function animate() {
             requestAnimationFrame(animate);
 
