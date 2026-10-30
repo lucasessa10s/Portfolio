@@ -1,60 +1,78 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" class="dark scroll-smooth selection:bg-cyan-500 selection:text-black">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | Next-Gen 3D Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUCA SESSA | Cyber-Portfolio 3D & Operations Engine</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyberBlack: '#050608',
+                        cyberDark: '#0a0d14',
+                        cyberCyan: '#00f3ff',
+                        cyberViolet: '#7000ff',
+                        cyberGold: '#ffb700',
+                        cyberPink: '#ff0055',
+                        glassCard: 'rgba(10, 15, 25, 0.75)'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'scanline': 'scanline 8s linear infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' }
+                        },
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)' },
+                            '100%': { boxShadow: '0 0 30px rgba(0, 243, 255, 0.8), 0 0 50px rgba(112, 0, 255, 0.4)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-    <!-- FONTS & ICONS -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:ital,wght@0,300;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- THREE.JS -->
+    
+    <!-- Three.js & Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        :root {
-            --bg-base: #020408;
-            --surface: rgba(12, 17, 28, 0.7);
-            --surface-hover: rgba(22, 30, 48, 0.85);
-            --accent-purple: #7f00ff;
-            --accent-cyan: #00c6ff;
-            --gradient: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border-glass: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-base);
-            color: var(--text-muted);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
-
+        /* Base Styling & Custom Scrollbar */
         body {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
+            font-family: 'Inter', sans-serif;
+            background-color: #050608;
+            color: #e2e8f0;
             overflow-x: hidden;
+            cursor: none; /* Custom Sci-Fi Cursor enabled */
         }
 
-        h1, h2, h3, .syne-font {
-            font-family: 'Syne', sans-serif;
-        }
-
-        /* WEBGL BACKGROUND CANVAS */
-        #webgl-canvas {
+        #canvas-3d {
             position: fixed;
             top: 0;
             left: 0;
@@ -64,1111 +82,1004 @@
             pointer-events: none;
         }
 
-        /* CURSOR GLOW INTERATTIVO */
-        #cursor-glow {
-            position: fixed;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(127, 0, 255, 0.2) 0%, rgba(0, 198, 255, 0.05) 55%, transparent 75%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            will-change: transform;
+        /* Sci-Fi HUD Line Effects */
+        .hud-border {
+            position: relative;
+            background: rgba(10, 13, 20, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
         }
 
-        @media (max-width: 768px) {
-            #cursor-glow { display: none !important; }
-        }
-
-        /* FLOATING ACTION TRIGGER (HUB) */
-        .hub-trigger {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--gradient);
-            box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.4rem;
-            cursor: pointer;
-            z-index: 9000;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: pulseHub 3s infinite ease-in-out;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes pulseHub {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); transform: scale(1); }
-            50% { box-shadow: 0 0 40px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
-        }
-
-        .hub-trigger:hover {
-            transform: scale(1.15) rotate(15deg);
-        }
-
-        /* HUB OVERLAY MODAL */
-        .hub-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 4, 8, 0.94);
-            backdrop-filter: blur(25px);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            opacity: 0;
-            pointer-events: none;
-            clip-path: circle(0px at calc(100vw - 60px) calc(100vh - 60px));
-            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease;
-        }
-
-        .hub-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-            clip-path: circle(150% at calc(100vw - 60px) calc(100vh - 60px));
-        }
-
-        .hub-close {
+        .hud-border::before {
+            content: '';
             position: absolute;
-            top: 35px;
-            right: 35px;
-            width: 50px;
-            height: 50px;
+            top: -1px; left: -1px; width: 12px; height: 12px;
+            border-top: 2px solid #00f3ff;
+            border-left: 2px solid #00f3ff;
+            pointer-events: none;
+        }
+
+        .hud-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px; width: 12px; height: 12px;
+            border-bottom: 2px solid #7000ff;
+            border-right: 2px solid #7000ff;
+            pointer-events: none;
+        }
+
+        .hud-border-gold::before { border-color: #ffb700; }
+        .hud-border-gold::after { border-color: #ffb700; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050608; }
+        ::-webkit-scrollbar-thumb { background: #1a202c; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+
+        /* Sci-Fi Scanlines Overlay */
+        .scanline-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+
+        /* 3D Tilt Card Container */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Custom Cursor */
+        #cursor-dot, #cursor-ring {
+            pointer-events: none;
+            position: fixed;
+            top: 0; left: 0;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-glass);
-            color: white;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .hub-close:hover {
-            background: var(--accent-purple);
-            transform: rotate(90deg);
-        }
-
-        .hub-container {
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .hub-container h2 {
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            color: var(--text-main);
-            margin-bottom: 10px;
-        }
-
-        .hub-container h2 span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hub-container p {
-            font-size: 1.05rem;
-            margin-bottom: 35px;
-        }
-
-        .hub-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .hub-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .hub-item:hover {
-            background: var(--surface-hover);
-            border-color: var(--accent-cyan);
-            transform: translateX(8px);
-        }
-
-        /* HERO SECTION */
-        header {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 80px 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-box {
-            max-width: 850px;
-            width: 100%;
-        }
-
-        .avatar-frame {
-            width: 130px;
-            height: 130px;
-            margin: 0 auto 25px;
-            border-radius: 50%;
-            padding: 4px;
-            background: var(--gradient);
-            box-shadow: 0 0 35px rgba(0, 198, 255, 0.4);
-            animation: floatAvatar 4s ease-in-out infinite;
-        }
-
-        @keyframes floatAvatar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            background: var(--bg-base);
-        }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 7vw, 4.5rem);
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -1px;
-            margin-bottom: 15px;
-            line-height: 1.1;
-        }
-
-        .hero-title span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: var(--text-muted);
-            margin-bottom: 35px;
-            font-weight: 400;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-main {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
-            background: var(--gradient);
-            border-radius: 30px;
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            box-shadow: 0 10px 25px rgba(127, 0, 255, 0.35);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 198, 255, 0.5);
-        }
-
-        .btn-sec {
-            background: transparent;
-            border: 2px solid var(--accent-cyan);
-            box-shadow: none;
-        }
-
-        /* MAIN SECTIONS */
-        section {
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .sec-title {
-            text-align: center;
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            color: var(--text-main);
-            font-weight: 800;
-            margin-bottom: 50px;
-            letter-spacing: -0.5px;
-        }
-
-        .sec-title span {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* STORYTELLING / CHI SONO SECTION */
-        .story-wrapper {
-            background: var(--surface);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .story-text {
-            font-size: clamp(1.1rem, 3vw, 1.35rem);
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 35px;
-            font-weight: 500;
-        }
-
-        .story-text span.word {
-            display: inline-block;
-            transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
-            margin: 0 4px;
-        }
-
-        .story-text span.word.active {
-            color: #ffffff;
-            text-shadow: 0 0 15px var(--accent-cyan), 0 0 25px var(--accent-purple);
-            font-weight: 700;
-            transform: scale(1.06);
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            border-top: 1px solid var(--border-glass);
-            padding-top: 30px;
-        }
-
-        .metric-card h4 {
-            font-size: 2rem;
-            color: var(--text-main);
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
-        }
-
-        .metric-card span {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* LIVE CLOCK WIDGET */
-        .clock-box {
-            background: var(--surface);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 30px;
-            max-width: 550px;
-            margin: 0 auto;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(127, 0, 255, 0.15);
-        }
-
-        .clock-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-cyan);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .clock-digits {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 700;
-            color: var(--text-main);
-            text-shadow: 0 0 25px rgba(0, 198, 255, 0.5);
-        }
-
-        .clock-date {
-            margin-top: 15px;
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: capitalize;
-        }
-
-        /* PROJECTS GRID */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: var(--surface);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2);
-        }
-
-        .project-img-wrap {
-            width: 100%;
-            height: 220px;
-            overflow: hidden;
-            background: #080c14;
-        }
-
-        .project-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .project-card:hover .project-img-wrap img {
-            transform: scale(1.08);
-        }
-
-        .project-info {
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            justify-content: space-between;
-        }
-
-        .project-info h3 {
-            font-size: 1.5rem;
-            color: var(--text-main);
-            margin-bottom: 10px;
-        }
-
-        .project-info p {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .tags-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            font-size: 0.72rem;
-            padding: 5px 12px;
-            border-radius: 20px;
-            background: rgba(127, 0, 255, 0.15);
-            color: var(--accent-cyan);
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            font-weight: 600;
-        }
-
-        .project-link {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .project-link i {
-            color: var(--accent-cyan);
-        }
-
-        /* TECH STACK */
-        .stack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .stack-card {
-            background: var(--surface);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .stack-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-5px);
-        }
-
-        .stack-card h3 {
-            font-size: 1.25rem;
-            color: var(--text-main);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .stack-card h3 i {
-            color: var(--accent-cyan);
-        }
-
-        .pills-box {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 16px;
-            background: rgba(127, 0, 255, 0.1);
-            border: 1px solid rgba(0, 198, 255, 0.25);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .pill:hover {
-            background: var(--gradient);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        /* CONTACT SECTION */
-        .contact-panel {
-            background: var(--surface);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 40px 30px;
-            max-width: 650px;
-            margin: 0 auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-        }
-
-        .presets-title {
-            font-size: 0.82rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .chips-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-
-        .chip {
-            background: rgba(127, 0, 255, 0.12);
-            border: 1px solid rgba(0, 198, 255, 0.3);
-            color: #fff;
-            padding: 9px 16px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chip:hover {
-            background: var(--gradient);
-            border-color: transparent;
-            transform: translateY(-2px);
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 15px 20px;
-            background: rgba(3, 5, 10, 0.85);
-            border: 1px solid var(--border-glass);
-            border-radius: 14px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-            margin-bottom: 16px;
-        }
-
-        .input-field:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 198, 255, 0.25);
-        }
-
-        textarea.input-field {
-            resize: none;
-            height: 130px;
-        }
-
-        .toast-notify {
-            display: none;
-            padding: 14px;
-            border-radius: 12px;
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid #10b981;
-            color: #10b981;
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 50px 20px;
-            background: #010204;
-            border-top: 1px solid var(--border-glass);
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        footer p {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .social-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .social-row a {
-            color: var(--text-main);
-            font-size: 1.4rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-row a:hover {
-            color: var(--accent-cyan);
-        }
-
-        /* MEDIA QUERIES */
-        @media (max-width: 768px) {
-            .metrics-grid { grid-template-columns: 1fr; gap: 15px; }
-            .hub-trigger { bottom: 20px; right: 20px; width: 52px; height: 52px; }
-        }
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+        }
+        #cursor-dot { width: 6px; height: 6px; background-color: #00f3ff; }
+        #cursor-ring { width: 34px; height: 34px; border: 1.5px solid rgba(0, 243, 255, 0.5); }
+
+        .glow-text-cyan { text-shadow: 0 0 15px rgba(0, 243, 255, 0.6); }
+        .glow-text-gold { text-shadow: 0 0 15px rgba(255, 183, 0, 0.6); }
+        .glow-text-violet { text-shadow: 0 0 15px rgba(112, 0, 255, 0.6); }
     </style>
 </head>
+<body class="relative min-h-screen text-slate-100 antialiased overflow-x-hidden">
 
-<body>
+    <!-- Custom Sci-Fi Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
 
-    <!-- THREE.JS 3D CANVAS -->
-    <canvas id="webgl-canvas"></canvas>
+    <!-- Background 3D WebGL Canvas -->
+    <canvas id="canvas-3d"></canvas>
 
-    <!-- CURSOR GLOW -->
-    <div id="cursor-glow"></div>
+    <!-- Visual Scanline Overlay -->
+    <div class="fixed inset-0 scanline-overlay z-10 opacity-40"></div>
 
-    <!-- FLOATING HUB TRIGGER -->
-    <div class="hub-trigger" onclick="toggleHub()" title="Hub Rapido">
-        <i class="fa-solid fa-bolt"></i>
-    </div>
+    <!-- HUD Fixed UI Controls -->
+    <div class="fixed top-6 right-6 z-50 flex items-center gap-4">
+        <!-- Sound FX Synth Toggle -->
+        <button id="sound-toggle" onclick="toggleAudio()" class="hud-border px-3 py-2 rounded text-xs font-mono text-cyberCyan flex items-center gap-2 hover:bg-cyberCyan/10 transition-all">
+            <i id="sound-icon" class="fas fa-volume-up"></i>
+            <span id="sound-status">AUDIO ON</span>
+        </button>
 
-    <!-- HUB OVERLAY -->
-    <div class="hub-overlay" id="hubOverlay">
-        <div class="hub-close" onclick="toggleHub()">
-            <i class="fa-solid fa-xmark"></i>
-        </div>
-        <div class="hub-container">
-            <h2>Quick <span>Hub</span> ⚡</h2>
-            <p>Accedi rapidamente ai canali ufficiali e alle sezioni chiave.</p>
-            <div class="hub-list">
-                <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-item">
-                    <span><i class="fa-brands fa-instagram" style="margin-right: 12px; color: #e1306c;"></i> Instagram Official (@lukse__)</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="#progetti" class="hub-item" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-layer-group" style="margin-right: 12px; color: var(--accent-cyan);"></i> Esplora i Progetti Web</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="#contatti" class="hub-item" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 12px; color: var(--accent-purple);"></i> Richiedi Consulenza / Preventivo</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+        <!-- Live Scroll Percentage Indicator -->
+        <div class="hud-border px-3 py-2 rounded text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyberCyan animate-ping"></span>
+            <span id="scroll-percentage">00%</span>
         </div>
     </div>
 
-    <!-- HERO HEADER -->
-    <header>
-        <div class="hero-box">
-            <div class="avatar-frame">
-                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="avatar-img" onerror="this.src='https://via.placeholder.com/150/060913/00c6ff?text=Luca+Sessa'">
-            </div>
+    <!-- NAV BAR -->
+    <header class="fixed top-0 left-0 w-full z-40 px-6 py-5 bg-cyberDark/40 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="#hero" onclick="playSynthSound('click')" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-cyberCyan to-cyberViolet p-[1px] group-hover:shadow-[0_0_15px_#00f3ff] transition-all">
+                    <div class="w-full h-full bg-cyberBlack rounded flex items-center justify-center font-mono font-bold text-cyberCyan text-sm">LS</div>
+                </div>
+                <div class="font-mono text-sm tracking-wider">
+                    <span class="text-white font-bold">LUCA</span><span class="text-cyberCyan">.SESSA</span>
+                    <span class="block text-[9px] text-slate-500 uppercase tracking-widest">SYS.VER 2026.4</span>
+                </div>
+            </a>
 
-            <h1 class="hero-title" id="heroTitle">
-                Ciao, sono <br><span>Luca Sessa</span>
-            </h1>
+            <nav class="hidden lg:flex items-center space-x-8 font-mono text-xs tracking-wider">
+                <a href="#story-1" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/01</span> CODE & ARCHITECTURE</a>
+                <a href="#story-2" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/02</span> LOGISTICS</a>
+                <a href="#story-3" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/03</span> OPERATIONS</a>
+                <a href="#certifications" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors flex items-center gap-1.5"><span class="text-cyberGold">/04</span> CERTIFICATI</a>
+                <a href="#skills" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/05</span> SKILLS RADAR</a>
+            </nav>
 
-            <p class="hero-subtitle">Web Developer • Social Media Specialist • E-commerce Creator</p>
-            
-            <div class="cta-group">
-                <a href="#progetti" class="btn-main">
-                    Esplora i lavori <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <button type="button" onclick="toggleHub()" class="btn-main btn-sec">
-                    Apri Quick Hub <i class="fa-solid fa-bolt"></i>
-                </button>
-            </div>
+            <a href="#contact" onclick="playSynthSound('click')" class="hud-border px-4 py-2 rounded text-xs font-mono font-semibold text-cyberCyan hover:bg-cyberCyan hover:text-black transition-all duration-300">
+                <i class="fas fa-terminal mr-1.5"></i> INIZIA PROGETTO
+            </a>
         </div>
     </header>
 
-    <!-- STORYTELLING & STATS -->
-    <section id="chiSono">
-        <h2 class="sec-title">Chi <span>Sono</span></h2>
+    <!-- MAIN WRAPPER -->
+    <main class="relative z-20">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-28 pb-16 relative">
+            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-8 space-y-8">
+                    
+                    <div class="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full hud-border text-xs font-mono text-cyberCyan">
+                        <span class="w-2 h-2 rounded-full bg-cyberCyan animate-pulse"></span>
+                        FULL STACK DEVELOPER & OPERATIONS SPECIALIST
+                    </div>
+
+                    <!-- Animated Parallax Hero Title -->
+                    <div class="space-y-2">
+                        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
+                            LUCA <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyberCyan via-cyberViolet to-cyberGold glow-text-cyan inline-block font-mono">SESSA</span>
+                        </h1>
+                        <p class="text-sm sm:text-base font-mono text-cyberCyan/80 tracking-widest pt-2">
+                            [ FULL STACK CERTIFICATO // ARCHITETTURE WEB & LOGISTICA ]
+                        </p>
+                    </div>
+
+                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
+                        Integrazione perfetta tra ingegneria software moderna, sviluppo e-commerce, controllo dei dati e coordinamento logistico avanzato.
+                    </p>
+
+                    <!-- Contact Bar Badges -->
+                    <div class="flex flex-wrap gap-3 font-mono text-xs pt-2">
+                        <a href="mailto:sessa.luca@outlook.it" class="hud-border px-3.5 py-2 rounded text-slate-300 hover:text-cyberCyan hover:border-cyberCyan transition-all flex items-center gap-2">
+                            <i class="fas fa-envelope text-cyberCyan"></i> sessa.luca@outlook.it
+                        </a>
+                        <a href="tel:+393311135962" class="hud-border px-3.5 py-2 rounded text-slate-300 hover:text-cyberViolet hover:border-cyberViolet transition-all flex items-center gap-2">
+                            <i class="fas fa-phone text-cyberViolet"></i> +39 331 11 35 962
+                        </a>
+                        <span class="hud-border px-3.5 py-2 rounded text-slate-300 flex items-center gap-2">
+                            <i class="fas fa-location-dot text-cyberGold"></i> Bergamo (BG), Italia
+                        </span>
+                    </div>
+
+                    <!-- Call to Action Buttons -->
+                    <div class="flex flex-wrap gap-5 pt-4">
+                        <a href="#story-1" onclick="playSynthSound('click')" class="px-8 py-4 rounded font-mono font-bold text-xs tracking-wider bg-gradient-to-r from-cyberCyan via-blue-600 to-cyberViolet text-black hover:shadow-[0_0_25px_rgba(0,243,255,0.6)] hover:scale-105 transition-all flex items-center gap-3">
+                            <i class="fas fa-play"></i> ESPLORA STORYTELLING 3D
+                        </a>
+                        <button onclick="openCertModal()" class="px-8 py-4 rounded font-mono font-bold text-xs tracking-wider hud-border hud-border-gold text-cyberGold hover:bg-cyberGold/10 transition-all flex items-center gap-3">
+                            <i class="fas fa-certificate"></i> VERIFICA ATTESTATO AULAB
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Interactive Sci-Fi ID Card Feature -->
+                <div class="lg:col-span-4 flex justify-center">
+                    <div class="tilt-card hud-border p-6 rounded-2xl w-full max-w-sm space-y-6 relative group border-cyberCyan/30">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                            <span class="text-[10px] font-mono text-cyberCyan tracking-widest">DIGITAL ID // DEV-PASS</span>
+                            <span class="text-[10px] font-mono text-slate-500">SYS.2026</span>
+                        </div>
+
+                        <div class="relative rounded-xl overflow-hidden border border-cyberCyan/40 shadow-2xl group-hover:border-cyberCyan transition-all">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Luca Sessa Visual Concept" class="w-full h-64 object-cover filter contrast-125 brightness-90 group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-transparent"></div>
+                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+                                <span class="px-2 py-0.5 rounded bg-black/80 font-mono text-[10px] text-cyberCyan border border-cyberCyan/30">STATUS: ACTIVE</span>
+                                <span class="px-2 py-0.5 rounded bg-cyberGold/20 font-mono text-[10px] text-cyberGold border border-cyberGold/40">FULL STACK</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-center font-mono">
+                            <h3 class="text-lg font-bold text-white tracking-wider">LUCA SESSA</h3>
+                            <p class="text-xs text-slate-400">Bergamo, IT — Sviluppatore Web & Ops</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-center font-mono text-[11px] pt-2 border-t border-white/10">
+                            <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
+                                <span class="block text-slate-500 text-[9px]">AULAB CERT</span>
+                                <span class="text-cyberCyan font-bold">#79426108</span>
+                            </div>
+                            <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
+                                <span class="block text-slate-500 text-[9px]">PATENTE SPECIAL</span>
+                                <span class="text-cyberGold font-bold">PLE 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- STORY CHAPTER 01: CODE & ARCHITECTURE -->
+        <section id="story-1" class="py-32 px-6 relative">
+            <div class="max-w-6xl mx-auto space-y-16">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberCyan/20 pb-6 gap-4">
+                    <div>
+                        <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// CAPITOLO 01</span>
+                        <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Code & Architecture</h2>
+                    </div>
+                    <div class="font-mono text-xs text-slate-400">
+                        Sviluppo Web Full Stack & E-Commerce Freelance
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberCyan/30">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 rounded bg-cyberCyan/10 text-cyberCyan font-mono text-xs border border-cyberCyan/30">FREELANCE & PROJECT DEV</span>
+                                <i class="fas fa-laptop-code text-2xl text-cyberCyan"></i>
+                            </div>
+
+                            <h3 class="text-2xl font-bold text-white">Sviluppo Siti Web ed E-Commerce Completi</h3>
+                            
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Progettazione e realizzazione end-to-end di piattaforme digitali vetrina ed e-commerce strutturati (specialmente per il settore retail e abbigliamento).
+                            </p>
+
+                            <ul class="space-y-3 font-mono text-xs text-slate-300">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
+                                    <span>Configurazione completa domini, server, DNS, protocolli e caselle email aziendali.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
+                                    <span>Creazione e strutturazione cataloghi prodotti e formazione diretta del personale al back office.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
+                                    <span>Social Media Marketing, grafiche dedicate e attivazione/monitoraggio campagne ADV.</span>
+                                </li>
+                            </ul>
+
+                            <div class="pt-4 flex flex-wrap gap-2 font-mono text-[11px]">
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">PHP / Laravel</span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">JavaScript ES6</span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">HTML5 / CSS3</span>
+                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">CMS E-Commerce</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Code Canvas Feature Box -->
+                    <div class="lg:col-span-5">
+                        <div class="hud-border p-6 rounded-2xl bg-cyberBlack/90 font-mono text-xs space-y-4 border-slate-800">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                <div class="flex space-x-2">
+                                    <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                    <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                    <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                                </div>
+                                <span class="text-slate-500 text-[10px]">ECommerceController.php</span>
+                            </div>
+
+                            <pre class="text-slate-300 overflow-x-auto leading-relaxed">
+<span class="text-purple-400">namespace</span> App\Http\Controllers;
+
+<span class="text-blue-400">class</span> <span class="text-yellow-300">ECommerceEngine</span> {
+    <span class="text-purple-400">public function</span> <span class="text-blue-300">deployStore</span>($client) {
+        <span class="text-slate-500">// Setup Domain & Catalog</span>
+        $catalog = $this->buildCatalog();
+        $payment = $this->setupGateways();
         
-        <div class="story-wrapper">
-            <p class="story-text" id="storyText">
-                Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.
-            </p>
-            
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <h4 class="counter" data-target="4" data-suffix="+">0</h4>
-                    <span>Store Attivi</span>
-                </div>
-                <div class="metric-card">
-                    <h4 class="counter" data-target="100" data-suffix="%">0</h4>
-                    <span>Mobile Optimized</span>
-                </div>
-                <div class="metric-card">
-                    <h4 class="counter" data-target="24" data-suffix="/7">0</h4>
-                    <span>Top Performance</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LIVE CLOCK -->
-    <section style="padding: 40px 20px;">
-        <div class="clock-box">
-            <div class="clock-label">
-                <i class="fa-solid fa-clock"></i> Live System Clock
-            </div>
-            <div class="clock-digits" id="liveClock">00:00:00</div>
-            <div class="clock-date" id="liveDate">Caricamento data...</div>
-        </div>
-    </section>
-
-    <!-- PROGETTI -->
-    <section id="progetti">
-        <h2 class="sec-title">I Miei <span>Progetti</span></h2>
-
-        <div class="projects-grid">
-            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-card">
-                <div class="project-img-wrap">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Saadiya.it" loading="lazy">
-                </div>
-                <div class="project-info">
-                    <div>
-                        <h3>Saadiya.it</h3>
-                        <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
-                        <div class="tags-row">
-                            <span class="tag">E-Commerce</span>
-                            <span class="tag">Brand Identity</span>
+        <span class="text-purple-400">return</span> response()->json([
+            <span class="text-green-300">'status'</span> => <span class="text-green-300">'ONLINE'</span>,
+            <span class="text-green-300">'developer'</span> => <span class="text-green-300">'Luca Sessa'</span>
+        ]);
+    }
+}</pre>
                         </div>
                     </div>
-                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
 
-            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-card">
-                <div class="project-img-wrap">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="AirSafe.it" loading="lazy">
                 </div>
-                <div class="project-info">
+
+            </div>
+        </section>
+
+        <!-- STORY CHAPTER 02: LOGISTICS & SUPPLY CHAIN -->
+        <section id="story-2" class="py-32 px-6 relative bg-cyberDark/50">
+            <div class="max-w-6xl mx-auto space-y-16">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberViolet/20 pb-6 gap-4">
                     <div>
-                        <h3>AirSafe.it</h3>
-                        <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form.</p>
-                        <div class="tags-row">
-                            <span class="tag">HTML/CSS</span>
-                            <span class="tag-pill tag">Corporate</span>
+                        <span class="text-cyberViolet font-mono text-xs tracking-widest uppercase">// CAPITOLO 02</span>
+                        <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Logistics & Supply Chain</h2>
+                    </div>
+                    <div class="font-mono text-xs text-slate-400">
+                        Gestione Giacenze, Reportistica DDT & Logistica GDO
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <div class="lg:col-span-5 order-2 lg:order-1">
+                        <div class="hud-border p-6 rounded-2xl bg-slate-950 space-y-4 border-cyberViolet/30">
+                            <h4 class="font-mono text-xs text-cyberViolet tracking-wider">// CAPACITÀ OPERATIVE D'ATTACCO</h4>
+                            <div class="space-y-3 font-mono text-xs">
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
+                                    <span>Pianificazione Viaggi Autisti</span>
+                                    <span class="text-cyberViolet font-bold">Nord Italia</span>
+                                </div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
+                                    <span>Controllo Giacenze & Pedane</span>
+                                    <span class="text-cyberViolet font-bold">100% Preciso</span>
+                                </div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
+                                    <span>Piattaforme Aeree PLE</span>
+                                    <span class="text-cyberGold font-bold">Patente 2025</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
 
-            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-card">
-                <div class="project-img-wrap">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Gelosia Boutique" loading="lazy">
-                </div>
-                <div class="project-info">
-                    <div>
-                        <h3>Gelosia Boutique</h3>
-                        <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per conversioni mobile.</p>
-                        <div class="tags-row">
-                            <span class="tag">Shopify</span>
-                            <span class="tag">Mobile First</span>
+                    <div class="lg:col-span-7 order-1 lg:order-2 space-y-6">
+                        <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberViolet/30">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 rounded bg-cyberViolet/10 text-cyberViolet font-mono text-xs border border-cyberViolet/30">LOGISTICS & WAREHOUSE MANAGEMENT</span>
+                                <i class="fas fa-boxes-packing text-2xl text-cyberViolet"></i>
+                            </div>
+
+                            <h3 class="text-2xl font-bold text-white">Addetto Gestione Bancali & Logistica di Magazzino</h3>
+                            
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Controllo rigoroso del flusso di merci e bancali in entrata/uscita, ottimizzazione dei percorsi di trasporto e gestione della documentazione di carico.
+                            </p>
+
+                            <ul class="space-y-3 font-mono text-xs text-slate-300">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
+                                    <span>Conteggio analitico bancali con stesura di reportistica mensile dettagliata per la direzione.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
+                                    <span>Verifica corrispondenza DDT e controllo merce/pedane in fase di scarico merci.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
+                                    <span>Prenotazione carichi/scarichi tramite portali logistici dedicati per aziende e Grande Distribuzione Organizzata (GDO).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
+                                    <span>Movimentazione con transpallet manuali/elettrici e consegne con furgone 4 bancali (Patente B).</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                </div>
-            </a>
 
-            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-card">
-                <div class="project-img-wrap">
-                    <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Officina Luxury" loading="lazy">
                 </div>
-                <div class="project-info">
+
+            </div>
+        </section>
+
+        <!-- STORY CHAPTER 03: OPERATIONS & FRONT OFFICE -->
+        <section id="story-3" class="py-32 px-6 relative">
+            <div class="max-w-6xl mx-auto space-y-16">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberGold/20 pb-6 gap-4">
                     <div>
-                        <h3>Officina Luxury</h3>
-                        <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione e nel layout di vendita.</p>
-                        <div class="tags-row">
-                            <span class="tag">Shopify Pro</span>
-                            <span class="tag">Luxury UI</span>
+                        <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// CAPITOLO 03</span>
+                        <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Operations & Front Office</h2>
+                    </div>
+                    <div class="font-mono text-xs text-slate-400">
+                        Coordinamento Operativo & Gestione Parcheggio Aeroportuale
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberGold/30">
+                            <div class="flex items-center justify-between">
+                                <span class="px-3 py-1 rounded bg-cyberGold/10 text-cyberGold font-mono text-xs border border-cyberGold/30">AIRPORT OPERATIONS & FRONT OFFICE</span>
+                                <i class="fas fa-headset text-2xl text-cyberGold"></i>
+                            </div>
+
+                            <h3 class="text-2xl font-bold text-white">Addetto Front Office & Coordinamento Operativo</h3>
+                            
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Controllo delle operation di terra in strutture aeroportuali ad altissimo traffico: gestione flussi clienti, cassa, logistica navette e monitoraggio voli.
+                            </p>
+
+                            <ul class="space-y-3 font-mono text-xs text-slate-300">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
+                                    <span>Accettazione clienti e registrazione completa veicoli (targa, modello, tempi di sosta).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
+                                    <span>Monitoraggio arrivi voli in tempo reale per la preparazione e movimentazione tempestiva delle auto.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
+                                    <span>Gestione incassi (contanti/POS), fatturazione, prima nota e riconciliazione giornaliera gestionale.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
+                                    <span>Coordinamento del personale via radio per navette aeroporto, gestione bagagli e flussi veicolari.</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+
+                    <div class="lg:col-span-5">
+                        <div class="hud-border p-8 rounded-2xl bg-cyberBlack/80 space-y-6 border-slate-800 text-center">
+                            <i class="fas fa-plane-departure text-4xl text-cyberGold animate-bounce"></i>
+                            <h4 class="text-lg font-bold text-white font-mono">Precisione sotto Pressione</h4>
+                            <p class="text-xs text-slate-400 leading-relaxed font-mono">
+                                L'esperienza nell'hub aeroportuale ha consolidato una spiccata attitudine al problem solving rapido, comunicazione radio efficace e gestione contabile senza errori.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-            </a>
-        </div>
-    </section>
 
-    <!-- TECH STACK -->
-    <section>
-        <h2 class="sec-title">Tech Stack & <span>Competenze</span></h2>
+            </div>
+        </section>
 
-        <div class="stack-grid">
-            <div class="stack-card">
-                <h3><i class="fa-solid fa-code"></i> Frontend & Web</h3>
-                <div class="pills-box">
-                    <span class="pill"><i class="fa-brands fa-html5"></i> HTML5</span>
-                    <span class="pill"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
-                    <span class="pill"><i class="fa-brands fa-js"></i> JavaScript</span>
-                    <span class="pill"><i class="fa-brands fa-shopify"></i> Shopify Liquid</span>
+        <!-- CERTIFICATIONS SECTION & MODAL TRIGGER -->
+        <section id="certifications" class="py-32 px-6 relative bg-cyberDark/60">
+            <div class="max-w-6xl mx-auto space-y-16">
+                
+                <div class="text-center space-y-3">
+                    <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// 04. FORMAZIONE UFFICIALE & ATTESTATI</span>
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-white">Certificazioni di Valore</h2>
                 </div>
-            </div>
 
-            <div class="stack-card">
-                <h3><i class="fa-solid fa-robot"></i> Automation & Python</h3>
-                <div class="pills-box">
-                    <span class="pill"><i class="fa-brands fa-python"></i> Python Bots</span>
-                    <span class="pill"><i class="fa-solid fa-paper-plane"></i> Telegram API</span>
-                    <span class="pill"><i class="fa-solid fa-database"></i> Web Scraping</span>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Main Feature: Aulab Hackademy Card -->
+                    <div class="md:col-span-8 hud-border hud-border-gold p-8 rounded-2xl relative overflow-hidden space-y-6 tilt-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="px-3 py-1 rounded bg-cyberGold/20 text-cyberGold font-mono text-xs font-bold border border-cyberGold/40">CERTIFICATO UFFICIALE</span>
+                                <h3 class="text-3xl font-extrabold text-white mt-3">Full Stack Web Developer</h3>
+                                <p class="text-cyberGold font-mono text-sm">Aulab Hackademy — Corso Intensivo 400 Ore</p>
+                            </div>
+                            <i class="fas fa-award text-4xl text-cyberGold"></i>
+                        </div>
+
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Formazione intensiva teorico-pratica incentrata sullo sviluppo di web app complete: architetture MVC in PHP/Laravel, manipolazione DOM avanzata in JavaScript, database SQL e metodologia Agile (Scrum).
+                        </p>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-html5 text-orange-500 mr-1"></i> HTML5 & CSS3</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 mr-1"></i> JavaScript ES6</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-php text-indigo-400 mr-1"></i> PHP</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-laravel text-red-500 mr-1"></i> Laravel</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-database text-blue-400 mr-1"></i> SQL Database</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-users-gear text-green-400 mr-1"></i> Agile Scrum</div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 gap-4 font-mono text-xs">
+                            <span class="text-slate-400">ID CERTIFICATO: <strong class="text-white">79426108</strong> (8 Agosto 2023)</span>
+                            <button onclick="openCertModal()" class="px-5 py-2.5 rounded bg-cyberGold text-black font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2">
+                                <i class="fas fa-search-plus"></i> ISPEZIONA CERTIFICATO
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Side Certificates -->
+                    <div class="md:col-span-4 space-y-6">
+                        
+                        <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
+                            <span class="text-xs font-mono text-cyberCyan">ABILITAZIONE OPERATIVA 2025</span>
+                            <h4 class="text-lg font-bold text-white">Patente Piattaforme Aeree (PLE)</h4>
+                            <p class="text-xs text-slate-400">Abilitazione alla conduzione di macchinari per il lavoro in quota.</p>
+                        </div>
+
+                        <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
+                            <span class="text-xs font-mono text-emerald-400">DIPLOMA DI STATO 2017</span>
+                            <h4 class="text-lg font-bold text-white">Diploma Alberghiero</h4>
+                            <p class="text-xs text-slate-400">Forte orientamento alla comunicazione e al servizio clienti.</p>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
 
-            <div class="stack-card">
-                <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Design & Growth</h3>
-                <div class="pills-box">
-                    <span class="pill"><i class="fa-solid fa-palette"></i> UI/UX Design</span>
-                    <span class="pill"><i class="fa-brands fa-instagram"></i> Social Growth</span>
-                    <span class="pill"><i class="fa-solid fa-store"></i> E-Commerce Strategy</span>
+            </div>
+        </section>
+
+        <!-- SKILLS MATRIX RADAR -->
+        <section id="skills" class="py-32 px-6 relative">
+            <div class="max-w-6xl mx-auto space-y-16">
+                
+                <div class="text-center space-y-3">
+                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 05. SKILLS MATRIX & TECH RADAR</span>
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-white">Mappa delle Competenze</h2>
                 </div>
+
+                <!-- Category Filters -->
+                <div class="flex justify-center flex-wrap gap-3 font-mono text-xs">
+                    <button onclick="filterSkills('all')" class="skill-btn px-4 py-2 rounded hud-border text-cyberCyan active">TUTTE LE SKILLS</button>
+                    <button onclick="filterSkills('web')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">WEB DEVELOPMENT</button>
+                    <button onclick="filterSkills('logistics')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">LOGISTICA & GDO</button>
+                    <button onclick="filterSkills('ops')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">OPERATIONS & FRONT OFFICE</button>
+                </div>
+
+                <div id="skills-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
+                    
+                    <!-- Web Dev Skill Card -->
+                    <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">HTML5 / CSS3 / Tailwind</span>
+                            <span class="text-cyberCyan">95%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberCyan w-[95%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Layout moderni, responsive design, animations & Glassmorphism.</p>
+                    </div>
+
+                    <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">PHP & Laravel</span>
+                            <span class="text-cyberCyan">88%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberCyan w-[88%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Architetture MVC, controller, routing, ORM Eloquent e relazioni SQL.</p>
+                    </div>
+
+                    <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">JavaScript ES6+</span>
+                            <span class="text-cyberCyan">85%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberCyan w-[85%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Manipolazione DOM, Fetch API, chiamate asincrone ed eventi interattivi.</p>
+                    </div>
+
+                    <!-- Logistics Cards -->
+                    <div class="skill-card logistics hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">Gestione Giacenze & DDT</span>
+                            <span class="text-cyberViolet">92%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberViolet w-[92%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Verifica documenti di trasporto, giacenze e conteggi pedane mensili.</p>
+                    </div>
+
+                    <div class="skill-card logistics hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">Pianificazione Viaggi Autisti</span>
+                            <span class="text-cyberViolet">90%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberViolet w-[90%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Ottimizzazione rotte di consegna Nord Italia e slot di scarico GDO.</p>
+                    </div>
+
+                    <!-- Ops Cards -->
+                    <div class="skill-card ops hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <span class="font-bold text-white text-sm">Gestione Cassa & Prima Nota</span>
+                            <span class="text-cyberGold">94%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                            <div class="h-full bg-cyberGold w-[94%]"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Riconciliazione incassi POS/contanti e controllo gestionale.</p>
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CONTATTI -->
-    <section id="contatti">
-        <h2 class="sec-title">Entriamo in <span>Contatto</span></h2>
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-32 px-6 relative bg-cyberDark/80">
+            <div class="max-w-4xl mx-auto hud-border p-8 sm:p-12 rounded-3xl space-y-10 border-cyberCyan/40">
+                
+                <div class="text-center space-y-3">
+                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 06. CONTATTO DIRETTO</span>
+                    <h2 class="text-4xl font-extrabold text-white">Avvia un Canale di Comunicazione</h2>
+                    <p class="text-slate-400 text-sm font-mono max-w-md mx-auto">Disponibile per opportunità Web Full Stack, progetti e-commerce e ruoli gestionali operativi.</p>
+                </div>
 
-        <div class="contact-panel">
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">
-                Scegli una richiesta rapida o compila il modulo per inviarmi un messaggio istantaneo:
-            </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs text-center">
+                    <a href="mailto:sessa.luca@outlook.it" class="p-5 rounded bg-slate-900 border border-slate-800 hover:border-cyberCyan transition-all group">
+                        <i class="fas fa-envelope text-xl text-cyberCyan mb-2 group-hover:scale-110 transition-transform"></i>
+                        <span class="block text-slate-500 text-[10px]">EMAIL</span>
+                        <span class="text-white font-bold break-all">sessa.luca@outlook.it</span>
+                    </a>
 
-            <div class="presets-title">Richieste rapide:</div>
-            <div class="chips-group">
-                <button type="button" class="chip" onclick="setPreset('Nuovo Sito Web / E-Commerce', 'Vorrei realizzare un nuovo sito web o uno store e-commerce per la mia attività.')">🛍️ Sito Web / Shopify</button>
-                <button type="button" class="chip" onclick="setPreset('Restyling Grafico UI', 'Vorrei migliorare il design del mio sito attuale con una grafica moderna.')">🎨 Restyling Grafico</button>
-                <button type="button" class="chip" onclick="setPreset('Bot Automation & Social', 'Sarei interessato a strategie social e automazioni con bot.')">🤖 Bot & Growth</button>
+                    <a href="tel:+393311135962" class="p-5 rounded bg-slate-900 border border-slate-800 hover:border-cyberViolet transition-all group">
+                        <i class="fas fa-phone text-xl text-cyberViolet mb-2 group-hover:scale-110 transition-transform"></i>
+                        <span class="block text-slate-500 text-[10px]">TELEFONO</span>
+                        <span class="text-white font-bold">+39 331 11 35 962</span>
+                    </a>
+
+                    <div class="p-5 rounded bg-slate-900 border border-slate-800">
+                        <i class="fas fa-location-dot text-xl text-cyberGold mb-2"></i>
+                        <span class="block text-slate-500 text-[10px]">BASE OPERATIVA</span>
+                        <span class="text-white font-bold">Bergamo (BG), Italia</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Message Form -->
+                <form id="contact-form" onsubmit="handleForm(event)" class="space-y-4 font-mono text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Nome / Azienda" required class="w-full p-4 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-cyberCyan">
+                        <input type="email" placeholder="Email di Contatto" required class="w-full p-4 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-cyberCyan">
+                    </div>
+                    <textarea placeholder="Scrivi il tuo messaggio..." rows="4" required class="w-full p-4 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-cyberCyan"></textarea>
+
+                    <button type="submit" class="w-full py-4 rounded bg-gradient-to-r from-cyberCyan via-blue-600 to-cyberViolet text-black font-bold tracking-wider hover:shadow-[0_0_20px_rgba(0,243,255,0.5)] transition-all">
+                        <i class="fas fa-paper-plane mr-2"></i> INVIA MESSAGGIO
+                    </button>
+                    <div id="form-status" class="hidden text-center text-cyberCyan pt-2">
+                        ✓ Messaggio inviato con successo!
+                    </div>
+                </form>
+
             </div>
+        </section>
 
-            <div class="toast-notify" id="toastNotify">
-                <i class="fa-solid fa-check-circle"></i> Messaggio copiato negli appunti! Apertura Instagram...
-            </div>
-
-            <form onsubmit="handleSend(event)">
-                <input type="text" id="fieldName" class="input-field" placeholder="Il tuo nome o azienda" required>
-                <input type="text" id="fieldProject" class="input-field" placeholder="Di cosa hai bisogno? (es. E-Commerce, Sito Web)" required>
-                <textarea id="fieldMessage" class="input-field" placeholder="Raccontami la tua idea..." required></textarea>
-
-                <button type="submit" id="submitBtn" class="btn-main" style="width: 100%; justify-content: center; font-size: 0.98rem;">
-                    Invia messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i>
-                </button>
-            </form>
-        </div>
-    </section>
+    </main>
 
     <!-- FOOTER -->
-    <footer>
-        <p>© 2026 <strong>Luca Sessa</strong>. Next-Gen 3D Interactive Portfolio.</p>
-        <div class="social-row">
-            <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        </div>
+    <footer class="relative z-20 border-t border-white/10 py-8 text-center font-mono text-xs text-slate-500">
+        <p>&copy; 2026 LUCA SESSA — Full Stack Developer & Operations Engine.</p>
+        <p class="text-[10px] text-slate-600 mt-1">Sviluppato con Three.js, GSAP ScrollTrigger & Web Audio API</p>
     </footer>
 
-    <!-- SCRIPT MASTER (3D, COUNTERS, STORYTELLING) -->
+    <!-- AULAB DEDICATED CERTIFICATE INSPECTOR MODAL -->
+    <div id="cert-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl hidden opacity-0 transition-opacity duration-300">
+        <div class="hud-border hud-border-gold max-w-2xl w-full p-8 rounded-3xl space-y-6 relative bg-cyberBlack text-slate-100">
+            
+            <button onclick="closeCertModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center font-mono font-bold">✕</button>
+
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded bg-cyberGold/20 border border-cyberGold/40 text-cyberGold flex items-center justify-center text-2xl font-bold font-mono">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-white font-mono">CERTIFICATO UFFICIALE AULAB</h3>
+                    <p class="text-xs text-cyberGold font-mono">Hackademy Full Stack Web Developer</p>
+                </div>
+            </div>
+
+            <!-- Authentic Certificate Yellow Badge Box -->
+            <div class="bg-yellow-400 p-6 rounded-2xl text-black font-mono space-y-4 shadow-2xl">
+                <div class="flex justify-between items-center border-b-2 border-black pb-3">
+                    <span class="font-black text-xl tracking-wider">IN CODE WE TRUST</span>
+                    <span class="text-xs font-bold border border-black px-2 py-0.5 rounded">@aulab</span>
+                </div>
+
+                <div class="space-y-1 text-xs">
+                    <p>Si attesta che lo studente <strong>LUCA SESSA</strong> ha conseguito con successo gli obiettivi del corso Hackademy.</p>
+                    <p class="pt-2"><strong>DURATA CORSO:</strong> <span id="cert-hours-counter" class="text-lg font-black">0</span> ORE INTENSIVE</p>
+                    <p><strong>COMPETENZE ACQUISITE:</strong> HTML, CSS, JavaScript, PHP, Framework Laravel e Metodologie Agili (Scrum).</p>
+                    <p><strong>CODICE DI VERIFICA:</strong> <span class="bg-black text-yellow-400 px-2 py-0.5 rounded font-bold">79426108</span></p>
+                    <p><strong>DATA DI RILASCIO:</strong> 8 Agosto 2023</p>
+                </div>
+
+                <div class="text-right text-[11px] font-bold border-t border-black/30 pt-2">
+                    Giancarlo Valente — CTO e Co-founder aulab
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeCertModal()" class="px-6 py-2.5 rounded hud-border hud-border-gold text-cyberGold font-mono text-xs font-bold hover:bg-cyberGold/20 transition-all">
+                    CHIUDI ISPEZIONE
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
     <script>
-        // 1. SPLIT STORYTELLING PAROLE
-        const storyEl = document.getElementById('storyText');
-        const rawText = storyEl.textContent.trim();
-        const words = rawText.split(' ');
-        storyEl.innerHTML = words.map((w, i) => `<span class="word" id="sw-${i}">${w}</span>`).join(' ');
-        const wordSpans = document.querySelectorAll('.story-text span.word');
+        // --- 1. WEB AUDIO API SYNTH SOUND EFFECTS ---
+        let audioCtx = null;
+        let audioEnabled = true;
 
-        // 2. COUNTER ANIMATION & STORYTELLING SCROLL TRIGGER
-        let counted = false;
-        const chiSonoSec = document.getElementById('chiSono');
-
-        window.addEventListener('scroll', () => {
-            const rect = chiSonoSec.getBoundingClientRect();
-            const viewHeight = window.innerHeight;
-
-            // Counter trigger
-            if (rect.top < viewHeight && !counted) {
-                document.querySelectorAll('.counter').forEach(cnt => {
-                    const target = +cnt.getAttribute('data-target');
-                    const suffix = cnt.getAttribute('data-suffix');
-                    let curr = 0;
-                    const step = () => {
-                        curr += target / 35;
-                        if (curr < target) {
-                            cnt.textContent = Math.ceil(curr) + suffix;
-                            setTimeout(step, 25);
-                        } else {
-                            cnt.textContent = target + suffix;
-                        }
-                    };
-                    step();
-                });
-                counted = true;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+        }
 
-            // Storytelling active words progress
-            if (rect.top <= viewHeight * 0.7 && rect.bottom >= 0) {
-                const progress = Math.max(0, Math.min(1, (viewHeight * 0.7 - rect.top) / (rect.height * 0.8)));
-                const activeLimit = Math.floor(progress * wordSpans.length);
-                wordSpans.forEach((span, idx) => {
-                    if (idx <= activeLimit) span.classList.add('active');
-                    else span.classList.remove('active');
-                });
+        function playSynthSound(type) {
+            if (!audioEnabled) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(200, now + 0.08);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'hover') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.05);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
             }
-        });
-
-        // 3. LIVE CLOCK
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('liveClock').textContent = now.toTimeString().split(' ')[0];
-            const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('liveDate').textContent = now.toLocaleDateString('it-IT', opts);
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // 4. CONTACT FORM TO INSTAGRAM
-        function setPreset(proj, desc) {
-            document.getElementById('fieldProject').value = proj;
-            document.getElementById('fieldMessage').value = desc;
-            document.getElementById('fieldName').focus();
         }
 
-        function handleSend(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const toast = document.getElementById('toastNotify');
-            const name = document.getElementById('fieldName').value;
-            const proj = document.getElementById('fieldProject').value;
-            const msg = document.getElementById('fieldMessage').value;
-
-            const text = `Ciao Luca! Sono ${name}. Richiesta per: ${proj}. Dettagli: ${msg}`;
-
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Preparazione invio...';
-
-            navigator.clipboard.writeText(text).then(() => {
-                toast.style.display = 'block';
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiato negli appunti!';
-                setTimeout(() => {
-                    window.open('https://instagram.com/lukse__', '_blank');
-                    btn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
-                    toast.style.display = 'none';
-                }, 1200);
-            }).catch(() => {
-                window.open('https://instagram.com/lukse__', '_blank');
-                btn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
-            });
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            document.getElementById('sound-status').innerText = audioEnabled ? 'AUDIO ON' : 'AUDIO OFF';
+            document.getElementById('sound-icon').className = audioEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
         }
 
-        // 5. HUB TOGGLE
-        function toggleHub() {
-            document.getElementById('hubOverlay').classList.toggle('active');
-        }
+        // --- 2. THREE.JS 3D SCENE & ANIMATION ENGINE ---
+        let scene, camera, renderer;
+        let cyberCoreMesh, particleStreamMesh, torusKnotMesh;
+        let mouseX = 0, mouseY = 0;
 
-        // 6. MOUSE GLOW
-        const glow = document.getElementById('cursor-glow');
-        if (window.innerWidth > 768) {
-            window.addEventListener('mousemove', (e) => {
-                glow.style.left = `${e.clientX}px`;
-                glow.style.top = `${e.clientY}px`;
-            });
-        }
+        function initThreeJS() {
+            const canvas = document.getElementById('canvas-3d');
+            scene = new THREE.Scene();
 
-        // 7. THREE.JS 3D SPACE TUNNEL & PARALLAX
-        const canvas = document.getElementById('webgl-canvas');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020408, 0.002);
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 28;
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 40;
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // Particelle tunnel
-        const count = 2500;
-        const geom = new THREE.BufferGeometry();
-        const positions = new Float32Array(count * 3);
-        const colors = new Float32Array(count * 3);
-
-        const c1 = new THREE.Color(0x7f00ff);
-        const c2 = new THREE.Color(0x00c6ff);
-
-        for (let i = 0; i < count; i++) {
-            const r = 20 + Math.random() * 45;
-            const theta = Math.random() * Math.PI * 2;
-            const zCoord = (Math.random() - 0.5) * 1400;
-
-            positions[i * 3] = Math.cos(theta) * r;
-            positions[i * 3 + 1] = Math.sin(theta) * r;
-            positions[i * 3 + 2] = zCoord;
-
-            const mixed = c1.clone().lerp(c2, Math.random());
-            colors[i * 3] = mixed.r;
-            colors[i * 3 + 1] = mixed.g;
-            colors[i * 3 + 2] = mixed.b;
-        }
-
-        geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        const mat = new THREE.PointsMaterial({
-            size: 1.3,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.85
-        });
-
-        const starField = new THREE.Points(geom, mat);
-        scene.add(starField);
-
-        // Anelli geometrici spaziali
-        const rings = [];
-        for (let i = 0; i < 12; i++) {
-            const ringGeom = new THREE.TorusGeometry(20 + (i % 4) * 5, 0.25, 16, 100);
-            const ringMat = new THREE.MeshBasicMaterial({
-                color: i % 2 === 0 ? 0x7f00ff : 0x00c6ff,
+            // Central Complex Wireframe Object
+            const coreGeo = new THREE.IcosahedronGeometry(8, 2);
+            const coreMat = new THREE.MeshBasicMaterial({
+                color: 0x00f3ff,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.3
+                opacity: 0.35
             });
-            const ringMesh = new THREE.Mesh(ringGeom, ringMat);
-            ringMesh.position.z = -i * 90;
-            scene.add(ringMesh);
-            rings.push(ringMesh);
+            cyberCoreMesh = new THREE.Mesh(coreGeo, coreMat);
+            scene.add(cyberCoreMesh);
+
+            // Surrounding Torus Knot Ring
+            const torusGeo = new THREE.TorusKnotGeometry(14, 0.6, 120, 16);
+            const torusMat = new THREE.MeshBasicMaterial({
+                color: 0x7000ff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.25
+            });
+            torusKnotMesh = new THREE.Mesh(torusGeo, torusMat);
+            cyberCoreMesh.add(torusKnotMesh);
+
+            // Floating Particle Field Stream
+            const particleCount = 1200;
+            const positions = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 120;
+            }
+            const particleGeo = new THREE.BufferGeometry();
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMat = new THREE.PointsMaterial({
+                size: 0.18,
+                color: 0x00f3ff,
+                transparent: true,
+                opacity: 0.7
+            });
+            particleStreamMesh = new THREE.Points(particleGeo, particleMat);
+            scene.add(particleStreamMesh);
+
+            // PointLights
+            const light1 = new THREE.PointLight(0x00f3ff, 2, 100);
+            light1.position.set(10, 10, 10);
+            scene.add(light1);
+
+            const light2 = new THREE.PointLight(0x7000ff, 2, 100);
+            light2.position.set(-10, -10, -10);
+            scene.add(light2);
+
+            window.addEventListener('resize', onWindowResize);
+            document.addEventListener('mousemove', onMouseMove);
         }
 
-        // Parallax scroll & mouse listener
-        let targetZ = 40;
-        window.addEventListener('scroll', () => {
-            targetZ = 40 - (window.scrollY * 0.12);
-        });
-
-        let mouseX = 0, mouseY = 0;
-        window.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-
-            starField.rotation.z += 0.001;
-            rings.forEach((ring, idx) => {
-                ring.rotation.z += 0.002 * (idx % 2 === 0 ? 1 : -1);
-            });
-
-            camera.position.z += (targetZ - camera.position.z) * 0.08;
-            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
-
-            renderer.render(scene, camera);
-        }
-        animate3D();
-
-        window.addEventListener('resize', () => {
+        function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        }
+
+        function onMouseMove(e) {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0008;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0008;
+
+            // Custom Cursor Position Update
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            dot.style.left = `${e.clientX}px`;
+            dot.style.top = `${e.clientY}px`;
+            ring.style.left = `${e.clientX}px`;
+            ring.style.top = `${e.clientY}px`;
+        }
+
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+
+            // Core Rotations
+            cyberCoreMesh.rotation.y += 0.003;
+            cyberCoreMesh.rotation.x += 0.0015;
+
+            torusKnotMesh.rotation.z -= 0.004;
+
+            // Mouse Reaction
+            cyberCoreMesh.rotation.y += mouseX * 0.2;
+            cyberCoreMesh.rotation.x += mouseY * 0.2;
+
+            particleStreamMesh.rotation.y -= 0.0005;
+
+            renderer.render(scene, camera);
+        }
+
+        // --- 3. GSAP SCROLL & CAMERA PARALLAX CONTROL ---
+        function initGSAP() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Scroll percentage indicator
+            ScrollTrigger.create({
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                onUpdate: (self) => {
+                    const percent = Math.round(self.progress * 100);
+                    document.getElementById('scroll-percentage').innerText = `${percent < 10 ? '0' : ''}${percent}%`;
+                }
+            });
+
+            // Sincronizzazione Camera 3D con lo scroll
+            gsap.to(camera.position, {
+                scrollTrigger: {
+                    trigger: "#story-1",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                },
+                z: 22,
+                y: -4
+            });
+
+            gsap.to(camera.position, {
+                scrollTrigger: {
+                    trigger: "#story-2",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                },
+                z: 32,
+                x: 6
+            });
+
+            gsap.to(camera.position, {
+                scrollTrigger: {
+                    trigger: "#story-3",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                },
+                z: 26,
+                x: -6
+            });
+        }
+
+        // --- 4. 3D GLASS TILT CARDS LOGIC ---
+        function initTiltCards() {
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+
+                card.addEventListener('mouseenter', () => playSynthSound('hover'));
+            });
+        }
+
+        // --- 5. SKILLS MATRIX FILTERING ---
+        function filterSkills(category) {
+            playSynthSound('click');
+            const btns = document.querySelectorAll('.skill-btn');
+            btns.forEach(b => b.classList.remove('active', 'text-cyberCyan'));
+
+            event.target.classList.add('active', 'text-cyberCyan');
+
+            const cards = document.querySelectorAll('.skill-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 6. CERTIFICATE INSPECTION MODAL & COUNTER ---
+        function openCertModal() {
+            playSynthSound('click');
+            const modal = document.getElementById('cert-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+
+            // Animate Hours Counter
+            const counter = document.getElementById('cert-hours-counter');
+            let count = 0;
+            const target = 400;
+            const interval = setInterval(() => {
+                count += 10;
+                counter.innerText = count;
+                if (count >= target) {
+                    counter.innerText = target;
+                    clearInterval(interval);
+                }
+            }, 30);
+        }
+
+        function closeCertModal() {
+            playSynthSound('click');
+            const modal = document.getElementById('cert-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // --- 7. FORM SUBMISSION ---
+        function handleForm(e) {
+            e.preventDefault();
+            playSynthSound('click');
+            const status = document.getElementById('form-status');
+            status.classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => status.classList.add('hidden'), 5000);
+        }
+
+        // --- INITIALIZE ON LOAD ---
+        window.onload = function() {
+            initThreeJS();
+            animateThreeJS();
+            initGSAP();
+            initTiltCards();
+        };
     </script>
 </body>
 </html>
