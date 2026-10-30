@@ -306,7 +306,6 @@
             }
         }
 
-        /* NOME HERO GLITCH NEON CON RAZZO A TRAIETTORIA A "S" */
         .hero-name-wrapper {
             display: inline-flex;
             align-items: center;
@@ -322,14 +321,15 @@
             animation: neonGlowPulse 2s ease-in-out infinite alternate;
         }
 
+        /* RAZZO FISSO PER IL VOLO FLUIDO */
         #flyingRocket {
-            display: inline-block;
-            position: relative;
-            z-index: 8000;
-            transition: transform 0.08s linear;
-            font-size: 1.1em;
-            will-change: transform;
-            filter: drop-shadow(0 0 14px rgba(0, 198, 255, 0.9));
+            position: fixed;
+            font-size: 2rem;
+            z-index: 9998;
+            pointer-events: none;
+            will-change: transform, left, top;
+            transition: transform 0.1s ease-out;
+            filter: drop-shadow(0 0 15px rgba(0, 198, 255, 0.9));
         }
 
         @keyframes neonGlowPulse {
@@ -443,7 +443,7 @@
 
         .about-reading-text span.word {
             display: inline-block;
-            transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
+            transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
             margin: 0 3px;
         }
 
@@ -451,7 +451,7 @@
             color: #ffffff;
             text-shadow: 0 0 12px var(--secondary), 0 0 20px var(--primary);
             font-weight: 700;
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
 
         .stats-grid {
@@ -853,6 +853,9 @@
     <!-- CURSORE DESKTOP -->
     <div id="cursor-glow"></div>
 
+    <!-- RAZZO VOLANTE ASSOLUTO (S-CURVE & READING) -->
+    <div id="flyingRocket">🚀</div>
+
     <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
     <div class="expand-dot-trigger" id="dotTrigger" onclick="toggleHub()" title="Svela Hub Rapido">
         <i class="fa-solid fa-bolt"></i>
@@ -900,8 +903,7 @@
                 </span>
                 <span class="split-line">
                     <span class="slide-text delayed hero-name-wrapper glitch-flash" id="heroName">
-                        <span class="neon-glitch-name">Luca Sessa</span>
-                        <span id="flyingRocket">🚀</span>
+                        <span class="neon-glitch-name" id="heroNameText">Luca Sessa</span>
                     </span>
                 </span>
             </h1>
@@ -1117,7 +1119,7 @@
         </div>
     </footer>
 
-    <!-- SCRIPT ANIMAZIONI "S-CURVE" RAZZO & THREE.JS -->
+    <!-- SCRIPT ANIMAZIONI S-CURVE & LETTURA -->
     <script>
         // 1. ANIMAZIONE COUNTER STATISTICHE
         let counted = false;
@@ -1165,38 +1167,52 @@
         const wordElements = document.querySelectorAll('.word');
         const totalWords = wordElements.length;
 
-        // 3. ANIMAZIONE RAZZO CON TRAIETTORIA A "S" (CURVA SINUSOIDALE)
+        // 3. ANIMAZIONE RAZZO CON DISCESA A "S" E LETTURA DINAMICA
         const rocket = document.getElementById('flyingRocket');
+        const heroNameText = document.getElementById('heroNameText');
 
         window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
+            const scrollY = window.scrollY;
             const chiSonoTop = statsSection.offsetTop;
             const chiSonoHeight = statsSection.offsetHeight;
+            
+            // Posizione iniziale del nome nella Hero
+            const nameRect = heroNameText.getBoundingClientRect();
+            const startX = nameRect.right + 15;
+            const startY = nameRect.top + (nameRect.height / 2);
 
-            // Zona di transizione in cui il razzo scende con la S
-            const startScroll = 0;
-            const endScroll = chiSonoTop - 50;
+            const descentEndScroll = chiSonoTop - window.innerHeight * 0.4;
 
-            if (scrollPos >= startScroll && scrollPos <= endScroll) {
-                // Progress discesa (0.0 a 1.0)
-                let descentProgress = scrollPos / endScroll;
-                descentProgress = Math.max(0, Math.min(1, descentProgress));
-
-                // Calcolo curva a "S" (formula matematica basata su seno per l'asse X)
-                const targetX = Math.sin(descentProgress * Math.PI * 2) * 120; //ampiezza della S
-                const targetY = descentProgress * (chiSonoTop - window.innerHeight * 0.35); // discesa verticale
-
-                // Inclinazione dinamica del razzo lungo la curva
-                const tiltAngle = Math.cos(descentProgress * Math.PI * 2) * 45 + 45;
-
-                rocket.style.transform = `translate(${targetX}px, ${targetY}px) rotate(${tiltAngle}deg) scale(1.2)`;
-                
-                // Reset parole lette finché sta scendendo
+            if (scrollY < 10) {
+                // In cima: ancorato al nome
+                rocket.style.opacity = '1';
+                rocket.style.left = `${startX}px`;
+                rocket.style.top = `${startY}px`;
+                rocket.style.transform = 'rotate(0deg) scale(1)';
                 wordElements.forEach(w => w.classList.remove('read'));
+            } 
+            else if (scrollY >= 10 && scrollY < descentEndScroll) {
+                // Fase di discesa a "S"
+                rocket.style.opacity = '1';
+                const progress = scrollY / descentEndScroll; // da 0 a 1
 
-            } else if (scrollPos > chiSonoTop - window.innerHeight * 0.7 && scrollPos < chiSonoTop + chiSonoHeight) {
-                // Arrivato sul testo: fase di "lettura" parola per parola
-                let readProgress = (scrollPos - (chiSonoTop - window.innerHeight * 0.5)) / (chiSonoHeight * 0.8);
+                const targetX = window.innerWidth / 2 + Math.sin(progress * Math.PI * 2) * 120 - 60;
+                const targetY = startY + (chiSonoTop - startY - 80) * progress;
+                const tiltAngle = Math.cos(progress * Math.PI * 2) * 55 + 40;
+
+                rocket.style.left = `${targetX}px`;
+                rocket.style.top = `${targetY}px`;
+                rocket.style.transform = `rotate(${tiltAngle}deg) scale(1.25)`;
+
+                wordElements.forEach(w => w.classList.remove('read'));
+            } 
+            else if (scrollY >= descentEndScroll && scrollY < chiSonoTop + chiSonoHeight) {
+                // Fase di lettura parola per parola nel box Chi Sono
+                rocket.style.opacity = '1';
+                const boxRect = statsSection.getBoundingClientRect();
+                
+                // Progresso della lettura basato sullo scroll interno alla sezione
+                let readProgress = (scrollY - descentEndScroll) / (chiSonoHeight * 0.6);
                 readProgress = Math.max(0, Math.min(1, readProgress));
 
                 const activeIndex = Math.floor(readProgress * totalWords);
@@ -1211,17 +1227,13 @@
 
                 if (wordElements[activeIndex]) {
                     const wordRect = wordElements[activeIndex].getBoundingClientRect();
-                    const rocketHomeRect = rocket.parentElement.getBoundingClientRect();
-
-                    const deltaX = wordRect.left - rocketHomeRect.left;
-                    const deltaY = wordRect.top - rocketHomeRect.top - 25;
-
-                    rocket.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(45deg) scale(1.15)`;
+                    rocket.style.left = `${wordRect.left - 22}px`;
+                    rocket.style.top = `${wordRect.top - 6}px`;
+                    rocket.style.transform = 'rotate(45deg) scale(1.1)';
                 }
-            } else if (scrollPos < 50) {
-                // Ritorno iniziale nella Hero
-                rocket.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
-                wordElements.forEach(w => w.classList.remove('read'));
+            } else {
+                // Oltre la sezione, fade out del razzo
+                rocket.style.opacity = '0';
             }
         });
 
@@ -1343,12 +1355,12 @@
         }
 
         // 9. ANIMAZIONE CAMERA SU SCROLL
-        let scrollY = 0;
+        let scrollYVal = 0;
         let targetZ = 50;
 
         window.addEventListener('scroll', () => {
-            scrollY = window.scrollY;
-            targetZ = 50 - (scrollY * 0.15);
+            scrollYVal = window.scrollY;
+            targetZ = 50 - (scrollYVal * 0.15);
         });
 
         // MOVIMENTO MOUSE/TOUCH
