@@ -268,12 +268,30 @@
                             <span class="text-[10px] font-mono text-slate-500">SYS.2026</span>
                         </div>
 
-                        <div class="relative rounded-xl overflow-hidden border border-cyberCyan/40 shadow-2xl group-hover:border-cyberCyan transition-all">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Luca Sessa Visual Concept" class="w-full h-64 object-cover filter contrast-125 brightness-90 group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-transparent"></div>
-                            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
-                                <span class="px-2 py-0.5 rounded bg-black/80 font-mono text-[10px] text-cyberCyan border border-cyberCyan/30">STATUS: ACTIVE</span>
-                                <span class="px-2 py-0.5 rounded bg-cyberGold/20 font-mono text-[10px] text-cyberGold border border-cyberGold/40">FULL STACK</span>
+                        <!-- FOTO PROFILO CYBER-HOLOGRAPHIC CONTAINER -->
+                        <div class="relative flex justify-center py-2">
+                            <div class="relative w-48 h-48 rounded-full p-1 bg-gradient-to-tr from-cyberCyan via-cyberViolet to-cyberGold animate-pulse-glow group-hover:scale-105 transition-transform duration-500">
+                                
+                                <!-- Frame interno ottagonale/circolare con effetto ologramma -->
+                                <div class="w-full h-full rounded-full overflow-hidden border-2 border-cyberCyan bg-cyberDark relative">
+                                    
+                                    <!-- ================================================================= -->
+                                    <!-- RIGA FOTO PROFILO: SOSTITUISCI IL LINK SOTTO CON LA TUA FOTO    -->
+                                    <!-- Esempio locale: src="assets/foto-luca.jpg"                      -->
+                                    <!-- ================================================================= -->
+                                    <img id="profile-img" 
+                                         src="img/foto-profilo.jpg" 
+                                         alt="Foto Profilo Luca Sessa" 
+                                         class="w-full h-full object-cover filter contrast-110 brightness-100 group-hover:scale-110 transition-transform duration-700">
+
+                                    <!-- Effetto overlay ologramma con linee -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-cyberCyan/10 pointer-events-none"></div>
+                                </div>
+
+                                <!-- Badge circolare di stato attivo -->
+                                <div class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-cyberBlack border-2 border-cyberCyan flex items-center justify-center shadow-[0_0_10px_#00f3ff]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-cyberCyan animate-ping"></span>
+                                </div>
                             </div>
                         </div>
 
