@@ -306,7 +306,7 @@
             }
         }
 
-        /* NOME HERO GLITCH NEON CON RAZZO FLUTTUANTE GUIDATO DALLO SCROLL */
+        /* NOME HERO GLITCH NEON CON RAZZO A TRAIETTORIA A "S" */
         .hero-name-wrapper {
             display: inline-flex;
             align-items: center;
@@ -326,10 +326,10 @@
             display: inline-block;
             position: relative;
             z-index: 8000;
-            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            transition: transform 0.08s linear;
             font-size: 1.1em;
             will-change: transform;
-            filter: drop-shadow(0 0 12px rgba(0, 198, 255, 0.8));
+            filter: drop-shadow(0 0 14px rgba(0, 198, 255, 0.9));
         }
 
         @keyframes neonGlowPulse {
@@ -1117,9 +1117,9 @@
         </div>
     </footer>
 
-    <!-- SCRIPT ANIMAZIONI & THREE.JS -->
+    <!-- SCRIPT ANIMAZIONI "S-CURVE" RAZZO & THREE.JS -->
     <script>
-        // 1. ANIMAZIONE COUNTER STATISTICHE AL VISIBLE SCROLL
+        // 1. ANIMAZIONE COUNTER STATISTICHE
         let counted = false;
         const statsSection = document.getElementById('chiSonoSection');
 
@@ -1129,7 +1129,7 @@
                 const target = +counter.getAttribute('data-target');
                 const suffix = counter.getAttribute('data-suffix');
                 let count = 0;
-                const speed = 40; // Velocità animazione
+                const speed = 40;
 
                 const updateCount = () => {
                     const increment = target / speed;
@@ -1153,7 +1153,7 @@
             }
         });
 
-        // 2. DISPLIT TESTO "CHI SONO" PER LETTURA DEL RAZZO
+        // 2. SPLIT TESTO "CHI SONO" PER LA LETTURA
         const readingContainer = document.getElementById('readingTarget');
         const textContent = readingContainer.textContent.trim();
         const wordsArray = textContent.split(' ');
@@ -1165,7 +1165,7 @@
         const wordElements = document.querySelectorAll('.word');
         const totalWords = wordElements.length;
 
-        // 3. ANIMAZIONE RAZZO VOLANTE GUIDATO DALLO SCROLL
+        // 3. ANIMAZIONE RAZZO CON TRAIETTORIA A "S" (CURVA SINUSOIDALE)
         const rocket = document.getElementById('flyingRocket');
 
         window.addEventListener('scroll', () => {
@@ -1173,11 +1173,33 @@
             const chiSonoTop = statsSection.offsetTop;
             const chiSonoHeight = statsSection.offsetHeight;
 
-            if (scrollPos > chiSonoTop - window.innerHeight * 0.7 && scrollPos < chiSonoTop + chiSonoHeight) {
-                let progress = (scrollPos - (chiSonoTop - window.innerHeight * 0.5)) / (chiSonoHeight * 0.8);
-                progress = Math.max(0, Math.min(1, progress));
+            // Zona di transizione in cui il razzo scende con la S
+            const startScroll = 0;
+            const endScroll = chiSonoTop - 50;
 
-                const activeIndex = Math.floor(progress * totalWords);
+            if (scrollPos >= startScroll && scrollPos <= endScroll) {
+                // Progress discesa (0.0 a 1.0)
+                let descentProgress = scrollPos / endScroll;
+                descentProgress = Math.max(0, Math.min(1, descentProgress));
+
+                // Calcolo curva a "S" (formula matematica basata su seno per l'asse X)
+                const targetX = Math.sin(descentProgress * Math.PI * 2) * 120; //ampiezza della S
+                const targetY = descentProgress * (chiSonoTop - window.innerHeight * 0.35); // discesa verticale
+
+                // Inclinazione dinamica del razzo lungo la curva
+                const tiltAngle = Math.cos(descentProgress * Math.PI * 2) * 45 + 45;
+
+                rocket.style.transform = `translate(${targetX}px, ${targetY}px) rotate(${tiltAngle}deg) scale(1.2)`;
+                
+                // Reset parole lette finché sta scendendo
+                wordElements.forEach(w => w.classList.remove('read'));
+
+            } else if (scrollPos > chiSonoTop - window.innerHeight * 0.7 && scrollPos < chiSonoTop + chiSonoHeight) {
+                // Arrivato sul testo: fase di "lettura" parola per parola
+                let readProgress = (scrollPos - (chiSonoTop - window.innerHeight * 0.5)) / (chiSonoHeight * 0.8);
+                readProgress = Math.max(0, Math.min(1, readProgress));
+
+                const activeIndex = Math.floor(readProgress * totalWords);
 
                 wordElements.forEach((wordEl, idx) => {
                     if (idx <= activeIndex) {
@@ -1196,7 +1218,8 @@
 
                     rocket.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(45deg) scale(1.15)`;
                 }
-            } else if (scrollPos <= chiSonoTop - window.innerHeight * 0.7) {
+            } else if (scrollPos < 50) {
+                // Ritorno iniziale nella Hero
                 rocket.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
                 wordElements.forEach(w => w.classList.remove('read'));
             }
