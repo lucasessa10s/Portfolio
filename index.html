@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Luca Sessa | 3D Space Tunnel Portfolio</title>
+    <title>Luca Sessa | Next-Gen 3D Portfolio</title>
 
-    <!-- FONT & ICONS -->
+    <!-- FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
@@ -16,15 +16,15 @@
 
     <style>
         :root {
-            --bg-dark: #030407;
-            --bg-card: rgba(14, 18, 28, 0.78);
-            --bg-card-hover: rgba(28, 35, 52, 0.94);
-            --primary: #7f00ff;
-            --secondary: #00c6ff;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-            --text-title: #ffffff;
-            --text-body: #94a3b8;
-            --border-light: rgba(255, 255, 255, 0.12);
+            --bg-base: #020408;
+            --surface: rgba(12, 17, 28, 0.7);
+            --surface-hover: rgba(22, 30, 48, 0.85);
+            --accent-purple: #7f00ff;
+            --accent-cyan: #00c6ff;
+            --gradient: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -36,8 +36,8 @@
 
         html {
             scroll-behavior: smooth;
-            background-color: var(--bg-dark);
-            color: var(--text-body);
+            background-color: var(--bg-base);
+            color: var(--text-muted);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
         }
@@ -45,15 +45,15 @@
         body {
             width: 100%;
             min-height: 100vh;
-            overflow-x: hidden;
             position: relative;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, .brand-font {
+        h1, h2, h3, .syne-font {
             font-family: 'Syne', sans-serif;
         }
 
-        /* THREE.JS WEBGL CANVAS SFONDO */
+        /* WEBGL BACKGROUND CANVAS */
         #webgl-canvas {
             position: fixed;
             top: 0;
@@ -64,12 +64,12 @@
             pointer-events: none;
         }
 
-        /* CURSORE LUMINESCENTE DESKTOP */
+        /* CURSOR GLOW INTERATTIVO */
         #cursor-glow {
             position: fixed;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(127, 0, 255, 0.22) 0%, rgba(0, 198, 255, 0.07) 50%, transparent 70%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(127, 0, 255, 0.2) 0%, rgba(0, 198, 255, 0.05) 55%, transparent 75%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
@@ -81,16 +81,16 @@
             #cursor-glow { display: none !important; }
         }
 
-        /* PUNTINO FLUTTUANTE ESPANDIBILE */
-        .expand-dot-trigger {
+        /* FLOATING ACTION TRIGGER (HUB) */
+        .hub-trigger {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            width: 58px;
-            height: 58px;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: var(--gradient);
-            box-shadow: 0 0 25px rgba(0, 198, 255, 0.6);
+            box-shadow: 0 0 30px rgba(0, 198, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -98,30 +98,26 @@
             font-size: 1.4rem;
             cursor: pointer;
             z-index: 9000;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: dotPulse 2.5s infinite;
+            animation: pulseHub 3s infinite ease-in-out;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes dotPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.5); transform: scale(1); }
-            50% { box-shadow: 0 0 35px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
+        @keyframes pulseHub {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 198, 255, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 0 40px rgba(127, 0, 255, 0.8); transform: scale(1.08); }
         }
 
-        .expand-dot-trigger:hover {
-            transform: scale(1.15) rotate(12deg);
+        .hub-trigger:hover {
+            transform: scale(1.15) rotate(15deg);
         }
 
-        /* HUB OVERLAY FULLSCREEN */
-        .expanded-hub {
+        /* HUB OVERLAY MODAL */
+        .hub-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(3, 4, 7, 0.96);
+            inset: 0;
+            background: rgba(2, 4, 8, 0.94);
             backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
             z-index: 99999;
             display: flex;
             flex-direction: column;
@@ -130,25 +126,25 @@
             padding: 30px;
             opacity: 0;
             pointer-events: none;
-            clip-path: circle(0px at calc(100vw - 57px) calc(100vh - 57px));
-            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+            clip-path: circle(0px at calc(100vw - 60px) calc(100vh - 60px));
+            transition: clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease;
         }
 
-        .expanded-hub.active {
+        .hub-overlay.active {
             opacity: 1;
             pointer-events: all;
-            clip-path: circle(150% at calc(100vw - 57px) calc(100vh - 57px));
+            clip-path: circle(150% at calc(100vw - 60px) calc(100vh - 60px));
         }
 
-        .hub-close-btn {
+        .hub-close {
             position: absolute;
-            top: 30px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
+            top: 35px;
+            right: 35px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-glass);
             color: white;
             font-size: 1.3rem;
             display: flex;
@@ -158,48 +154,47 @@
             transition: all 0.3s ease;
         }
 
-        .hub-close-btn:hover {
-            background: var(--primary);
+        .hub-close:hover {
+            background: var(--accent-purple);
             transform: rotate(90deg);
         }
 
-        .hub-content {
-            max-width: 650px;
+        .hub-container {
+            max-width: 600px;
             width: 100%;
             text-align: center;
         }
 
-        .hub-content h2 {
-            font-size: clamp(2rem, 6vw, 3rem);
-            color: var(--text-title);
-            margin-bottom: 12px;
+        .hub-container h2 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--text-main);
+            margin-bottom: 10px;
         }
 
-        .hub-content h2 span {
+        .hub-container h2 span {
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hub-content p {
-            color: var(--text-body);
+        .hub-container p {
             font-size: 1.05rem;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
-        .hub-links {
+        .hub-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .hub-card-link {
+        .hub-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 18px 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
+            background: var(--surface);
+            border: 1px solid var(--border-glass);
             border-radius: 16px;
             color: white;
             text-decoration: none;
@@ -207,18 +202,13 @@
             transition: all 0.3s ease;
         }
 
-        .hub-card-link:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--secondary);
-            transform: translateX(6px);
+        .hub-item:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent-cyan);
+            transform: translateX(8px);
         }
 
-        .hub-card-link i {
-            font-size: 1.2rem;
-            color: var(--secondary);
-        }
-
-        /* HERO HEADER */
+        /* HERO SECTION */
         header {
             min-height: 100vh;
             display: flex;
@@ -226,288 +216,197 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 80px 20px 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
+            padding: 80px 20px;
             position: relative;
             z-index: 2;
-            width: 100%;
-            max-width: 850px;
         }
 
-        .profile-box {
-            position: relative;
+        .hero-box {
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .avatar-frame {
             width: 130px;
             height: 130px;
-            margin: 0 auto 24px;
+            margin: 0 auto 25px;
             border-radius: 50%;
             padding: 4px;
             background: var(--gradient);
-            box-shadow: 0 0 35px rgba(0, 198, 255, 0.5);
-            animation: floatProfile 3.5s ease-in-out infinite;
+            box-shadow: 0 0 35px rgba(0, 198, 255, 0.4);
+            animation: floatAvatar 4s ease-in-out infinite;
         }
 
-        @keyframes floatProfile {
+        @keyframes floatAvatar {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
 
-        .profile-img {
+        .avatar-img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            background: var(--bg-dark);
+            background: var(--bg-base);
         }
 
-        .hero-title-container {
-            font-size: clamp(2.2rem, 8vw, 4.2rem);
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
             font-weight: 800;
-            color: var(--text-title);
-            letter-spacing: -0.5px;
-            margin-bottom: 16px;
-            line-height: 1.2;
-            perspective: 1000px;
-            cursor: pointer;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            line-height: 1.1;
         }
 
-        .split-line {
-            display: block;
-            overflow: hidden;
-            padding: 6px 0;
-        }
-
-        .slide-text {
-            display: inline-block;
-            transform: translateY(120%) rotateX(-60deg);
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        .animate-in .slide-text {
-            animation: slideIn3D 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-in .slide-text.delayed {
-            animation-delay: 0.25s;
-        }
-
-        @keyframes slideIn3D {
-            0% {
-                transform: translateY(120%) rotateX(-60deg);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0) rotateX(0deg);
-                opacity: 1;
-            }
-        }
-
-        .hero-name-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .neon-glitch-name {
-            position: relative;
+        .hero-title span {
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: neonGlowPulse 2s ease-in-out infinite alternate;
         }
 
-        /* RAZZO VOLANTE CON POSIZIONE DINAMICA FLUIDA */
-        #flyingRocket {
-            position: fixed;
-            font-size: 2.2rem;
-            z-index: 9998;
-            pointer-events: none;
-            will-change: transform, left, top;
-            transition: transform 0.08s linear;
-            filter: drop-shadow(0 0 16px rgba(0, 198, 255, 0.95));
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 400;
         }
 
-        @keyframes neonGlowPulse {
-            0% { text-shadow: 0 0 10px rgba(127, 0, 255, 0.3), 0 0 20px rgba(0, 198, 255, 0.2); }
-            100% { text-shadow: 0 0 22px rgba(127, 0, 255, 0.8), 0 0 38px rgba(0, 198, 255, 0.7); }
-        }
-
-        .glitch-flash {
-            animation: glitchAnimation 0.4s steps(2, start) 1;
-        }
-
-        @keyframes glitchAnimation {
-            0% { transform: translate(0); filter: hue-rotate(0deg); }
-            20% { transform: translate(-3px, 3px); filter: hue-rotate(90deg); }
-            40% { transform: translate(-3px, -3px); filter: hue-rotate(180deg); }
-            60% { transform: translate(3px, 2px); filter: hue-rotate(270deg); }
-            80% { transform: translate(2px, -3px); filter: hue-rotate(360deg); }
-            100% { transform: translate(0); filter: hue-rotate(0deg); }
-        }
-
-        header p {
-            font-size: clamp(0.95rem, 3.8vw, 1.25rem);
-            color: var(--text-body);
-            max-width: 620px;
-            margin: 0 auto 30px;
-            padding: 0 10px;
-        }
-
-        .btn-group {
+        .cta-group {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 15px;
             justify-content: center;
-            width: 100%;
+            flex-wrap: wrap;
         }
 
-        .btn {
+        .btn-main {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 28px;
+            gap: 10px;
+            padding: 15px 30px;
             background: var(--gradient);
             border-radius: 30px;
-            text-decoration: none;
             color: white;
+            text-decoration: none;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 25px rgba(127, 0, 255, 0.35);
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(127, 0, 255, 0.35);
-            cursor: pointer;
             border: none;
+            cursor: pointer;
         }
 
-        .btn:active {
-            transform: scale(0.96);
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 198, 255, 0.5);
         }
 
-        .btn-outline {
+        .btn-sec {
             background: transparent;
-            border: 2px solid var(--secondary);
+            border: 2px solid var(--accent-cyan);
             box-shadow: none;
         }
 
-        /* SEZIONI GENERALI */
+        /* MAIN SECTIONS */
         section {
-            padding: 90px 20px;
-            max-width: 1200px;
+            padding: 100px 20px;
+            max-width: 1100px;
             margin: 0 auto;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
-        .section-title {
+        .sec-title {
             text-align: center;
-            font-size: clamp(1.8rem, 6vw, 2.6rem);
-            color: var(--text-title);
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: var(--text-main);
             font-weight: 800;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             letter-spacing: -0.5px;
         }
 
-        .section-title span {
+        .sec-title span {
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* CHI SONO CON LETTURA NEON PAROLA PER PAROLA */
-        .about-box {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
-            border-radius: 20px;
-            padding: 32px 24px;
+        /* STORYTELLING / CHI SONO SECTION */
+        .story-wrapper {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 40px 30px;
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        .about-reading-text {
-            font-size: clamp(1rem, 3.8vw, 1.2rem);
+        .story-text {
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
             line-height: 1.8;
-            color: rgba(255, 255, 255, 0.35);
-            margin-bottom: 28px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 35px;
             font-weight: 500;
         }
 
-        .about-reading-text span.word {
+        .story-text span.word {
             display: inline-block;
-            transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
-            margin: 0 3px;
+            transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
+            margin: 0 4px;
         }
 
-        .about-reading-text span.word.read {
+        .story-text span.word.active {
             color: #ffffff;
-            text-shadow: 0 0 12px var(--secondary), 0 0 20px var(--primary);
+            text-shadow: 0 0 15px var(--accent-cyan), 0 0 25px var(--accent-purple);
             font-weight: 700;
             transform: scale(1.06);
         }
 
-        .stats-grid {
+        .metrics-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            border-top: 1px solid var(--border-light);
-            padding-top: 20px;
+            gap: 20px;
+            border-top: 1px solid var(--border-glass);
+            padding-top: 30px;
         }
 
-        .stat-item h4 {
-            font-size: 1.6rem;
-            color: var(--text-title);
+        .metric-card h4 {
+            font-size: 2rem;
+            color: var(--text-main);
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
 
-        .stat-item span {
-            font-size: 0.78rem;
-            color: var(--text-body);
+        .metric-card span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* OROLOGIO NEON DIGITALE 3D */
-        .clock-section {
-            padding-top: 20px;
-            padding-bottom: 50px;
-        }
-
-        .clock-container {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
+        /* LIVE CLOCK WIDGET */
+        .clock-box {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
             border-radius: 24px;
-            padding: 28px 20px;
-            max-width: 600px;
+            padding: 30px;
+            max-width: 550px;
             margin: 0 auto;
             text-align: center;
-            box-shadow: 0 0 35px rgba(127, 0, 255, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(127, 0, 255, 0.15);
         }
 
-        .clock-container:hover {
-            border-color: var(--secondary);
-            box-shadow: 0 0 45px rgba(0, 198, 255, 0.35);
-        }
-
-        .clock-title {
-            font-size: 0.82rem;
+        .clock-label {
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--secondary);
+            color: var(--accent-cyan);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -515,222 +414,200 @@
             gap: 8px;
         }
 
-        .clock-display {
+        .clock-digits {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(2.2rem, 8vw, 3.8rem);
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 700;
-            color: var(--text-title);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(0, 198, 255, 0.6);
-        }
-
-        .clock-digit-box {
-            background: rgba(5, 7, 11, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 16px;
-            border-radius: 12px;
-            min-width: 70px;
-            display: inline-block;
-        }
-
-        .clock-colon {
-            color: var(--primary);
-            animation: clockBlink 1s infinite;
-        }
-
-        @keyframes clockBlink {
-            0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--primary); }
-            50% { opacity: 0.2; text-shadow: none; }
+            color: var(--text-main);
+            text-shadow: 0 0 25px rgba(0, 198, 255, 0.5);
         }
 
         .clock-date {
             margin-top: 15px;
-            font-size: 0.88rem;
-            color: var(--text-body);
+            font-size: 0.92rem;
+            color: var(--text-muted);
             font-weight: 600;
-            letter-spacing: 1px;
             text-transform: capitalize;
         }
 
-        /* PROGETTI EDITORIALI */
-        .projects-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
+        /* PROJECTS GRID */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
-        .project-row {
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 30px;
-            align-items: center;
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
+        .project-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
             border-radius: 24px;
-            padding: 24px;
-            transition: all 0.3s ease;
+            overflow: hidden;
             text-decoration: none;
             color: inherit;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        .project-row:hover {
-            border-color: var(--secondary);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 198, 255, 0.15);
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0, 198, 255, 0.2);
         }
 
-        .project-preview-wrapper {
-            position: relative;
+        .project-img-wrap {
             width: 100%;
-            height: 260px;
-            border-radius: 16px;
+            height: 220px;
             overflow: hidden;
-            background: #0d1117;
+            background: #080c14;
         }
 
-        .project-preview-wrapper img {
+        .project-img-wrap img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
 
-        .project-row:hover .project-preview-wrapper img {
-            transform: scale(1.06);
+        .project-card:hover .project-img-wrap img {
+            transform: scale(1.08);
         }
 
-        .project-row-info h3 {
-            font-size: 1.8rem;
-            color: var(--text-title);
+        .project-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .project-info h3 {
+            font-size: 1.5rem;
+            color: var(--text-main);
             margin-bottom: 10px;
         }
 
-        .project-row-info p {
+        .project-info p {
             font-size: 0.92rem;
-            color: var(--text-body);
-            margin-bottom: 18px;
+            color: var(--text-muted);
             line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .project-tags {
+        .tags-row {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 20px;
         }
 
-        .tag-pill {
+        .tag {
             font-size: 0.72rem;
-            padding: 4px 12px;
+            padding: 5px 12px;
             border-radius: 20px;
-            background: rgba(127, 0, 255, 0.18);
-            color: var(--secondary);
+            background: rgba(127, 0, 255, 0.15);
+            color: var(--accent-cyan);
             border: 1px solid rgba(0, 198, 255, 0.3);
             font-weight: 600;
         }
 
-        .project-link-btn {
+        .project-link {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-main);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700;
-            color: var(--text-title);
-            font-size: 0.9rem;
         }
 
-        .project-link-btn i {
-            color: var(--secondary);
+        .project-link i {
+            color: var(--accent-cyan);
         }
 
         /* TECH STACK */
-        .skills-grid {
+        .stack-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
 
-        .skill-category-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
+        .stack-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
             border-radius: 20px;
-            padding: 26px 22px;
+            padding: 30px;
             transition: all 0.3s ease;
         }
 
-        .skill-category-card:hover {
-            border-color: var(--secondary);
+        .stack-card:hover {
+            border-color: var(--accent-cyan);
             transform: translateY(-5px);
         }
 
-        .skill-category-card h3 {
-            color: var(--text-title);
-            font-size: 1.2rem;
-            margin-bottom: 18px;
+        .stack-card h3 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .skill-category-card h3 i {
-            color: var(--secondary);
+        .stack-card h3 i {
+            color: var(--accent-cyan);
         }
 
-        .skill-tags-wrapper {
+        .pills-box {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
 
-        .skill-pill {
+        .pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
-            background: rgba(127, 0, 255, 0.12);
+            padding: 9px 16px;
+            background: rgba(127, 0, 255, 0.1);
             border: 1px solid rgba(0, 198, 255, 0.25);
             border-radius: 20px;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #fff;
             transition: all 0.3s ease;
         }
 
-        .skill-pill:hover {
+        .pill:hover {
             background: var(--gradient);
             border-color: transparent;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
-        /* CONTATTI INTERATTIVI POTENZIATI */
-        .contact-box {
-            background: var(--bg-card);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-light);
+        /* CONTACT SECTION */
+        .contact-panel {
+            background: var(--surface);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glass);
             border-radius: 24px;
-            padding: 36px 28px;
-            max-width: 680px;
+            padding: 40px 30px;
+            max-width: 650px;
             margin: 0 auto;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        .quick-presets-label {
+        .presets-title {
             font-size: 0.82rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-body);
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
             margin-bottom: 12px;
             text-align: center;
         }
 
-        .quick-preset-chips {
+        .chips-group {
             display: flex;
             gap: 10px;
             justify-content: center;
@@ -738,11 +615,11 @@
             margin-bottom: 25px;
         }
 
-        .preset-chip {
+        .chip {
             background: rgba(127, 0, 255, 0.12);
             border: 1px solid rgba(0, 198, 255, 0.3);
             color: #fff;
-            padding: 8px 16px;
+            padding: 9px 16px;
             border-radius: 20px;
             font-size: 0.82rem;
             font-weight: 600;
@@ -750,44 +627,44 @@
             transition: all 0.3s ease;
         }
 
-        .preset-chip:hover {
+        .chip:hover {
             background: var(--gradient);
             border-color: transparent;
             transform: translateY(-2px);
         }
 
-        .form-control {
+        .input-field {
             width: 100%;
-            padding: 14px 18px;
-            background: rgba(5, 7, 11, 0.85);
-            border: 1px solid var(--border-light);
+            padding: 15px 20px;
+            background: rgba(3, 5, 10, 0.85);
+            border: 1px solid var(--border-glass);
             border-radius: 14px;
             color: #fff;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             outline: none;
             transition: all 0.3s ease;
             margin-bottom: 16px;
         }
 
-        .form-control:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 15px rgba(0, 198, 255, 0.25);
+        .input-field:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.25);
         }
 
-        textarea.form-control {
+        textarea.input-field {
             resize: none;
-            height: 120px;
+            height: 130px;
         }
 
-        .contact-status-toast {
+        .toast-notify {
             display: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 12px;
             background: rgba(16, 185, 129, 0.2);
             border: 1px solid #10b981;
             color: #10b981;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 15px;
@@ -801,89 +678,76 @@
 
         /* FOOTER */
         footer {
-            padding: 40px 20px;
-            background: #030406;
-            border-top: 1px solid var(--border-light);
+            padding: 50px 20px;
+            background: #010204;
+            border-top: 1px solid var(--border-glass);
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         footer p {
-            font-size: 0.85rem;
-            color: var(--text-body);
-            margin-bottom: 16px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
         }
 
-        .social-links {
+        .social-row {
             display: flex;
             justify-content: center;
             gap: 20px;
         }
 
-        .social-links a {
-            color: var(--text-title);
-            font-size: 1.3rem;
+        .social-row a {
+            color: var(--text-main);
+            font-size: 1.4rem;
             transition: color 0.3s ease;
         }
 
-        .social-links a:hover {
-            color: var(--secondary);
+        .social-row a:hover {
+            color: var(--accent-cyan);
         }
 
-        @media (max-width: 850px) {
-            .project-row { grid-template-columns: 1fr; }
-            .project-preview-wrapper { height: 200px; }
-        }
-
-        @media (max-width: 480px) {
-            section { padding: 50px 16px; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
-            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-            .expand-dot-trigger { bottom: 20px; right: 20px; width: 50px; height: 50px; }
-            .clock-digit-box { min-width: 50px; padding: 8px 10px; }
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            .metrics-grid { grid-template-columns: 1fr; gap: 15px; }
+            .hub-trigger { bottom: 20px; right: 20px; width: 52px; height: 52px; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- THREE.JS WEBGL CANVAS SFONDO TUNNEL 3D -->
+    <!-- THREE.JS 3D CANVAS -->
     <canvas id="webgl-canvas"></canvas>
 
-    <!-- CURSORE DESKTOP -->
+    <!-- CURSOR GLOW -->
     <div id="cursor-glow"></div>
 
-    <!-- RAZZO VOLANTE ASSOLUTO -->
-    <div id="flyingRocket">🚀</div>
-
-    <!-- PUNTINO FLUTTUANTE ESPANDIBILE -->
-    <div class="expand-dot-trigger" id="dotTrigger" onclick="toggleHub()" title="Svela Hub Rapido">
+    <!-- FLOATING HUB TRIGGER -->
+    <div class="hub-trigger" onclick="toggleHub()" title="Hub Rapido">
         <i class="fa-solid fa-bolt"></i>
     </div>
 
-    <!-- HUB OVERLAY FULLSCREEN -->
-    <div class="expanded-hub" id="expandedHub">
-        <div class="hub-close-btn" onclick="toggleHub()">
+    <!-- HUB OVERLAY -->
+    <div class="hub-overlay" id="hubOverlay">
+        <div class="hub-close" onclick="toggleHub()">
             <i class="fa-solid fa-xmark"></i>
         </div>
-
-        <div class="hub-content">
-            <h2>Hub Rapido <span>Luca Sessa</span> ⚡</h2>
-            <p>Accedi rapidamente ai miei canali principali e ai progetti più recenti.</p>
-
-            <div class="hub-links">
-                <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-card-link">
-                    <span><i class="fa-brands fa-instagram" style="margin-right: 10px; color: #e1306c;"></i> Profilo Instagram ufficiale (@lukse__)</span>
+        <div class="hub-container">
+            <h2>Quick <span>Hub</span> ⚡</h2>
+            <p>Accedi rapidamente ai canali ufficiali e alle sezioni chiave.</p>
+            <div class="hub-list">
+                <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" class="hub-item">
+                    <span><i class="fa-brands fa-instagram" style="margin-right: 12px; color: #e1306c;"></i> Instagram Official (@lukse__)</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
-
-                <a href="#progetti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-layer-group" style="margin-right: 10px; color: var(--secondary);"></i> Esplora i Progetti Web & Shopify</span>
+                <a href="#progetti" class="hub-item" onclick="toggleHub()">
+                    <span><i class="fa-solid fa-layer-group" style="margin-right: 12px; color: var(--accent-cyan);"></i> Esplora i Progetti Web</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
-
-                <a href="#contatti" class="hub-card-link" onclick="toggleHub()">
-                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 10px; color: var(--primary);"></i> Richiedi Preventivo / Consulenza</span>
+                <a href="#contatti" class="hub-item" onclick="toggleHub()">
+                    <span><i class="fa-solid fa-paper-plane" style="margin-right: 12px; color: var(--accent-purple);"></i> Richiedi Consulenza / Preventivo</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -892,218 +756,201 @@
 
     <!-- HERO HEADER -->
     <header>
-        <div class="hero-content">
-            <div class="profile-box">
-                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="profile-img" onerror="this.src='https://via.placeholder.com/150/121620/00c6ff?text=Luca+Sessa'">
+        <div class="hero-box">
+            <div class="avatar-frame">
+                <img src="img/foto-profilo.jpg" alt="Luca Sessa" class="avatar-img" onerror="this.src='https://via.placeholder.com/150/060913/00c6ff?text=Luca+Sessa'">
             </div>
 
-            <h1 class="hero-title-container animate-in" id="heroTitle" onclick="replayHeroAnimation()" title="Clicca per riprodurre l'animazione">
-                <span class="split-line">
-                    <span class="slide-text">Ciao, sono</span>
-                </span>
-                <span class="split-line">
-                    <span class="slide-text delayed hero-name-wrapper glitch-flash" id="heroName">
-                        <span class="neon-glitch-name" id="heroNameText">Luca Sessa</span>
-                    </span>
-                </span>
+            <h1 class="hero-title" id="heroTitle">
+                Ciao, sono <br><span>Luca Sessa</span>
             </h1>
 
-            <p>Web Developer • Social Media Specialist • E-commerce Creator</p>
+            <p class="hero-subtitle">Web Developer • Social Media Specialist • E-commerce Creator</p>
             
-            <div class="btn-group">
-                <a href="#progetti" class="btn">
-                    Guarda i miei lavori <i class="fa-solid fa-arrow-down"></i>
+            <div class="cta-group">
+                <a href="#progetti" class="btn-main">
+                    Esplora i lavori <i class="fa-solid fa-arrow-down"></i>
                 </a>
-                <button type="button" onclick="toggleHub()" class="btn btn-outline">
-                    Svela Hub Rapido <i class="fa-solid fa-bolt"></i>
+                <button type="button" onclick="toggleHub()" class="btn-main btn-sec">
+                    Apri Quick Hub <i class="fa-solid fa-bolt"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- CHI SONO CON LETTURA NEON DEL RAZZO & COUNTER ANIMATO -->
-    <section id="chiSonoSection">
-        <div class="about-box">
-            <h2 class="section-title" style="margin-bottom: 20px;">👤 Chi <span>Sono</span></h2>
-            
-            <p class="about-reading-text" id="readingTarget">
+    <!-- STORYTELLING & STATS -->
+    <section id="chiSono">
+        <h2 class="sec-title">Chi <span>Sono</span></h2>
+        
+        <div class="story-wrapper">
+            <p class="story-text" id="storyText">
                 Mi occupo di creare esperienze digitali complete, unendo design moderno, strategie social e sviluppo web pulito per aiutare i brand a distinguersi e crescere online.
             </p>
             
-            <div class="stats-grid">
-                <div class="stat-item">
+            <div class="metrics-grid">
+                <div class="metric-card">
                     <h4 class="counter" data-target="4" data-suffix="+">0</h4>
-                    <span>Store & Siti Attivi</span>
+                    <span>Store Attivi</span>
                 </div>
-                <div class="stat-item">
+                <div class="metric-card">
                     <h4 class="counter" data-target="100" data-suffix="%">0</h4>
                     <span>Mobile Optimized</span>
                 </div>
-                <div class="stat-item">
+                <div class="metric-card">
                     <h4 class="counter" data-target="24" data-suffix="/7">0</h4>
-                    <span>Performance Top</span>
+                    <span>Top Performance</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- OROLOGIO DIGITALE 3D / ORA ESATTA -->
-    <section class="clock-section">
-        <div class="clock-container">
-            <div class="clock-title">
-                <i class="fa-solid fa-clock"></i> Ora Esatta in Tempo Reale
+    <!-- LIVE CLOCK -->
+    <section style="padding: 40px 20px;">
+        <div class="clock-box">
+            <div class="clock-label">
+                <i class="fa-solid fa-clock"></i> Live System Clock
             </div>
-
-            <div class="clock-display">
-                <span class="clock-digit-box" id="clock-hours">00</span>
-                <span class="clock-colon">:</span>
-                <span class="clock-digit-box" id="clock-minutes">00</span>
-                <span class="clock-colon">:</span>
-                <span class="clock-digit-box" id="clock-seconds">00</span>
-            </div>
-
-            <div class="clock-date" id="clock-date-text">Caricamento data...</div>
+            <div class="clock-digits" id="liveClock">00:00:00</div>
+            <div class="clock-date" id="liveDate">Caricamento data...</div>
         </div>
     </section>
 
-    <!-- PROGETTI EDITORIALI -->
+    <!-- PROGETTI -->
     <section id="progetti">
-        <h2 class="section-title">📱 I Miei <span>Progetti</span></h2>
+        <h2 class="sec-title">I Miei <span>Progetti</span></h2>
 
-        <div class="projects-stack">
-
-            <!-- PROGETTO 1 -->
-            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+        <div class="projects-grid">
+            <a href="https://www.saadiya.it" target="_blank" rel="noopener noreferrer" class="project-card">
+                <div class="project-img-wrap">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.saadiya.it?w=800" alt="Saadiya.it" loading="lazy">
                 </div>
-                <div class="project-row-info">
-                    <h3>Saadiya.it</h3>
-                    <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
-                    <div class="project-tags">
-                        <span class="tag-pill">E-Commerce</span>
-                        <span class="tag-pill">Brand Identity</span>
-                        <span class="tag-pill">Fashion UI</span>
+                <div class="project-info">
+                    <div>
+                        <h3>Saadiya.it</h3>
+                        <p>E-commerce di moda elegante con design responsive, vetrina prodotti curata ed esperienza utente fluida.</p>
+                        <div class="tags-row">
+                            <span class="tag">E-Commerce</span>
+                            <span class="tag">Brand Identity</span>
+                        </div>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
-            <!-- PROGETTO 2 -->
-            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.air-safe.it" target="_blank" rel="noopener noreferrer" class="project-card">
+                <div class="project-img-wrap">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.air-safe.it?w=800" alt="AirSafe.it" loading="lazy">
                 </div>
-                <div class="project-row-info">
-                    <h3>AirSafe.it</h3>
-                    <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form di contatto.</p>
-                    <div class="project-tags">
-                        <span class="tag-pill">HTML/CSS</span>
-                        <span class="tag-pill">UI Design</span>
-                        <span class="tag-pill">Corporate</span>
+                <div class="project-info">
+                    <div>
+                        <h3>AirSafe.it</h3>
+                        <p>Sito aziendale per interventi di bonifica e coperture industriali con layout scuro, preventivatore e form.</p>
+                        <div class="tags-row">
+                            <span class="tag">HTML/CSS</span>
+                            <span class="tag-pill tag">Corporate</span>
+                        </div>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
-            <!-- PROGETTO 3 -->
-            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.gelosiaboutique.it" target="_blank" rel="noopener noreferrer" class="project-card">
+                <div class="project-img-wrap">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.gelosiaboutique.it?w=800" alt="Gelosia Boutique" loading="lazy">
                 </div>
-                <div class="project-row-info">
-                    <h3>Gelosia Boutique</h3>
-                    <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per l'acquisto da mobile.</p>
-                    <div class="project-tags">
-                        <span class="tag-pill">Shopify</span>
-                        <span class="tag-pill">Mobile First</span>
-                        <span class="tag-pill">UX Research</span>
+                <div class="project-info">
+                    <div>
+                        <h3>Gelosia Boutique</h3>
+                        <p>Store e-commerce realizzato su Shopify con tema Pro personalizzato, ottimizzato per conversioni mobile.</p>
+                        <div class="tags-row">
+                            <span class="tag">Shopify</span>
+                            <span class="tag">Mobile First</span>
+                        </div>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
 
-            <!-- PROGETTO 4 -->
-            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-row">
-                <div class="project-preview-wrapper">
+            <a href="https://www.officinaluxury.it" target="_blank" rel="noopener noreferrer" class="project-card">
+                <div class="project-img-wrap">
                     <img src="https://s0.wp.com/mshots/v1/https%3A%2F%2Fwww.officinaluxury.it?w=800" alt="Officina Luxury" loading="lazy">
                 </div>
-                <div class="project-row-info">
-                    <h3>Officina Luxury</h3>
-                    <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione dei prodotti e nel layout di conversione.</p>
-                    <div class="project-tags">
-                        <span class="tag-pill">Shopify Pro</span>
-                        <span class="tag-pill">E-Commerce</span>
-                        <span class="tag-pill">Luxury UI</span>
+                <div class="project-info">
+                    <div>
+                        <h3>Officina Luxury</h3>
+                        <p>Store Shopify completo personalizzato nei dettagli visivi, nella navigazione e nel layout di vendita.</p>
+                        <div class="tags-row">
+                            <span class="tag">Shopify Pro</span>
+                            <span class="tag">Luxury UI</span>
+                        </div>
                     </div>
-                    <span class="project-link-btn">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    <span class="project-link">Visita il sito <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
                 </div>
             </a>
-
         </div>
     </section>
 
     <!-- TECH STACK -->
     <section>
-        <h2 class="section-title">⚡ Tech Stack & <span>Competenze</span></h2>
+        <h2 class="sec-title">Tech Stack & <span>Competenze</span></h2>
 
-        <div class="skills-grid">
-            <div class="skill-category-card">
+        <div class="stack-grid">
+            <div class="stack-card">
                 <h3><i class="fa-solid fa-code"></i> Frontend & Web</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-brands fa-html5"></i> HTML5</span>
-                    <span class="skill-pill"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
-                    <span class="skill-pill"><i class="fa-brands fa-js"></i> JavaScript</span>
-                    <span class="skill-pill"><i class="fa-brands fa-shopify"></i> Shopify Liquid</span>
+                <div class="pills-box">
+                    <span class="pill"><i class="fa-brands fa-html5"></i> HTML5</span>
+                    <span class="pill"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+                    <span class="pill"><i class="fa-brands fa-js"></i> JavaScript</span>
+                    <span class="pill"><i class="fa-brands fa-shopify"></i> Shopify Liquid</span>
                 </div>
             </div>
 
-            <div class="skill-category-card">
+            <div class="stack-card">
                 <h3><i class="fa-solid fa-robot"></i> Automation & Python</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-brands fa-python"></i> Python Automation</span>
-                    <span class="skill-pill"><i class="fa-solid fa-paper-plane"></i> Telegram API</span>
-                    <span class="skill-pill"><i class="fa-solid fa-database"></i> Web Scraping</span>
+                <div class="pills-box">
+                    <span class="pill"><i class="fa-brands fa-python"></i> Python Bots</span>
+                    <span class="pill"><i class="fa-solid fa-paper-plane"></i> Telegram API</span>
+                    <span class="pill"><i class="fa-solid fa-database"></i> Web Scraping</span>
                 </div>
             </div>
 
-            <div class="skill-category-card">
+            <div class="stack-card">
                 <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Design & Growth</h3>
-                <div class="skill-tags-wrapper">
-                    <span class="skill-pill"><i class="fa-solid fa-palette"></i> UI/UX Design</span>
-                    <span class="skill-pill"><i class="fa-brands fa-instagram"></i> Social Media Growth</span>
-                    <span class="skill-pill"><i class="fa-solid fa-store"></i> E-Commerce Strategy</span>
+                <div class="pills-box">
+                    <span class="pill"><i class="fa-solid fa-palette"></i> UI/UX Design</span>
+                    <span class="pill"><i class="fa-brands fa-instagram"></i> Social Growth</span>
+                    <span class="pill"><i class="fa-solid fa-store"></i> E-Commerce Strategy</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTATTI INTERATTIVI -->
+    <!-- CONTATTI -->
     <section id="contatti">
-        <h2 class="section-title">📩 Entriamo in <span>Contatto</span></h2>
+        <h2 class="sec-title">Entriamo in <span>Contatto</span></h2>
 
-        <div class="contact-box">
-            <p style="text-align: center; color: var(--text-body); margin-bottom: 20px; font-size: 0.95rem;">
-                Scegli una richiesta rapida o compila il modulo per inviarmi direttamente un messaggio su Instagram:
+        <div class="contact-panel">
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">
+                Scegli una richiesta rapida o compila il modulo per inviarmi un messaggio istantaneo:
             </p>
 
-            <div class="quick-presets-label">Selezione rapida argomento:</div>
-            <div class="quick-preset-chips">
-                <button type="button" class="preset-chip" onclick="setPreset('Nuovo Sito Web / E-Commerce', 'Vorrei realizzare un nuovo sito web o uno store e-commerce per la mia attività.')">🛍️ Sito Web / Shopify</button>
-                <button type="button" class="preset-chip" onclick="setPreset('Restyling e Grafica UI', 'Vorrei migliorare il design del mio sito attuale con una grafica più moderna.')">🎨 Restyling Grafico</button>
-                <button type="button" class="preset-chip" onclick="setPreset('Consulenza Social & Bot Automation', 'Sarei interessato a strategie per la crescita social e automazioni.')">🤖 Bot & Growth Social</button>
+            <div class="presets-title">Richieste rapide:</div>
+            <div class="chips-group">
+                <button type="button" class="chip" onclick="setPreset('Nuovo Sito Web / E-Commerce', 'Vorrei realizzare un nuovo sito web o uno store e-commerce per la mia attività.')">🛍️ Sito Web / Shopify</button>
+                <button type="button" class="chip" onclick="setPreset('Restyling Grafico UI', 'Vorrei migliorare il design del mio sito attuale con una grafica moderna.')">🎨 Restyling Grafico</button>
+                <button type="button" class="chip" onclick="setPreset('Bot Automation & Social', 'Sarei interessato a strategie social e automazioni con bot.')">🤖 Bot & Growth</button>
             </div>
 
-            <div class="contact-status-toast" id="toastMsg">
+            <div class="toast-notify" id="toastNotify">
                 <i class="fa-solid fa-check-circle"></i> Messaggio copiato negli appunti! Apertura Instagram...
             </div>
 
-            <form id="instaForm" onsubmit="sendToInstagram(event)">
-                <input type="text" id="name" class="form-control" placeholder="Il tuo nome o azienda" required>
-                <input type="text" id="project" class="form-control" placeholder="Di cosa hai bisogno? (es. Sito Web, Shopify, Social)" required>
-                <textarea id="message" class="form-control" placeholder="Descrivi brevemente la tua idea..." required></textarea>
+            <form onsubmit="handleSend(event)">
+                <input type="text" id="fieldName" class="input-field" placeholder="Il tuo nome o azienda" required>
+                <input type="text" id="fieldProject" class="input-field" placeholder="Di cosa hai bisogno? (es. E-Commerce, Sito Web)" required>
+                <textarea id="fieldMessage" class="input-field" placeholder="Raccontami la tua idea..." required></textarea>
 
-                <button type="submit" id="submitBtn" class="btn" style="width: 100%; justify-content: center; font-size: 0.95rem;">
+                <button type="submit" id="submitBtn" class="btn-main" style="width: 100%; justify-content: center; font-size: 0.98rem;">
                     Invia messaggio su Instagram <i class="fa-brands fa-instagram" style="font-size: 1.1rem;"></i>
                 </button>
             </form>
@@ -1112,325 +959,216 @@
 
     <!-- FOOTER -->
     <footer>
-        <p>© 2026 <strong>Luca Sessa</strong>. 3D WebGL Space Tunnel Portfolio.</p>
-        <div class="social-links">
+        <p>© 2026 <strong>Luca Sessa</strong>. Next-Gen 3D Interactive Portfolio.</p>
+        <div class="social-row">
             <a href="https://www.linkedin.com/in/luca-sessa/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://instagram.com/lukse__" target="_blank" rel="noopener noreferrer" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
 
-    <!-- SCRIPT ANIMAZIONI & INTERATTIVITÀ -->
+    <!-- SCRIPT MASTER (3D, COUNTERS, STORYTELLING) -->
     <script>
-        // 1. COUNTER STATISTICHE ANIMATE
+        // 1. SPLIT STORYTELLING PAROLE
+        const storyEl = document.getElementById('storyText');
+        const rawText = storyEl.textContent.trim();
+        const words = rawText.split(' ');
+        storyEl.innerHTML = words.map((w, i) => `<span class="word" id="sw-${i}">${w}</span>`).join(' ');
+        const wordSpans = document.querySelectorAll('.story-text span.word');
+
+        // 2. COUNTER ANIMATION & STORYTELLING SCROLL TRIGGER
         let counted = false;
-        const statsSection = document.getElementById('chiSonoSection');
-
-        function runCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const suffix = counter.getAttribute('data-suffix');
-                let count = 0;
-                const speed = 40;
-
-                const updateCount = () => {
-                    const increment = target / speed;
-                    if (count < target) {
-                        count += increment;
-                        counter.textContent = Math.ceil(count) + suffix;
-                        setTimeout(updateCount, 30);
-                    } else {
-                        counter.textContent = target + suffix;
-                    }
-                };
-                updateCount();
-            });
-        }
+        const chiSonoSec = document.getElementById('chiSono');
 
         window.addEventListener('scroll', () => {
-            const rect = statsSection.getBoundingClientRect();
-            if (rect.top < window.innerHeight && !counted) {
-                runCounters();
+            const rect = chiSonoSec.getBoundingClientRect();
+            const viewHeight = window.innerHeight;
+
+            // Counter trigger
+            if (rect.top < viewHeight && !counted) {
+                document.querySelectorAll('.counter').forEach(cnt => {
+                    const target = +cnt.getAttribute('data-target');
+                    const suffix = cnt.getAttribute('data-suffix');
+                    let curr = 0;
+                    const step = () => {
+                        curr += target / 35;
+                        if (curr < target) {
+                            cnt.textContent = Math.ceil(curr) + suffix;
+                            setTimeout(step, 25);
+                        } else {
+                            cnt.textContent = target + suffix;
+                        }
+                    };
+                    step();
+                });
                 counted = true;
             }
-        });
 
-        // 2. SPLIT TESTO "CHI SONO" PER LETTURA DEL RAZZO
-        const readingContainer = document.getElementById('readingTarget');
-        const textContent = readingContainer.textContent.trim();
-        const wordsArray = textContent.split(' ');
-        
-        readingContainer.innerHTML = wordsArray
-            .map((w, index) => `<span class="word" id="word-${index}">${w}</span>`)
-            .join(' ');
-
-        const wordElements = document.querySelectorAll('.word');
-        const totalWords = wordElements.length;
-
-        // 3. ANIMAZIONE RAZZO FLUTTUANTE A "S" & LETTURA PAROLA PER PAROLA
-        const rocket = document.getElementById('flyingRocket');
-        const heroNameText = document.getElementById('heroNameText');
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const chiSonoTop = statsSection.offsetTop;
-            const chiSonoHeight = statsSection.offsetHeight;
-
-            // Calcoli basati su viewport al 100% stabili
-            const triggerStart = 20;
-            const triggerEnd = chiSonoTop - window.innerHeight * 0.45;
-
-            if (scrollY < triggerStart) {
-                // Ancorato esattamente accanto a Luca Sessa nella Hero
-                const nameRect = heroNameText.getBoundingClientRect();
-                const initX = nameRect.right + 12;
-                const initY = nameRect.top + (nameRect.height / 2) - 15;
-
-                rocket.style.opacity = '1';
-                rocket.style.left = `${initX}px`;
-                rocket.style.top = `${initY}px`;
-                rocket.style.transform = 'rotate(0deg) scale(1)';
-                wordElements.forEach(w => w.classList.remove('read'));
-            } 
-            else if (scrollY >= triggerStart && scrollY < triggerEnd) {
-                // Fase di discesa a "S" fluida verso il box Chi Sono
-                rocket.style.opacity = '1';
-                const progress = (scrollY - triggerStart) / (triggerEnd - triggerStart);
-                const clamped = Math.max(0, Math.min(1, progress));
-
-                // Traiettoria a S centrata responsiva
-                const centerX = window.innerWidth / 2;
-                const currentX = centerX + Math.sin(clamped * Math.PI * 2) * 110 - 20;
-                
-                const startY = window.innerHeight * 0.45;
-                const endY = chiSonoTop - 100;
-                const currentY = startY + (endY - startY) * clamped;
-
-                const tilt = Math.cos(clamped * Math.PI * 2) * 50 + 30;
-
-                rocket.style.left = `${currentX}px`;
-                rocket.style.top = `${currentY}px`;
-                rocket.style.transform = `rotate(${tilt}deg) scale(1.2)`;
-
-                wordElements.forEach(w => w.classList.remove('read'));
-            } 
-            else if (scrollY >= triggerEnd && scrollY < chiSonoTop + chiSonoHeight) {
-                // Fase di lettura parola per parola all'interno del box
-                rocket.style.opacity = '1';
-                
-                let readProgress = (scrollY - triggerEnd) / (chiSonoHeight * 0.65);
-                readProgress = Math.max(0, Math.min(1, readProgress));
-
-                const activeIndex = Math.floor(readProgress * totalWords);
-
-                wordElements.forEach((wordEl, idx) => {
-                    if (idx <= activeIndex) {
-                        wordEl.classList.add('read');
-                    } else {
-                        wordEl.classList.remove('read');
-                    }
+            // Storytelling active words progress
+            if (rect.top <= viewHeight * 0.7 && rect.bottom >= 0) {
+                const progress = Math.max(0, Math.min(1, (viewHeight * 0.7 - rect.top) / (rect.height * 0.8)));
+                const activeLimit = Math.floor(progress * wordSpans.length);
+                wordSpans.forEach((span, idx) => {
+                    if (idx <= activeLimit) span.classList.add('active');
+                    else span.classList.remove('active');
                 });
-
-                if (wordElements[activeIndex]) {
-                    const wordRect = wordElements[activeIndex].getBoundingClientRect();
-                    rocket.style.left = `${wordRect.left - 22}px`;
-                    rocket.style.top = `${wordRect.top - 8}px`;
-                    rocket.style.transform = 'rotate(45deg) scale(1.1)';
-                }
-            } else {
-                rocket.style.opacity = '0';
             }
         });
 
-        // 4. FORM CONTATTI INTERATTIVO
-        function setPreset(projectType, desc) {
-            document.getElementById('project').value = projectType;
-            document.getElementById('message').value = desc;
-            document.getElementById('name').focus();
+        // 3. LIVE CLOCK
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('liveClock').textContent = now.toTimeString().split(' ')[0];
+            const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('liveDate').textContent = now.toLocaleDateString('it-IT', opts);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 4. CONTACT FORM TO INSTAGRAM
+        function setPreset(proj, desc) {
+            document.getElementById('fieldProject').value = proj;
+            document.getElementById('fieldMessage').value = desc;
+            document.getElementById('fieldName').focus();
         }
 
-        function sendToInstagram(event) {
-            event.preventDefault();
+        function handleSend(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const toast = document.getElementById('toastNotify');
+            const name = document.getElementById('fieldName').value;
+            const proj = document.getElementById('fieldProject').value;
+            const msg = document.getElementById('fieldMessage').value;
 
-            const submitBtn = document.getElementById('submitBtn');
-            const toast = document.getElementById('toastMsg');
-            const name = document.getElementById('name').value;
-            const project = document.getElementById('project').value;
-            const message = document.getElementById('message').value;
+            const text = `Ciao Luca! Sono ${name}. Richiesta per: ${proj}. Dettagli: ${msg}`;
 
-            const text = `Ciao Luca! Sono ${name}. Ho bisogno di un progetto per: ${project}. Dettagli: ${message}`;
-
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Copia in corso...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Preparazione invio...';
 
             navigator.clipboard.writeText(text).then(() => {
                 toast.style.display = 'block';
-                submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copiato!';
-
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copiato negli appunti!';
                 setTimeout(() => {
                     window.open('https://instagram.com/lukse__', '_blank');
-                    submitBtn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
+                    btn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
                     toast.style.display = 'none';
                 }, 1200);
             }).catch(() => {
                 window.open('https://instagram.com/lukse__', '_blank');
-                submitBtn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
+                btn.innerHTML = 'Invia messaggio su Instagram <i class="fa-brands fa-instagram"></i>';
             });
         }
 
-        // 5. OROLOGIO DIGITALE IN TEMPO REALE
-        function updateLiveClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-
-            document.getElementById('clock-hours').textContent = hours;
-            document.getElementById('clock-minutes').textContent = minutes;
-            document.getElementById('clock-seconds').textContent = seconds;
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('clock-date-text').textContent = now.toLocaleDateString('it-IT', options);
+        // 5. HUB TOGGLE
+        function toggleHub() {
+            document.getElementById('hubOverlay').classList.toggle('active');
         }
-        setInterval(updateLiveClock, 1000);
-        updateLiveClock();
 
-        // 6. INIZIALIZZAZIONE THREE.JS SCENE, CAMERA, RENDERER
+        // 6. MOUSE GLOW
+        const glow = document.getElementById('cursor-glow');
+        if (window.innerWidth > 768) {
+            window.addEventListener('mousemove', (e) => {
+                glow.style.left = `${e.clientX}px`;
+                glow.style.top = `${e.clientY}px`;
+            });
+        }
+
+        // 7. THREE.JS 3D SPACE TUNNEL & PARALLAX
         const canvas = document.getElementById('webgl-canvas');
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030407, 0.0018);
+        scene.fog = new THREE.FogExp2(0x020408, 0.002);
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 50;
+        camera.position.z = 40;
 
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // 7. TUNNEL DI PARTICELLE 3D
-        const particleCount = 2200;
-        const geometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const colors = new Float32Array(particleCount * 3);
+        // Particelle tunnel
+        const count = 2500;
+        const geom = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
 
-        const color1 = new THREE.Color(0x7f00ff); // Purple
-        const color2 = new THREE.Color(0x00c6ff); // Cyan
+        const c1 = new THREE.Color(0x7f00ff);
+        const c2 = new THREE.Color(0x00c6ff);
 
-        for (let i = 0; i < particleCount; i++) {
-            const radius = 25 + Math.random() * 40;
-            const angle = Math.random() * Math.PI * 2;
-            const z = (Math.random() - 0.5) * 1200;
+        for (let i = 0; i < count; i++) {
+            const r = 20 + Math.random() * 45;
+            const theta = Math.random() * Math.PI * 2;
+            const zCoord = (Math.random() - 0.5) * 1400;
 
-            positions[i * 3] = Math.cos(angle) * radius;
-            positions[i * 3 + 1] = Math.sin(angle) * radius;
-            positions[i * 3 + 2] = z;
+            positions[i * 3] = Math.cos(theta) * r;
+            positions[i * 3 + 1] = Math.sin(theta) * r;
+            positions[i * 3 + 2] = zCoord;
 
-            const mixedColor = color1.clone().lerp(color2, Math.random());
-            colors[i * 3] = mixedColor.r;
-            colors[i * 3 + 1] = mixedColor.g;
-            colors[i * 3 + 2] = mixedColor.b;
+            const mixed = c1.clone().lerp(c2, Math.random());
+            colors[i * 3] = mixed.r;
+            colors[i * 3 + 1] = mixed.g;
+            colors[i * 3 + 2] = mixed.b;
         }
 
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-        const material = new THREE.PointsMaterial({
-            size: 1.2,
+        const mat = new THREE.PointsMaterial({
+            size: 1.3,
             vertexColors: true,
             transparent: true,
             opacity: 0.85
         });
 
-        const tunnelParticles = new THREE.Points(geometry, material);
-        scene.add(tunnelParticles);
+        const starField = new THREE.Points(geom, mat);
+        scene.add(starField);
 
-        // 8. ANELLI NEON 3D NELLO SPAZIO
+        // Anelli geometrici spaziali
         const rings = [];
-        for (let i = 0; i < 10; i++) {
-            const ringGeo = new THREE.TorusGeometry(22 + (i % 3) * 4, 0.3, 16, 100);
+        for (let i = 0; i < 12; i++) {
+            const ringGeom = new THREE.TorusGeometry(20 + (i % 4) * 5, 0.25, 16, 100);
             const ringMat = new THREE.MeshBasicMaterial({
                 color: i % 2 === 0 ? 0x7f00ff : 0x00c6ff,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.35
+                opacity: 0.3
             });
-            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-            ringMesh.position.z = -i * 100;
+            const ringMesh = new THREE.Mesh(ringGeom, ringMat);
+            ringMesh.position.z = -i * 90;
             scene.add(ringMesh);
             rings.push(ringMesh);
         }
 
-        // 9. PARALLASSE SU SCROLL & MOUSE
-        let scrollYVal = 0;
-        let targetZ = 50;
-
+        // Parallax scroll & mouse listener
+        let targetZ = 40;
         window.addEventListener('scroll', () => {
-            scrollYVal = window.scrollY;
-            targetZ = 50 - (scrollYVal * 0.15);
+            targetZ = 40 - (window.scrollY * 0.12);
         });
 
-        let mouseX = 0;
-        let mouseY = 0;
-
+        let mouseX = 0, mouseY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
             mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
         });
 
-        function animate() {
-            requestAnimationFrame(animate);
+        function animate3D() {
+            requestAnimationFrame(animate3D);
 
-            tunnelParticles.rotation.z += 0.0012;
-            
+            starField.rotation.z += 0.001;
             rings.forEach((ring, idx) => {
-                ring.rotation.z += 0.003 * (idx % 2 === 0 ? 1 : -1);
+                ring.rotation.z += 0.002 * (idx % 2 === 0 ? 1 : -1);
             });
 
             camera.position.z += (targetZ - camera.position.z) * 0.08;
-            camera.position.x += (mouseX * 4 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 4 - camera.position.y) * 0.05;
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
 
             renderer.render(scene, camera);
         }
-        animate();
+        animate3D();
 
-        // RESIZE WINDOW
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-
-        // REPLAY ANIMAZIONE SALUTO
-        function replayHeroAnimation() {
-            const titleContainer = document.getElementById('heroTitle');
-            const name = document.getElementById('heroName');
-            
-            titleContainer.classList.remove('animate-in');
-            name.classList.remove('glitch-flash');
-            
-            void titleContainer.offsetWidth;
-            
-            titleContainer.classList.add('animate-in');
-            name.classList.add('glitch-flash');
-        }
-
-        // TOGGLE HUB
-        function toggleHub() {
-            const hub = document.getElementById('expandedHub');
-            hub.classList.toggle('active');
-        }
-
-        // CURSORE DESKTOP
-        const cursorGlow = document.getElementById('cursor-glow');
-        if (window.innerWidth > 768) {
-            window.addEventListener('mousemove', (e) => {
-                cursorGnowMove(e);
-            });
-        }
-        function cursorGnowMove(e) {
-            cursorGlow.style.left = `${e.clientX}px`;
-            cursorGlow.style.top = `${e.clientY}px`;
-        }
     </script>
 </body>
 </html>
