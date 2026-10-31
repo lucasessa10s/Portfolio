@@ -114,7 +114,7 @@
         .hud-border-gold::after { border-color: #ffb700; }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #050608; }
         ::-webkit-scrollbar-thumb { background: #1a202c; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
@@ -151,6 +151,10 @@
         .glow-text-cyan { text-shadow: 0 0 15px rgba(0, 243, 255, 0.6); }
         .glow-text-gold { text-shadow: 0 0 15px rgba(255, 183, 0, 0.6); }
         .glow-text-violet { text-shadow: 0 0 15px rgba(112, 0, 255, 0.6); }
+
+        /* Hide horizontal scrollbars where appropriate */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="relative min-h-screen text-slate-100 antialiased overflow-x-hidden">
@@ -187,21 +191,22 @@
                 </div>
                 <div class="font-mono text-sm tracking-wider">
                     <span class="text-white font-bold">LUCA</span><span class="text-cyberCyan">.SESSA</span>
-                    <span class="block text-[9px] text-slate-500 uppercase tracking-widest">SYS.VER 2026.4</span>
+                    <span class="block text-[9px] text-slate-500 uppercase tracking-widest">SYS.VER 2026.5</span>
                 </div>
             </a>
 
-            <nav class="hidden lg:flex items-center space-x-8 font-mono text-xs tracking-wider">
-                <a href="#story-1" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/01</span> CODE</a>
-                <a href="#story-2" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/02</span> LOGISTICS</a>
-                <a href="#matrix-lockdown" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors flex items-center gap-1.5 animate-pulse"><span class="text-cyberGold">/03</span> LOCKDOWN 3D</a>
-                <a href="#biometric-scanner" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/04</span> SCANNER</a>
-                <a href="#terminal-hacker" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberPink transition-colors flex items-center gap-1.5"><span class="text-cyberPink">/05</span> TERMINAL</a>
-                <a href="#certifications" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors flex items-center gap-1.5"><span class="text-cyberGold">/06</span> CERTIFICATI</a>
+            <nav class="hidden lg:flex items-center space-x-6 font-mono text-xs tracking-wider">
+                <a href="#story-1" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors"><span class="text-cyberCyan">/01</span> CODE</a>
+                <a href="#holo-timeline" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors"><span class="text-cyberGold">/02</span> TIMELINE</a>
+                <a href="#matrix-lockdown" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors animate-pulse"><span class="text-cyberGold">/03</span> LOCKDOWN</a>
+                <a href="#biometric-scanner" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors"><span class="text-cyberCyan">/04</span> SCANNER</a>
+                <a href="#terminal-hacker" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberPink transition-colors"><span class="text-cyberPink">/05</span> CLI</a>
+                <a href="#geo-radar" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors"><span class="text-cyberCyan">/06</span> RADAR</a>
+                <a href="#cyber-mini-game" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors"><span class="text-cyberGold">/07</span> GAME</a>
             </nav>
 
             <a href="#contact" onclick="playSynthSound('click')" class="hud-border px-4 py-2 rounded text-xs font-mono font-semibold text-cyberCyan hover:bg-cyberCyan hover:text-black transition-all duration-300">
-                <i class="fas fa-terminal mr-1.5"></i> INIZIA PROGETTO
+                <i class="fas fa-terminal mr-1.5"></i> CONTACT
             </a>
         </div>
     </header>
@@ -364,45 +369,44 @@
             </div>
         </section>
 
-        <!-- STORY CHAPTER 02: LOGISTICS & SUPPLY CHAIN -->
-        <section id="story-2" class="py-32 px-6 relative bg-cyberDark/50">
-            <div class="max-w-6xl mx-auto space-y-16">
-                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberViolet/20 pb-6 gap-4">
+        <!-- IDEA 3: TIMELINE OLOGRAFICA A NASTRO CONTINUO -->
+        <section id="holo-timeline" class="py-24 px-6 relative bg-cyberDark/60 overflow-hidden">
+            <div class="max-w-6xl mx-auto space-y-12">
+                <div class="flex items-center justify-between border-b border-cyberGold/30 pb-4">
                     <div>
-                        <span class="text-cyberViolet font-mono text-xs tracking-widest uppercase">// CAPITOLO 02</span>
-                        <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Logistics & Supply Chain</h2>
+                        <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// PERCORSO EVOLUTIVO // TIMELINE CONVEYOR</span>
+                        <h2 class="text-3xl font-bold text-white">Nastro di Sviluppo Professionale</h2>
                     </div>
-                    <div class="font-mono text-xs text-slate-400">Gestione Giacenze, Reportistica DDT & Logistica GDO</div>
+                    <span class="text-xs font-mono text-slate-500 hidden sm:inline">&lt; SCORRI ORIZZONTALE &gt;</span>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                    <div class="lg:col-span-5 order-2 lg:order-1">
-                        <div class="hud-border p-6 rounded-2xl bg-slate-950 space-y-4 border-cyberViolet/30">
-                            <h4 class="font-mono text-xs text-cyberViolet tracking-wider">// CAPACITÀ OPERATIVE D'ATTACCO</h4>
-                            <div class="space-y-3 font-mono text-xs">
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Pianificazione Viaggi Autisti</span><span class="text-cyberViolet font-bold">Nord Italia</span></div>
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Controllo Giacenze & Pedane</span><span class="text-cyberViolet font-bold">100% Preciso</span></div>
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Piattaforme Aeree PLE</span><span class="text-cyberGold font-bold">Patente 2025</span></div>
-                            </div>
-                        </div>
+                <div class="flex gap-6 overflow-x-auto pb-8 pt-4 no-scrollbar cursor-grab active:cursor-grabbing" id="timeline-conveyor">
+                    <div class="min-w-[300px] hud-border p-6 rounded-2xl space-y-3 flex-shrink-0 border-cyberCyan/40 bg-cyberBlack/80">
+                        <span class="text-xs font-mono text-cyberCyan font-bold">2023 // AULAB</span>
+                        <h4 class="text-lg font-bold text-white">Full Stack Web Developer</h4>
+                        <p class="text-xs text-slate-400">Corso intensivo di 400 ore su PHP, Laravel, JS, HTML/CSS e Scrum.</p>
+                        <span class="inline-block text-[10px] font-mono text-cyberCyan bg-cyberCyan/10 px-2 py-0.5 rounded">CERT #79426108</span>
                     </div>
 
-                    <div class="lg:col-span-7 order-1 lg:order-2 space-y-6">
-                        <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberViolet/30">
-                            <div class="flex items-center justify-between">
-                                <span class="px-3 py-1 rounded bg-cyberViolet/10 text-cyberViolet font-mono text-xs border border-cyberViolet/30">LOGISTICS & WAREHOUSE</span>
-                                <i class="fas fa-boxes-packing text-2xl text-cyberViolet"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Addetto Gestione Bancali & Logistica di Magazzino</h3>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Controllo rigoroso del flusso di merci e bancali in entrata/uscita, ottimizzazione percorsi di trasporto e gestione documentazione carico.
-                            </p>
-                            <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Conteggio analitico bancali con reportistica mensile dettagliata.</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Verifica corrispondenza DDT e controllo merce in fase di scarico.</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Prenotazione carichi tramite portali GDO.</span></li>
-                            </ul>
-                        </div>
+                    <div class="min-w-[300px] hud-border p-6 rounded-2xl space-y-3 flex-shrink-0 border-cyberViolet/40 bg-cyberBlack/80">
+                        <span class="text-xs font-mono text-cyberViolet font-bold">2024 // FREELANCE</span>
+                        <h4 class="text-lg font-bold text-white">E-Commerce Specialist</h4>
+                        <p class="text-xs text-slate-400">Creazione e gestione piattaforme retail web, domini e campagne ADV.</p>
+                        <span class="inline-block text-[10px] font-mono text-cyberViolet bg-cyberViolet/10 px-2 py-0.5 rounded">CMS & ADV ENGINE</span>
+                    </div>
+
+                    <div class="min-w-[300px] hud-border p-6 rounded-2xl space-y-3 flex-shrink-0 border-cyberGold/40 bg-cyberBlack/80">
+                        <span class="text-xs font-mono text-cyberGold font-bold">2025 // OPERATIVO</span>
+                        <h4 class="text-lg font-bold text-white">Patente PLE (Piattaforme)</h4>
+                        <p class="text-xs text-slate-400">Abilitazione alla conduzione macchinari speciali per lavoro in quota.</p>
+                        <span class="inline-block text-[10px] font-mono text-cyberGold bg-cyberGold/10 px-2 py-0.5 rounded">SAFETY & SPECIAL</span>
+                    </div>
+
+                    <div class="min-w-[300px] hud-border p-6 rounded-2xl space-y-3 flex-shrink-0 border-cyberPink/40 bg-cyberBlack/80">
+                        <span class="text-xs font-mono text-cyberPink font-bold">2026 // NOW</span>
+                        <h4 class="text-lg font-bold text-white">Logistics & Operations Engine</h4>
+                        <p class="text-xs text-slate-400">Gestione flussi di cassa, DDT, bancali e coordinamento aeroportuale.</p>
+                        <span class="inline-block text-[10px] font-mono text-cyberPink bg-cyberPink/10 px-2 py-0.5 rounded">FULL INTEGRATION</span>
                     </div>
                 </div>
             </div>
@@ -443,7 +447,6 @@
 
         <!-- COLPO DI SCENA 2: SCANNER BIOMETRICO LASER -->
         <section id="biometric-scanner" class="h-screen flex items-center justify-center relative overflow-hidden bg-slate-950/90">
-            <!-- Linea Laser di Scansione -->
             <div id="scanner-laser" class="absolute left-0 w-full h-1 bg-cyberCyan shadow-[0_0_20px_#00f3ff] z-20 top-0 opacity-0"></div>
 
             <div class="max-w-xl mx-auto px-6 w-full text-center space-y-8 relative z-10 hud-border p-10 rounded-3xl border-cyberCyan/50 bg-cyberBlack/90">
@@ -458,7 +461,6 @@
                     <p id="scanner-sub" class="text-xs text-slate-400">Scansione registro credenziali, certificati e abilitazioni di guida.</p>
                 </div>
 
-                <!-- Progress Bar di Scansione -->
                 <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
                     <div id="scanner-progress" class="h-full bg-gradient-to-r from-cyberCyan via-cyberViolet to-cyberGold w-0 transition-all duration-300"></div>
                 </div>
@@ -482,7 +484,6 @@
                 </div>
 
                 <div class="hud-border rounded-2xl p-6 bg-slate-950 font-mono text-xs space-y-4 border-cyberPink/30 shadow-2xl">
-                    <!-- Quick Command Buttons -->
                     <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4">
                         <button onclick="runCommand('cat profile.sys')" class="px-3 py-1.5 rounded bg-slate-900 text-cyberCyan hover:bg-cyberCyan hover:text-black transition-all">cat profile.sys</button>
                         <button onclick="runCommand('php artisan deploy')" class="px-3 py-1.5 rounded bg-slate-900 text-cyberViolet hover:bg-cyberViolet hover:text-white transition-all">php artisan deploy</button>
@@ -490,13 +491,11 @@
                         <button onclick="runCommand('help')" class="px-3 py-1.5 rounded bg-slate-900 text-cyberPink hover:bg-cyberPink hover:text-white transition-all">help</button>
                     </div>
 
-                    <!-- Output Console Window -->
                     <div id="terminal-output" class="h-64 overflow-y-auto space-y-2 text-slate-300 p-3 bg-black/80 rounded border border-slate-900 font-mono leading-relaxed">
                         <p class="text-slate-500">// Benvenuto nel terminale interattivo di Luca Sessa.</p>
                         <p class="text-slate-500">// Clicca sui comandi in alto o digita sotto per esplorare.</p>
                     </div>
 
-                    <!-- Input Command Line -->
                     <form onsubmit="handleTerminalInput(event)" class="flex items-center gap-2 pt-2 border-t border-slate-800">
                         <span class="text-cyberPink font-bold">sessa@dev:~$</span>
                         <input id="terminal-input" type="text" placeholder="Digita un comando..." class="w-full bg-transparent text-white focus:outline-none font-mono text-xs">
@@ -505,98 +504,79 @@
             </div>
         </section>
 
-        <!-- STORY CHAPTER 03: OPERATIONS & FRONT OFFICE -->
-        <section id="story-3" class="py-32 px-6 relative">
-            <div class="max-w-6xl mx-auto space-y-16">
-                <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberGold/20 pb-6 gap-4">
-                    <div>
-                        <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// CAPITOLO 03</span>
-                        <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Operations & Front Office</h2>
-                    </div>
-                    <div class="font-mono text-xs text-slate-400">Coordinamento Operativo & Gestione Parcheggio Aeroportuale</div>
+        <!-- IDEA 2: RADAR DI LOCALIZZAZIONE SATELLITARE -->
+        <section id="geo-radar" class="py-24 px-6 relative bg-cyberDark/80">
+            <div class="max-w-5xl mx-auto space-y-12">
+                <div class="text-center space-y-3">
+                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// SATELLITE RADAR OPERATIVO</span>
+                    <h2 class="text-3xl font-extrabold text-white">Raggio d'Azione & Base Operativa</h2>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberGold/30">
-                            <div class="flex items-center justify-between">
-                                <span class="px-3 py-1 rounded bg-cyberGold/10 text-cyberGold font-mono text-xs border border-cyberGold/30">AIRPORT OPERATIONS</span>
-                                <i class="fas fa-headset text-2xl text-cyberGold"></i>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <!-- Radar Canvas Widget -->
+                    <div class="md:col-span-6 flex justify-center">
+                        <div class="relative w-72 h-72 rounded-full hud-border border-cyberCyan/40 flex items-center justify-center p-4">
+                            <canvas id="radar-canvas" width="280" height="280" class="rounded-full"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <span class="w-3 h-3 rounded-full bg-cyberCyan animate-ping"></span>
                             </div>
-                            <h3 class="text-2xl font-bold text-white">Addetto Front Office & Coordinamento Operativo</h3>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Controllo delle operation di terra in strutture aeroportuali ad altissimo traffico: gestione flussi clienti, cassa, logistica navette e monitoraggio voli.
-                            </p>
-                            <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Accettazione clienti e registrazione veicoli (targa, modello, tempi di sosta).</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Gestione incassi contanti/POS, fatturazione e riconciliazione giornaliera.</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Coordinamento personale via radio per navette e flussi veicolari.</span></li>
-                            </ul>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-5">
-                        <div class="hud-border p-8 rounded-2xl bg-cyberBlack/80 space-y-6 border-slate-800 text-center">
-                            <i class="fas fa-plane-departure text-4xl text-cyberGold animate-bounce"></i>
-                            <h4 class="text-lg font-bold text-white font-mono">Precisione sotto Pressione</h4>
-                            <p class="text-xs text-slate-400 leading-relaxed font-mono">
-                                L'esperienza nell'hub aeroportuale ha consolidato una spiccata attitudine al problem solving rapido e comunicazione radio efficace.
-                            </p>
+                    <!-- Radar Information Panel -->
+                    <div class="md:col-span-6 space-y-4 font-mono text-xs">
+                        <div class="hud-border p-4 rounded-xl border-slate-800 space-y-1 hover:border-cyberCyan transition-all cursor-pointer" onclick="updateRadarTarget('Bergamo HQ', 'Base principale, disponibilità immediata ed e-commerce dev')">
+                            <span class="text-cyberCyan font-bold">[NODE 01] BERGAMO HQ</span>
+                            <p class="text-slate-300">Base di residenza, gestione clienti e sviluppo software.</p>
+                        </div>
+
+                        <div class="hud-border p-4 rounded-xl border-slate-800 space-y-1 hover:border-cyberViolet transition-all cursor-pointer" onclick="updateRadarTarget('Hub Logistici Nord Italia', 'Gestione tratte autisti e prenotazioni portali GDO')">
+                            <span class="text-cyberViolet font-bold">[NODE 02] HUB LOGISTICI NORD IT</span>
+                            <p class="text-slate-300">Pianificazione consegne, gestione giacenze e DDT.</p>
+                        </div>
+
+                        <div class="hud-border p-4 rounded-xl border-slate-800 space-y-1 hover:border-cyberGold transition-all cursor-pointer" onclick="updateRadarTarget('Hub Aeroportuale', 'Coordinamento navette, cassa POS e monitoraggio voli')">
+                            <span class="text-cyberGold font-bold">[NODE 03] AIRPORT OPERATIONS</span>
+                            <p class="text-slate-300">Front office, gestione flussi passeggeri e veicoli.</p>
+                        </div>
+
+                        <div id="radar-log" class="p-3 bg-black/80 rounded border border-cyberCyan/30 text-[11px] text-cyberCyan">
+                            > SELEZIONA UN NODO SULLA MAPPA
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- CERTIFICATIONS SECTION -->
-        <section id="certifications" class="py-32 px-6 relative bg-cyberDark/60">
-            <div class="max-w-6xl mx-auto space-y-16">
-                <div class="text-center space-y-3">
-                    <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// 06. FORMAZIONE UFFICIALE & ATTESTATI</span>
-                    <h2 class="text-4xl sm:text-5xl font-extrabold text-white">Certificazioni di Valore</h2>
+        <!-- IDEA 1: MINI-GIOCO CYBER REFLEX TEST -->
+        <section id="cyber-mini-game" class="py-24 px-6 relative bg-cyberBlack">
+            <div class="max-w-3xl mx-auto hud-border p-8 rounded-3xl space-y-6 text-center border-cyberGold/40 bg-cyberDark/90">
+                <div class="space-y-2">
+                    <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// REFLEX & SPEED TEST</span>
+                    <h3 class="text-2xl font-bold text-white">Testa i Tuoi Riflessi Operativi</h3>
+                    <p class="text-xs text-slate-400 font-mono">Clicca il più velocemente possibile sul pulsante prima che allo scadere dei 5 secondi scada il tempo!</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                    <div class="md:col-span-8 hud-border hud-border-gold p-8 rounded-2xl relative overflow-hidden space-y-6 tilt-card">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <span class="px-3 py-1 rounded bg-cyberGold/20 text-cyberGold font-mono text-xs font-bold border border-cyberGold/40">CERTIFICATO UFFICIALE</span>
-                                <h3 class="text-3xl font-extrabold text-white mt-3">Full Stack Web Developer</h3>
-                                <p class="text-cyberGold font-mono text-sm">Aulab Hackademy — Corso Intensivo 400 Ore</p>
-                            </div>
-                            <i class="fas fa-award text-4xl text-cyberGold"></i>
-                        </div>
-                        <p class="text-slate-300 text-sm leading-relaxed">
-                            Formazione intensiva teorico-pratica incentrata sullo sviluppo di web app complete: architetture MVC in PHP/Laravel, JavaScript ES6, database SQL e metodologia Agile.
-                        </p>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-html5 text-orange-500 mr-1"></i> HTML5 & CSS3</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 mr-1"></i> JavaScript</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-php text-indigo-400 mr-1"></i> PHP</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-laravel text-red-500 mr-1"></i> Laravel</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-database text-blue-400 mr-1"></i> SQL DB</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-users-gear text-green-400 mr-1"></i> Agile Scrum</div>
-                        </div>
-                        <div class="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 gap-4 font-mono text-xs">
-                            <span class="text-slate-400">ID CERTIFICATO: <strong class="text-white">79426108</strong> (8 Agosto 2023)</span>
-                            <button onclick="openCertModal()" class="px-5 py-2.5 rounded bg-cyberGold text-black font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2">
-                                <i class="fas fa-search-plus"></i> ISPEZIONA CERTIFICATO
-                            </button>
-                        </div>
+                <div class="flex justify-center items-center gap-8 font-mono">
+                    <div class="p-3 bg-slate-900 rounded border border-slate-800">
+                        <span class="block text-slate-500 text-[10px]">TIMER</span>
+                        <span id="game-timer" class="text-2xl font-bold text-cyberCyan">05.00s</span>
                     </div>
 
-                    <div class="md:col-span-4 space-y-6">
-                        <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
-                            <span class="text-xs font-mono text-cyberCyan">ABILITAZIONE OPERATIVA 2025</span>
-                            <h4 class="text-lg font-bold text-white">Patente Piattaforme Aeree (PLE)</h4>
-                            <p class="text-xs text-slate-400">Abilitazione alla conduzione di macchinari per il lavoro in quota.</p>
-                        </div>
-                        <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
-                            <span class="text-xs font-mono text-emerald-400">DIPLOMA DI STATO 2017</span>
-                            <h4 class="text-lg font-bold text-white">Diploma Alberghiero</h4>
-                            <p class="text-xs text-slate-400">Forte orientamento alla comunicazione e al servizio clienti.</p>
-                        </div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-800">
+                        <span class="block text-slate-500 text-[10px]">CLICK COUNT</span>
+                        <span id="game-score" class="text-2xl font-bold text-cyberGold">0</span>
                     </div>
+                </div>
+
+                <div>
+                    <button id="game-btn" onclick="handleGameClick()" class="px-10 py-5 rounded-2xl bg-gradient-to-r from-cyberGold via-amber-500 to-cyberPink text-black font-mono font-black text-sm tracking-widest hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,183,0,0.4)]">
+                        AVVIA TEST RIFLESSI
+                    </button>
+                </div>
+
+                <div id="game-rank" class="hidden text-sm font-mono text-cyberCyan pt-2">
+                    RANK OPERATIVO: <span id="rank-val" class="font-bold text-white">---</span>
                 </div>
             </div>
         </section>
@@ -605,7 +585,7 @@
         <section id="contact" class="py-32 px-6 relative bg-cyberDark/80">
             <div class="max-w-4xl mx-auto hud-border p-8 sm:p-12 rounded-3xl space-y-10 border-cyberCyan/40">
                 <div class="text-center space-y-3">
-                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 07. CONTATTO DIRETTO</span>
+                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// CONTATTO DIRETTO</span>
                     <h2 class="text-4xl font-extrabold text-white">Avvia un Canale di Comunicazione</h2>
                     <p class="text-slate-400 text-sm font-mono max-w-md mx-auto">Disponibile per opportunità Web Full Stack, progetti e-commerce e ruoli gestionali operativi.</p>
                 </div>
@@ -817,7 +797,7 @@
             renderer.render(scene, camera);
         }
 
-        // --- 3. GSAP SCROLL, LOCKDOWN & SCANNER LOGIC ---
+        // --- 3. GSAP SCROLL & LOCKDOWN ---
         function initGSAP() {
             gsap.registerPlugin(ScrollTrigger);
 
@@ -831,7 +811,6 @@
                 }
             });
 
-            // 1. Lockdown 3D Sequence
             const lockdownTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#matrix-lockdown",
@@ -850,7 +829,6 @@
                       .to('.lockdown-card:nth-child(3)', { opacity: 1, y: 0, duration: 0.8 }, 0.8)
                       .to(cyberCoreMesh.scale, { x: 1, y: 1, z: 1, duration: 1 }, 1.2);
 
-            // 2. Scanner Biometrico Laser Sequence
             const scannerTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: "#biometric-scanner",
@@ -907,7 +885,101 @@
             }
         }
 
-        // --- 5. TILT CARDS & CERT MODAL ---
+        // --- 5. RADAR SATELLITARE CANVAS ENGINE ---
+        let radarAngle = 0;
+        function initRadarCanvas() {
+            const canvas = document.getElementById('radar-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            function drawRadar() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+
+                // Circles
+                ctx.strokeStyle = "rgba(0, 243, 255, 0.3)";
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.arc(cx, cy, 40, 0, Math.PI * 2); ctx.stroke();
+                ctx.beginPath(); ctx.arc(cx, cy, 80, 0, Math.PI * 2); ctx.stroke();
+                ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.stroke();
+
+                // Cross lines
+                ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy); ctx.stroke();
+
+                // Sweeping Line
+                radarAngle += 0.03;
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(radarAngle);
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(130, 0);
+                ctx.strokeStyle = "#00f3ff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.restore();
+
+                requestAnimationFrame(drawRadar);
+            }
+            drawRadar();
+        }
+
+        function updateRadarTarget(name, desc) {
+            playSynthSound('click');
+            const log = document.getElementById('radar-log');
+            log.innerHTML = `> TARGET: <strong class="text-white">${name}</strong> — ${desc}`;
+        }
+
+        // --- 6. MINI-GIOCO CYBER REFLEX TEST ---
+        let gameActive = false;
+        let gameScore = 0;
+        let gameTime = 5.0;
+        let gameInterval = null;
+
+        function handleGameClick() {
+            playSynthSound('click');
+            const btn = document.getElementById('game-btn');
+            const scoreEl = document.getElementById('game-score');
+            const timerEl = document.getElementById('game-timer');
+            const rankEl = document.getElementById('game-rank');
+
+            if (!gameActive) {
+                gameActive = true;
+                gameScore = 1;
+                gameTime = 5.0;
+                scoreEl.innerText = gameScore;
+                rankEl.classList.add('hidden');
+                btn.innerText = "CLICCA VELOCE!!";
+
+                gameInterval = setInterval(() => {
+                    gameTime -= 0.05;
+                    timerEl.innerText = `${gameTime.toFixed(2)}s`;
+
+                    if (gameTime <= 0) {
+                        clearInterval(gameInterval);
+                        gameActive = false;
+                        timerEl.innerText = "00.00s";
+                        btn.innerText = "RIPROVA TEST";
+
+                        // Calculate Rank
+                        let rank = "C - STANDARD";
+                        if (gameScore > 35) rank = "S+ CYBER GOD";
+                        else if (gameScore > 25) rank = "A - ELITE OPERATOR";
+                        else if (gameScore > 15) rank = "B - PRO DEVELOPER";
+
+                        document.getElementById('rank-val').innerText = rank;
+                        rankEl.classList.remove('hidden');
+                    }
+                }, 50);
+            } else {
+                gameScore++;
+                scoreEl.innerText = gameScore;
+            }
+        }
+
+        // --- 7. TILT CARDS & CERT MODAL ---
         function initTiltCards() {
             const cards = document.querySelectorAll('.tilt-card');
             cards.forEach(card => {
@@ -968,6 +1040,7 @@
             animateThreeJS();
             initGSAP();
             initTiltCards();
+            initRadarCanvas();
         };
     </script>
 </body>
