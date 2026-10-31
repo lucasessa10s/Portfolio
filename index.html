@@ -121,9 +121,14 @@
             pointer-events: none;
         }
 
+        /* CARD PARALLAX 3D HOVER EFFECT */
         .tilt-card {
             transform-style: preserve-3d;
             transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tilt-card-content {
+            transform: translateZ(30px);
+            transition: transform 0.2s ease-out;
         }
 
         #cursor-dot, #cursor-ring {
@@ -142,7 +147,10 @@
         .glow-text-gold { text-shadow: 0 0 15px rgba(255, 183, 0, 0.6); }
         .glow-text-violet { text-shadow: 0 0 15px rgba(112, 0, 255, 0.6); }
 
-        #pong-canvas { touch-action: none; }
+        /* PONG CANVAS UNBLOCKED SCROLL */
+        #pong-canvas {
+            touch-action: pan-y;
+        }
 
         #ig-orb-container {
             position: fixed;
@@ -185,15 +193,18 @@
     <div class="fixed inset-0 scanline-overlay z-10 opacity-40"></div>
 
     <!-- HUD Fixed UI Controls -->
-    <div class="fixed top-6 right-6 z-50 flex items-center gap-4">
-        <button id="sound-toggle" onclick="toggleAudio()" class="hud-border px-3 py-2 rounded text-xs font-mono text-cyberCyan flex items-center gap-2 hover:bg-cyberCyan/10 transition-all">
+    <div class="fixed top-6 right-6 z-50 flex items-center gap-3">
+        <!-- AUDIO TOGGLE -->
+        <button id="sound-toggle" onclick="toggleAudio()" class="hud-border px-3.5 py-2 rounded text-xs font-mono text-cyberCyan flex items-center gap-2 hover:bg-cyberCyan/10 transition-all">
             <i id="sound-icon" class="fas fa-volume-up"></i>
             <span id="sound-status">AUDIO ON</span>
         </button>
 
-        <div class="hud-border px-3 py-2 rounded text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyberCyan animate-ping"></span>
-            <span id="scroll-percentage">00%</span>
+        <!-- CLEAR SCROLL PROGRESS METER HUD -->
+        <div class="hud-border px-3.5 py-2 rounded text-xs font-mono text-cyberCyan flex items-center gap-2">
+            <i class="fas fa-compass animate-spin text-cyberCyan" style="animation-duration: 8s;"></i>
+            <span class="text-slate-400 text-[10px]">SCROLL:</span>
+            <span id="scroll-percentage" class="font-bold text-white">0%</span>
         </div>
     </div>
 
@@ -279,45 +290,49 @@
 
                 </div>
 
-                <!-- Interactive Sci-Fi ID Card Feature -->
+                <!-- Interactive Sci-Fi ID Card Feature con Parallasse 3D -->
                 <div class="lg:col-span-4 flex justify-center">
-                    <div class="tilt-card hud-border p-6 rounded-2xl w-full max-w-sm space-y-6 relative group border-cyberCyan/30">
-                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                            <span class="text-[10px] font-mono text-cyberCyan tracking-widest">DEV ID // AULAB PASS</span>
-                            <span class="text-[10px] font-mono text-slate-500">2026.VER</span>
-                        </div>
+                    <div class="tilt-card hud-border p-6 rounded-2xl w-full max-w-sm space-y-6 relative group border-cyberCyan/30 overflow-hidden">
+                        
+                        <div class="tilt-card-content space-y-6">
+                            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                                <span class="text-[10px] font-mono text-cyberCyan tracking-widest"><i class="fas fa-id-card mr-1"></i> DEV ID PASS</span>
+                                <span class="text-[10px] font-mono text-slate-500">2026.VER</span>
+                            </div>
 
-                        <!-- FOTO PROFILO CONTAINER -->
-                        <div class="relative flex justify-center py-2">
-                            <div class="relative w-48 h-48 rounded-full p-1 bg-gradient-to-tr from-cyberCyan via-cyberViolet to-cyberGold animate-pulse-glow group-hover:scale-105 transition-transform duration-500">
-                                <div class="w-full h-full rounded-full overflow-hidden border-2 border-cyberCyan bg-cyberDark relative">
-                                    <img id="profile-img" 
-                                         src="img/foto-profilo.jpg" 
-                                         alt="Foto Profilo Luca Sessa" 
-                                         class="w-full h-full object-cover filter contrast-110 brightness-100 group-hover:scale-110 transition-transform duration-700">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-cyberCyan/10 pointer-events-none"></div>
+                            <!-- FOTO PROFILO CONTAINER -->
+                            <div class="relative flex justify-center py-2">
+                                <div class="relative w-48 h-48 rounded-full p-1 bg-gradient-to-tr from-cyberCyan via-cyberViolet to-cyberGold animate-pulse-glow group-hover:scale-105 transition-transform duration-500">
+                                    <div class="w-full h-full rounded-full overflow-hidden border-2 border-cyberCyan bg-cyberDark relative">
+                                        <img id="profile-img" 
+                                             src="img/foto-profilo.jpg" 
+                                             alt="Foto Profilo Luca Sessa" 
+                                             class="w-full h-full object-cover filter contrast-110 brightness-100 group-hover:scale-110 transition-transform duration-700">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-cyberCyan/10 pointer-events-none"></div>
+                                    </div>
+                                    <div class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-cyberBlack border-2 border-cyberCyan flex items-center justify-center shadow-[0_0_10px_#00f3ff]">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-cyberCyan animate-ping"></span>
+                                    </div>
                                 </div>
-                                <div class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-cyberBlack border-2 border-cyberCyan flex items-center justify-center shadow-[0_0_10px_#00f3ff]">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-cyberCyan animate-ping"></span>
+                            </div>
+
+                            <div class="space-y-2 text-center font-mono">
+                                <h3 class="text-lg font-bold text-white tracking-wider">LUCA SESSA</h3>
+                                <p class="text-xs text-slate-400">Bergamo, IT — Full Stack Web Developer</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 text-center font-mono text-[11px] pt-2 border-t border-white/10">
+                                <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
+                                    <span class="block text-slate-500 text-[9px]">CERTIFICATO</span>
+                                    <span class="text-cyberCyan font-bold">#79426108</span>
+                                </div>
+                                <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
+                                    <span class="block text-slate-500 text-[9px]">ORE CORSO</span>
+                                    <span class="text-cyberGold font-bold">400 INTENSE</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="space-y-2 text-center font-mono">
-                            <h3 class="text-lg font-bold text-white tracking-wider">LUCA SESSA</h3>
-                            <p class="text-xs text-slate-400">Bergamo, IT — Full Stack Web Developer</p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 text-center font-mono text-[11px] pt-2 border-t border-white/10">
-                            <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
-                                <span class="block text-slate-500 text-[9px]">CERTIFICATO</span>
-                                <span class="text-cyberCyan font-bold">#79426108</span>
-                            </div>
-                            <div class="p-2 rounded bg-slate-900/60 border border-slate-800">
-                                <span class="block text-slate-500 text-[9px]">ORE CORSO</span>
-                                <span class="text-cyberGold font-bold">400 INTENSE</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -345,39 +360,42 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
                     <div class="lg:col-span-7 space-y-6">
                         <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberCyan/30">
-                            <div class="flex items-center justify-between">
-                                <span class="px-3 py-1 rounded bg-cyberCyan/10 text-cyberCyan font-mono text-xs border border-cyberCyan/30">END-TO-END WEB DEV</span>
-                                <i class="fas fa-laptop-code text-2xl text-cyberCyan"></i>
-                            </div>
-                            <h3 class="text-2xl font-bold text-white">Realizzazione Vetrina & Piattaforme Digitali</h3>
-                            <p class="text-slate-300 text-sm leading-relaxed">
-                                Dalla configurazione iniziale del dominio e dei server DNS fino al lancio online e alla formazione del cliente sull'utilizzo del back office.
-                            </p>
-                            <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Configurazione domini, account aziendali, protocolli e caselle email dedicate.</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Impostazione, strutturazione cataloghi prodotti e gestione e-commerce (specialmente settore abbigliamento).</span></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Creazione grafiche base, attivazione social media aziendali e monitoraggio campagne ADV.</span></li>
-                            </ul>
-                            <div class="pt-4 flex flex-wrap gap-2 font-mono text-[11px]">
-                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">PHP / Laravel</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">JavaScript ES6</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">HTML5 / CSS3 / Tailwind</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">CMS E-Commerce</span>
+                            <div class="tilt-card-content space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <span class="px-3 py-1 rounded bg-cyberCyan/10 text-cyberCyan font-mono text-xs border border-cyberCyan/30">END-TO-END WEB DEV</span>
+                                    <i class="fas fa-laptop-code text-3xl text-cyberCyan"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold text-white">Realizzazione Vetrina & Piattaforme Digitali</h3>
+                                <p class="text-slate-300 text-sm leading-relaxed">
+                                    Dalla configurazione iniziale del dominio e dei server DNS fino al lancio online e alla formazione del cliente sull'utilizzo del back office.
+                                </p>
+                                <ul class="space-y-3 font-mono text-xs text-slate-300">
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Configurazione domini, account aziendali, protocolli e caselle email dedicate.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Impostazione, strutturazione cataloghi prodotti e gestione e-commerce (specialmente settore abbigliamento).</span></li>
+                                    <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Creazione grafiche base, attivazione social media aziendali e monitoraggio campagne ADV.</span></li>
+                                </ul>
+                                <div class="pt-4 flex flex-wrap gap-2 font-mono text-[11px]">
+                                    <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">PHP / Laravel</span>
+                                    <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">JavaScript ES6</span>
+                                    <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">HTML5 / CSS3 / Tailwind</span>
+                                    <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">CMS E-Commerce</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="lg:col-span-5">
-                        <div class="hud-border p-6 rounded-2xl bg-cyberBlack/90 font-mono text-xs space-y-4 border-slate-800">
-                            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                                <div class="flex space-x-2">
-                                    <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-                                    <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-                                    <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                        <div class="hud-border p-6 rounded-2xl bg-cyberBlack/90 font-mono text-xs space-y-4 border-slate-800 tilt-card">
+                            <div class="tilt-card-content space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                    <div class="flex space-x-2">
+                                        <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                                    </div>
+                                    <span class="text-slate-500 text-[10px]">ECommerceController.php</span>
                                 </div>
-                                <span class="text-slate-500 text-[10px]">ECommerceController.php</span>
-                            </div>
-                            <pre class="text-slate-300 overflow-x-auto leading-relaxed">
+                                <pre class="text-slate-300 overflow-x-auto leading-relaxed">
 <span class="text-purple-400">namespace</span> App\Http\Controllers;
 
 <span class="text-blue-400">class</span> <span class="text-yellow-300">ECommerceEngine</span> {
@@ -391,13 +409,14 @@
         ]);
     }
 }</pre>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TECH STACK & SKILLS MATRIX -->
+        <!-- TECH STACK & SKILLS MATRIX CON PARALLASSE SULLE ICONE -->
         <section id="stack" class="py-32 px-6 relative bg-cyberDark/50">
             <div class="max-w-6xl mx-auto space-y-16">
                 <div class="text-center space-y-3">
@@ -406,37 +425,43 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
-                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberCyan/30">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm"><i class="fab fa-html5 text-orange-500 mr-2"></i> Frontend Development</span>
-                            <span class="text-cyberCyan">95%</span>
+                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberCyan/30 tilt-card">
+                        <div class="tilt-card-content space-y-4">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                <span class="font-bold text-white text-sm"><i class="fab fa-html5 text-orange-500 text-xl mr-2"></i> Frontend Dev</span>
+                                <span class="text-cyberCyan font-bold">95%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyberCyan w-[95%]"></div>
+                            </div>
+                            <p class="text-[11px] text-slate-400">HTML5, CSS3, JavaScript ES6+, Responsive Layouts, Tailwind CSS e animazioni interattive.</p>
                         </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberCyan w-[95%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">HTML5, CSS3, JavaScript ES6+, Responsive Layouts, Tailwind CSS e animazioni interattive.</p>
                     </div>
 
-                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberViolet/30">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm"><i class="fab fa-php text-indigo-400 mr-2"></i> Backend & Laravel</span>
-                            <span class="text-cyberViolet">90%</span>
+                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberViolet/30 tilt-card">
+                        <div class="tilt-card-content space-y-4">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                <span class="font-bold text-white text-sm"><i class="fab fa-php text-indigo-400 text-xl mr-2"></i> Backend & Laravel</span>
+                                <span class="text-cyberViolet font-bold">90%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyberViolet w-[90%]"></div>
+                            </div>
+                            <p class="text-[11px] text-slate-400">PHP, Framework Laravel (MVC), routing, controller, ORM Eloquent e gestione database SQL.</p>
                         </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberViolet w-[90%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">PHP, Framework Laravel (MVC), routing, controller, ORM Eloquent e gestione database SQL.</p>
                     </div>
 
-                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberGold/30">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm"><i class="fas fa-users-gear text-green-400 mr-2"></i> Methodologies & Tools</span>
-                            <span class="text-cyberGold">92%</span>
+                    <div class="hud-border p-6 rounded-2xl space-y-4 border-cyberGold/30 tilt-card">
+                        <div class="tilt-card-content space-y-4">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                <span class="font-bold text-white text-sm"><i class="fas fa-users-gear text-green-400 text-xl mr-2"></i> Methodologies & Tools</span>
+                                <span class="text-cyberGold font-bold">92%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyberGold w-[92%]"></div>
+                            </div>
+                            <p class="text-[11px] text-slate-400">Metodologie Agili (Scrum), Git workflow, configurazione CMS e-commerce, digital marketing e ADV.</p>
                         </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberGold w-[92%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Metodologie Agili (Scrum), Git workflow, configurazione CMS e-commerce, digital marketing e ADV.</p>
                     </div>
                 </div>
             </div>
@@ -452,31 +477,33 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                     <div class="md:col-span-12 hud-border hud-border-gold p-8 sm:p-12 rounded-3xl relative overflow-hidden space-y-6 tilt-card">
-                        <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-                            <div>
-                                <span class="px-3 py-1 rounded bg-cyberGold/20 text-cyberGold font-mono text-xs font-bold border border-cyberGold/40">CERTIFICATO VERIFICATO</span>
-                                <h3 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Full Stack Web Developer</h3>
-                                <p class="text-cyberGold font-mono text-sm mt-1">Aulab Hackademy — 400 Ore di Alta Formazione</p>
+                        <div class="tilt-card-content space-y-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+                                <div>
+                                    <span class="px-3 py-1 rounded bg-cyberGold/20 text-cyberGold font-mono text-xs font-bold border border-cyberGold/40">CERTIFICATO VERIFICATO</span>
+                                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Full Stack Web Developer</h3>
+                                    <p class="text-cyberGold font-mono text-sm mt-1">Aulab Hackademy — 400 Ore di Alta Formazione</p>
+                                </div>
+                                <i class="fas fa-award text-6xl text-cyberGold"></i>
                             </div>
-                            <i class="fas fa-award text-5xl text-cyberGold"></i>
-                        </div>
 
-                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                            Percorso intensivo completato con successo in data <strong>8 Agosto 2023</strong>, incentrato sulla progettazione e sviluppo completo di applicazioni web, gestione database relazionali e adozione di metodologie di lavoro Agile.
-                        </p>
+                            <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                                Percorso intensivo completato con successo in data <strong>8 Agosto 2023</strong>, incentrato sulla progettazione e sviluppo completo di applicazioni web, gestione database relazionali e adozione di metodologie di lavoro Agile.
+                            </p>
 
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-                            <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-html5 text-orange-500 block text-lg mb-1"></i> HTML5 & CSS3</div>
-                            <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 block text-lg mb-1"></i> JavaScript ES6</div>
-                            <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-php text-indigo-400 block text-lg mb-1"></i> PHP Core</div>
-                            <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-laravel text-red-500 block text-lg mb-1"></i> Laravel Framework</div>
-                        </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-html5 text-orange-500 block text-xl mb-1"></i> HTML5 & CSS3</div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 block text-xl mb-1"></i> JavaScript ES6</div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-php text-indigo-400 block text-xl mb-1"></i> PHP Core</div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-laravel text-red-500 block text-xl mb-1"></i> Laravel Framework</div>
+                            </div>
 
-                        <div class="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 gap-4 font-mono text-xs">
-                            <span class="text-slate-400">CODICE ID: <strong class="text-white">79426108</strong> (Rilasciato da Giancarlo Valente, CTO Aulab)</span>
-                            <button onclick="openCertModal()" class="px-6 py-3 rounded bg-cyberGold text-black font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2">
-                                <i class="fas fa-search-plus"></i> ISPEZIONA ATTESTATO
-                            </button>
+                            <div class="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 gap-4 font-mono text-xs">
+                                <span class="text-slate-400">CODICE ID: <strong class="text-white">79426108</strong> (Rilasciato da Giancarlo Valente, CTO Aulab)</span>
+                                <button onclick="openCertModal()" class="px-6 py-3 rounded bg-cyberGold text-black font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2">
+                                    <i class="fas fa-search-plus"></i> ISPEZIONA ATTESTATO
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -515,13 +542,13 @@
             </div>
         </section>
 
-        <!-- MINI-GIOCO CYBER PONG NEON 1V1 VS AI (SESSA.AI A SINISTRA, YOU A DESTRA) -->
+        <!-- MINI-GIOCO CYBER PONG (FLUIDO E SCROLL LIBERO) -->
         <section id="cyber-pong" class="py-24 px-6 relative bg-cyberDark/80">
             <div class="max-w-3xl mx-auto hud-border p-6 sm:p-8 rounded-3xl space-y-6 text-center border-cyberCyan/40 bg-cyberBlack/90">
                 <div class="space-y-2">
                     <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 05. ARCADE INTERATTIVO // NEON PONG 1V1</span>
                     <h3 class="text-2xl font-bold text-white">Cyber Pong vs Sessa.AI (Primi a 3 Vincono!)</h3>
-                    <p class="text-xs text-slate-400 font-mono">Sessa.AI è a sinistra (Viola). Muovi il cursore o trascina il dito per controllare la tua racchetta a destra (Azzurra)!</p>
+                    <p class="text-xs text-slate-400 font-mono">Sessa.AI a sinistra (Viola). Tu controlli la racchetta a destra (Azzurra)!</p>
                 </div>
 
                 <div class="flex justify-center items-center gap-8 font-mono">
@@ -537,7 +564,7 @@
                 </div>
 
                 <div class="relative flex justify-center">
-                    <canvas id="pong-canvas" width="600" height="350" class="w-full max-w-full rounded-2xl border border-cyberCyan/30 bg-cyberBlack shadow-[0_0_15px_rgba(0,243,255,0.2)]"></canvas>
+                    <canvas id="pong-canvas" width="600" height="350" class="w-full max-w-full rounded-2xl border border-cyberCyan/30 bg-cyberBlack shadow-[0_0_15px_rgba(0,243,255,0.2)] cursor-pointer"></canvas>
                 </div>
 
                 <div>
@@ -594,7 +621,7 @@
 
     </main>
 
-    <!-- INSTAGRAM 3D MOCKUP EXPANDABLE ORB OVERLAY (COLLEGATO A @lukse__) -->
+    <!-- INSTAGRAM 3D MOCKUP EXPANDABLE ORB OVERLAY -->
     <div id="ig-orb-container">
         <div id="ig-expanding-orb"></div>
         <div id="ig-content-wrapper" class="w-full max-w-sm px-4">
@@ -771,14 +798,6 @@
             particleStreamMesh = new THREE.Points(particleGeo, particleMat);
             scene.add(particleStreamMesh);
 
-            const light1 = new THREE.PointLight(0x00f3ff, 2, 100);
-            light1.position.set(10, 10, 10);
-            scene.add(light1);
-
-            const light2 = new THREE.PointLight(0x7000ff, 2, 100);
-            light2.position.set(-10, -10, -10);
-            scene.add(light2);
-
             window.addEventListener('resize', onWindowResize);
             document.addEventListener('mousemove', onMouseMove);
         }
@@ -803,11 +822,9 @@
 
         function animateThreeJS() {
             requestAnimationFrame(animateThreeJS);
-            cyberCoreMesh.rotation.y += 0.003;
-            cyberCoreMesh.rotation.x += 0.0015;
+            cyberCoreMesh.rotation.y += 0.003 + mouseX * 0.1;
+            cyberCoreMesh.rotation.x += 0.0015 + mouseY * 0.1;
             torusKnotMesh.rotation.z -= 0.004;
-            cyberCoreMesh.rotation.y += mouseX * 0.2;
-            cyberCoreMesh.rotation.x += mouseY * 0.2;
             particleStreamMesh.rotation.y -= 0.0005;
             renderer.render(scene, camera);
         }
@@ -822,7 +839,7 @@
                 end: "bottom bottom",
                 onUpdate: (self) => {
                     const percent = Math.round(self.progress * 100);
-                    document.getElementById('scroll-percentage').innerText = `${percent < 10 ? '0' : ''}${percent}%`;
+                    document.getElementById('scroll-percentage').innerText = `${percent}%`;
                 }
             });
 
@@ -884,7 +901,7 @@
             }
         }
 
-        // --- 5. MINI-GIOCO CYBER PONG (SESSA.AI A SINISTRA, YOU A DESTRA) ---
+        // --- 5. MINI-GIOCO CYBER PONG (SESSA.AI A SINISTRA, PLAYER A DESTRA) ---
         let pongCanvas, pongCtx;
         let pongRunning = false;
         let playerY = 135, aiY = 135;
@@ -898,18 +915,17 @@
             if(!pongCanvas) return;
             pongCtx = pongCanvas.getContext('2d');
 
-            // Il giocatore controlla la racchetta a DESTRA (Player)
-            pongCanvas.addEventListener('mousemove', (e) => {
+            function updatePaddlePosition(clientY) {
                 const rect = pongCanvas.getBoundingClientRect();
                 const scaleY = pongCanvas.height / rect.height;
-                playerY = (e.clientY - rect.top) * scaleY - paddleHeight / 2;
-            });
+                playerY = (clientY - rect.top) * scaleY - paddleHeight / 2;
+            }
+
+            pongCanvas.addEventListener('mousemove', (e) => updatePaddlePosition(e.clientY));
 
             pongCanvas.addEventListener('touchmove', (e) => {
-                const rect = pongCanvas.getBoundingClientRect();
-                const scaleY = pongCanvas.height / rect.height;
                 if (e.touches.length > 0) {
-                    playerY = (e.touches[0].clientY - rect.top) * scaleY - paddleHeight / 2;
+                    updatePaddlePosition(e.touches[0].clientY);
                 }
             }, { passive: true });
 
@@ -923,11 +939,11 @@
             pongCtx.fillStyle = 'rgba(0, 243, 255, 0.2)';
             pongCtx.fillRect(pongCanvas.width / 2 - 1, 0, 2, pongCanvas.height);
 
-            // Racchetta SESSA.AI (Viola - SINISTRA)
+            // SESSA.AI (Racchetta a Sinistra - Viola)
             pongCtx.fillStyle = '#7000ff';
             pongCtx.fillRect(10, aiY, paddleWidth, paddleHeight);
 
-            // Racchetta PLAYER (Azzurra - DESTRA)
+            // PLAYER (Racchetta a Destra - Azzurra)
             pongCtx.fillStyle = '#00f3ff';
             pongCtx.fillRect(pongCanvas.width - 20, playerY, paddleWidth, paddleHeight);
 
@@ -973,7 +989,7 @@
                 ballSpeedY = -ballSpeedY;
             }
 
-            // SESSA.AI (Sinistra) segue la palla
+            // AI (Sinistra) segue la palla
             const aiCenter = aiY + paddleHeight / 2;
             if (aiCenter < ballY - 15) {
                 aiY += 3.8;
@@ -986,19 +1002,19 @@
             if (aiY < 0) aiY = 0;
             if (aiY > pongCanvas.height - paddleHeight) aiY = pongCanvas.height - paddleHeight;
 
-            // Collisione SESSA.AI (Racchetta a Sinistra)
+            // Collisione SESSA.AI (Racchetta Sinistra)
             if (ballX <= 20 + paddleWidth && ballY >= aiY && ballY <= aiY + paddleHeight) {
                 ballSpeedX = -ballSpeedX * 1.05;
                 playSynthSound('hover');
             }
 
-            // Collisione PLAYER (Racchetta a Destra)
+            // Collisione PLAYER (Racchetta Destra)
             if (ballX >= pongCanvas.width - 20 - paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
                 ballSpeedX = -ballSpeedX * 1.05;
                 playSynthSound('hover');
             }
 
-            // Punto per PLAYER (Palla esce a sinistra oltre Sessa.AI)
+            // Punto per PLAYER (Palla esce a sinistra)
             if (ballX <= 0) {
                 playerScore++;
                 updatePongScores();
@@ -1007,7 +1023,7 @@
                 if (pongRunning) resetPongBall();
             }
 
-            // Punto per SESSA.AI (Palla esce a destra oltre Player)
+            // Punto per SESSA.AI (Palla esce a destra)
             if (ballX >= pongCanvas.width) {
                 aiScore++;
                 updatePongScores();
@@ -1042,7 +1058,7 @@
             document.getElementById('pong-start-btn').innerText = "RIGIOCA PARTITA";
         }
 
-        // --- 6. TILT CARDS & CERT MODAL ---
+        // --- 6. ADVANCED TILT CARDS WITH PARALLAX GLOW ---
         function initTiltCards() {
             const cards = document.querySelectorAll('.tilt-card');
             cards.forEach(card => {
@@ -1054,11 +1070,14 @@
                     const centerY = rect.height / 2;
                     const rotateX = ((y - centerY) / centerY) * -10;
                     const rotateY = ((x - centerX) / centerX) * 10;
+                    
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
+
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                 });
+
                 card.addEventListener('mouseenter', () => playSynthSound('hover'));
             });
         }
