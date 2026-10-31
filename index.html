@@ -69,7 +69,7 @@
             background-color: #050608;
             color: #e2e8f0;
             overflow-x: hidden;
-            cursor: none; /* Custom Sci-Fi Cursor enabled */
+            cursor: none;
         }
 
         #canvas-3d {
@@ -85,7 +85,7 @@
         /* Sci-Fi HUD Line Effects */
         .hud-border {
             position: relative;
-            background: rgba(10, 13, 20, 0.7);
+            background: rgba(10, 13, 20, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(0, 243, 255, 0.15);
@@ -167,13 +167,11 @@
 
     <!-- HUD Fixed UI Controls -->
     <div class="fixed top-6 right-6 z-50 flex items-center gap-4">
-        <!-- Sound FX Synth Toggle -->
         <button id="sound-toggle" onclick="toggleAudio()" class="hud-border px-3 py-2 rounded text-xs font-mono text-cyberCyan flex items-center gap-2 hover:bg-cyberCyan/10 transition-all">
             <i id="sound-icon" class="fas fa-volume-up"></i>
             <span id="sound-status">AUDIO ON</span>
         </button>
 
-        <!-- Live Scroll Percentage Indicator -->
         <div class="hud-border px-3 py-2 rounded text-xs font-mono text-slate-400 hidden sm:flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-cyberCyan animate-ping"></span>
             <span id="scroll-percentage">00%</span>
@@ -194,11 +192,11 @@
             </a>
 
             <nav class="hidden lg:flex items-center space-x-8 font-mono text-xs tracking-wider">
-                <a href="#story-1" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/01</span> CODE & ARCHITECTURE</a>
+                <a href="#story-1" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/01</span> CODE</a>
                 <a href="#story-2" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/02</span> LOGISTICS</a>
-                <a href="#story-3" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/03</span> OPERATIONS</a>
+                <a href="#matrix-lockdown" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors flex items-center gap-1.5 animate-pulse"><span class="text-cyberGold">/03</span> LOCKDOWN 3D</a>
                 <a href="#certifications" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors flex items-center gap-1.5"><span class="text-cyberGold">/04</span> CERTIFICATI</a>
-                <a href="#skills" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/05</span> SKILLS RADAR</a>
+                <a href="#skills" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors flex items-center gap-1.5"><span class="text-cyberCyan">/05</span> SKILLS</a>
             </nav>
 
             <a href="#contact" onclick="playSynthSound('click')" class="hud-border px-4 py-2 rounded text-xs font-mono font-semibold text-cyberCyan hover:bg-cyberCyan hover:text-black transition-all duration-300">
@@ -221,7 +219,6 @@
                         FULL STACK DEVELOPER & OPERATIONS SPECIALIST
                     </div>
 
-                    <!-- Animated Parallax Hero Title -->
                     <div class="space-y-2">
                         <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none">
                             LUCA <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyberCyan via-cyberViolet to-cyberGold glow-text-cyan inline-block font-mono">SESSA</span>
@@ -235,7 +232,6 @@
                         Integrazione perfetta tra ingegneria software moderna, sviluppo e-commerce, controllo dei dati e coordinamento logistico avanzato.
                     </p>
 
-                    <!-- Contact Bar Badges -->
                     <div class="flex flex-wrap gap-3 font-mono text-xs pt-2">
                         <a href="mailto:sessa.luca@outlook.it" class="hud-border px-3.5 py-2 rounded text-slate-300 hover:text-cyberCyan hover:border-cyberCyan transition-all flex items-center gap-2">
                             <i class="fas fa-envelope text-cyberCyan"></i> sessa.luca@outlook.it
@@ -248,7 +244,6 @@
                         </span>
                     </div>
 
-                    <!-- Call to Action Buttons -->
                     <div class="flex flex-wrap gap-5 pt-4">
                         <a href="#story-1" onclick="playSynthSound('click')" class="px-8 py-4 rounded font-mono font-bold text-xs tracking-wider bg-gradient-to-r from-cyberCyan via-blue-600 to-cyberViolet text-black hover:shadow-[0_0_25px_rgba(0,243,255,0.6)] hover:scale-105 transition-all flex items-center gap-3">
                             <i class="fas fa-play"></i> ESPLORA STORYTELLING 3D
@@ -268,27 +263,19 @@
                             <span class="text-[10px] font-mono text-slate-500">SYS.2026</span>
                         </div>
 
-                        <!-- FOTO PROFILO CYBER-HOLOGRAPHIC CONTAINER -->
+                        <!-- FOTO PROFILO CONTAINER -->
                         <div class="relative flex justify-center py-2">
                             <div class="relative w-48 h-48 rounded-full p-1 bg-gradient-to-tr from-cyberCyan via-cyberViolet to-cyberGold animate-pulse-glow group-hover:scale-105 transition-transform duration-500">
-                                
-                                <!-- Frame interno ottagonale/circolare con effetto ologramma -->
                                 <div class="w-full h-full rounded-full overflow-hidden border-2 border-cyberCyan bg-cyberDark relative">
-                                    
                                     <!-- ================================================================= -->
                                     <!-- RIGA FOTO PROFILO: SOSTITUISCI IL LINK SOTTO CON LA TUA FOTO    -->
-                                    <!-- Esempio locale: src="assets/foto-luca.jpg"                      -->
                                     <!-- ================================================================= -->
                                     <img id="profile-img" 
                                          src="img/foto-profilo.jpg" 
                                          alt="Foto Profilo Luca Sessa" 
                                          class="w-full h-full object-cover filter contrast-110 brightness-100 group-hover:scale-110 transition-transform duration-700">
-
-                                    <!-- Effetto overlay ologramma con linee -->
                                     <div class="absolute inset-0 bg-gradient-to-t from-cyberDark via-transparent to-cyberCyan/10 pointer-events-none"></div>
                                 </div>
-
-                                <!-- Badge circolare di stato attivo -->
                                 <div class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-cyberBlack border-2 border-cyberCyan flex items-center justify-center shadow-[0_0_10px_#00f3ff]">
                                     <span class="w-2.5 h-2.5 rounded-full bg-cyberCyan animate-ping"></span>
                                 </div>
@@ -319,57 +306,38 @@
         <!-- STORY CHAPTER 01: CODE & ARCHITECTURE -->
         <section id="story-1" class="py-32 px-6 relative">
             <div class="max-w-6xl mx-auto space-y-16">
-                
                 <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberCyan/20 pb-6 gap-4">
                     <div>
                         <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// CAPITOLO 01</span>
                         <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Code & Architecture</h2>
                     </div>
-                    <div class="font-mono text-xs text-slate-400">
-                        Sviluppo Web Full Stack & E-Commerce Freelance
-                    </div>
+                    <div class="font-mono text-xs text-slate-400">Sviluppo Web Full Stack & E-Commerce Freelance</div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                    
                     <div class="lg:col-span-7 space-y-6">
                         <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberCyan/30">
                             <div class="flex items-center justify-between">
                                 <span class="px-3 py-1 rounded bg-cyberCyan/10 text-cyberCyan font-mono text-xs border border-cyberCyan/30">FREELANCE & PROJECT DEV</span>
                                 <i class="fas fa-laptop-code text-2xl text-cyberCyan"></i>
                             </div>
-
                             <h3 class="text-2xl font-bold text-white">Sviluppo Siti Web ed E-Commerce Completi</h3>
-                            
                             <p class="text-slate-300 text-sm leading-relaxed">
                                 Progettazione e realizzazione end-to-end di piattaforme digitali vetrina ed e-commerce strutturati (specialmente per il settore retail e abbigliamento).
                             </p>
-
                             <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
-                                    <span>Configurazione completa domini, server, DNS, protocolli e caselle email aziendali.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
-                                    <span>Creazione e strutturazione cataloghi prodotti e formazione diretta del personale al back office.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberCyan mt-0.5"></i>
-                                    <span>Social Media Marketing, grafiche dedicate e attivazione/monitoraggio campagne ADV.</span>
-                                </li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Configurazione completa domini, server, DNS, protocolli e caselle email aziendali.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Creazione cataloghi prodotti e formazione diretta del personale al back office.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Social Media Marketing, grafiche dedicate e campagne ADV.</span></li>
                             </ul>
-
                             <div class="pt-4 flex flex-wrap gap-2 font-mono text-[11px]">
                                 <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">PHP / Laravel</span>
                                 <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">JavaScript ES6</span>
                                 <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">HTML5 / CSS3</span>
-                                <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">CMS E-Commerce</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Visual Code Canvas Feature Box -->
                     <div class="lg:col-span-5">
                         <div class="hud-border p-6 rounded-2xl bg-cyberBlack/90 font-mono text-xs space-y-4 border-slate-800">
                             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -380,16 +348,12 @@
                                 </div>
                                 <span class="text-slate-500 text-[10px]">ECommerceController.php</span>
                             </div>
-
                             <pre class="text-slate-300 overflow-x-auto leading-relaxed">
 <span class="text-purple-400">namespace</span> App\Http\Controllers;
 
 <span class="text-blue-400">class</span> <span class="text-yellow-300">ECommerceEngine</span> {
     <span class="text-purple-400">public function</span> <span class="text-blue-300">deployStore</span>($client) {
-        <span class="text-slate-500">// Setup Domain & Catalog</span>
         $catalog = $this->buildCatalog();
-        $payment = $this->setupGateways();
-        
         <span class="text-purple-400">return</span> response()->json([
             <span class="text-green-300">'status'</span> => <span class="text-green-300">'ONLINE'</span>,
             <span class="text-green-300">'developer'</span> => <span class="text-green-300">'Luca Sessa'</span>
@@ -398,44 +362,29 @@
 }</pre>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </section>
 
         <!-- STORY CHAPTER 02: LOGISTICS & SUPPLY CHAIN -->
         <section id="story-2" class="py-32 px-6 relative bg-cyberDark/50">
             <div class="max-w-6xl mx-auto space-y-16">
-                
                 <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberViolet/20 pb-6 gap-4">
                     <div>
                         <span class="text-cyberViolet font-mono text-xs tracking-widest uppercase">// CAPITOLO 02</span>
                         <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Logistics & Supply Chain</h2>
                     </div>
-                    <div class="font-mono text-xs text-slate-400">
-                        Gestione Giacenze, Reportistica DDT & Logistica GDO
-                    </div>
+                    <div class="font-mono text-xs text-slate-400">Gestione Giacenze, Reportistica DDT & Logistica GDO</div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                    
                     <div class="lg:col-span-5 order-2 lg:order-1">
                         <div class="hud-border p-6 rounded-2xl bg-slate-950 space-y-4 border-cyberViolet/30">
                             <h4 class="font-mono text-xs text-cyberViolet tracking-wider">// CAPACITÀ OPERATIVE D'ATTACCO</h4>
                             <div class="space-y-3 font-mono text-xs">
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
-                                    <span>Pianificazione Viaggi Autisti</span>
-                                    <span class="text-cyberViolet font-bold">Nord Italia</span>
-                                </div>
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
-                                    <span>Controllo Giacenze & Pedane</span>
-                                    <span class="text-cyberViolet font-bold">100% Preciso</span>
-                                </div>
-                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center">
-                                    <span>Piattaforme Aeree PLE</span>
-                                    <span class="text-cyberGold font-bold">Patente 2025</span>
-                                </div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Pianificazione Viaggi Autisti</span><span class="text-cyberViolet font-bold">Nord Italia</span></div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Controllo Giacenze & Pedane</span><span class="text-cyberViolet font-bold">100% Preciso</span></div>
+                                <div class="p-3 rounded bg-slate-900 border border-slate-800 flex justify-between items-center"><span>Piattaforme Aeree PLE</span><span class="text-cyberGold font-bold">Patente 2025</span></div>
                             </div>
                         </div>
                     </div>
@@ -443,88 +392,86 @@
                     <div class="lg:col-span-7 order-1 lg:order-2 space-y-6">
                         <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberViolet/30">
                             <div class="flex items-center justify-between">
-                                <span class="px-3 py-1 rounded bg-cyberViolet/10 text-cyberViolet font-mono text-xs border border-cyberViolet/30">LOGISTICS & WAREHOUSE MANAGEMENT</span>
+                                <span class="px-3 py-1 rounded bg-cyberViolet/10 text-cyberViolet font-mono text-xs border border-cyberViolet/30">LOGISTICS & WAREHOUSE</span>
                                 <i class="fas fa-boxes-packing text-2xl text-cyberViolet"></i>
                             </div>
-
                             <h3 class="text-2xl font-bold text-white">Addetto Gestione Bancali & Logistica di Magazzino</h3>
-                            
                             <p class="text-slate-300 text-sm leading-relaxed">
-                                Controllo rigoroso del flusso di merci e bancali in entrata/uscita, ottimizzazione dei percorsi di trasporto e gestione della documentazione di carico.
+                                Controllo rigoroso del flusso di merci e bancali in entrata/uscita, ottimizzazione percorsi di trasporto e gestione documentazione carico.
                             </p>
-
                             <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
-                                    <span>Conteggio analitico bancali con stesura di reportistica mensile dettagliata per la direzione.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
-                                    <span>Verifica corrispondenza DDT e controllo merce/pedane in fase di scarico merci.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
-                                    <span>Prenotazione carichi/scarichi tramite portali logistici dedicati per aziende e Grande Distribuzione Organizzata (GDO).</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberViolet mt-0.5"></i>
-                                    <span>Movimentazione con transpallet manuali/elettrici e consegne con furgone 4 bancali (Patente B).</span>
-                                </li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Conteggio analitico bancali con reportistica mensile dettagliata.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Verifica corrispondenza DDT e controllo merce in fase di scarico.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberViolet mt-0.5"></i><span>Prenotazione carichi tramite portali GDO.</span></li>
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- ================================================================= -->
+        <!-- COLPO DI SCENA: CYBER-LOCKDOWN PARALLAX SEQUENCE (PIN & 3D ZOOM)  -->
+        <!-- ================================================================= -->
+        <section id="matrix-lockdown" class="h-screen flex items-center justify-center relative overflow-hidden bg-cyberBlack">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyberViolet/10 to-transparent pointer-events-none"></div>
+            
+            <div class="max-w-4xl mx-auto px-6 w-full relative z-10 text-center space-y-12">
+                <div class="space-y-3">
+                    <span class="text-cyberGold font-mono text-xs tracking-widest uppercase animate-pulse">// PROTOCOLLO DI LOCKDOWN // ATTIVATO</span>
+                    <h2 class="text-4xl sm:text-6xl font-black text-white tracking-tight">Core Processing System</h2>
+                    <p class="text-slate-400 font-mono text-xs max-w-lg mx-auto">Sincronizzazione in corso tra competenze tecniche digitali e flussi operativi fisici.</p>
                 </div>
 
+                <!-- 3 Dynamic Hologram Cards that appear sequentially during pin -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
+                    <div class="lockdown-card hud-border p-6 rounded-2xl opacity-20 transform translate-y-10 transition-all duration-500 border-cyberCyan/40">
+                        <i class="fas fa-code text-2xl text-cyberCyan mb-3"></i>
+                        <h4 class="font-bold text-white mb-1">FULL STACK DEV</h4>
+                        <p class="text-[11px] text-slate-400">PHP, Laravel, JS, Database & E-Commerce architecture.</p>
+                    </div>
+
+                    <div class="lockdown-card hud-border p-6 rounded-2xl opacity-20 transform translate-y-10 transition-all duration-500 border-cyberViolet/40">
+                        <i class="fas fa-truck-fast text-2xl text-cyberViolet mb-3"></i>
+                        <h4 class="font-bold text-white mb-1">LOGISTICS</h4>
+                        <p class="text-[11px] text-slate-400">Bancali, DDT, GDO portals & fleet coordination.</p>
+                    </div>
+
+                    <div class="lockdown-card hud-border p-6 rounded-2xl opacity-20 transform translate-y-10 transition-all duration-500 border-cyberGold/40">
+                        <i class="fas fa-shield-halved text-2xl text-cyberGold mb-3"></i>
+                        <h4 class="font-bold text-white mb-1">OPERATIONS</h4>
+                        <p class="text-[11px] text-slate-400">Front office, cassa, airport ground coordination.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- STORY CHAPTER 03: OPERATIONS & FRONT OFFICE -->
         <section id="story-3" class="py-32 px-6 relative">
             <div class="max-w-6xl mx-auto space-y-16">
-                
                 <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-cyberGold/20 pb-6 gap-4">
                     <div>
                         <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// CAPITOLO 03</span>
                         <h2 class="text-4xl sm:text-5xl font-extrabold text-white mt-1">Operations & Front Office</h2>
                     </div>
-                    <div class="font-mono text-xs text-slate-400">
-                        Coordinamento Operativo & Gestione Parcheggio Aeroportuale
-                    </div>
+                    <div class="font-mono text-xs text-slate-400">Coordinamento Operativo & Gestione Parcheggio Aeroportuale</div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                    
                     <div class="lg:col-span-7 space-y-6">
                         <div class="hud-border p-8 rounded-2xl space-y-6 tilt-card border-cyberGold/30">
                             <div class="flex items-center justify-between">
-                                <span class="px-3 py-1 rounded bg-cyberGold/10 text-cyberGold font-mono text-xs border border-cyberGold/30">AIRPORT OPERATIONS & FRONT OFFICE</span>
+                                <span class="px-3 py-1 rounded bg-cyberGold/10 text-cyberGold font-mono text-xs border border-cyberGold/30">AIRPORT OPERATIONS</span>
                                 <i class="fas fa-headset text-2xl text-cyberGold"></i>
                             </div>
-
                             <h3 class="text-2xl font-bold text-white">Addetto Front Office & Coordinamento Operativo</h3>
-                            
                             <p class="text-slate-300 text-sm leading-relaxed">
                                 Controllo delle operation di terra in strutture aeroportuali ad altissimo traffico: gestione flussi clienti, cassa, logistica navette e monitoraggio voli.
                             </p>
-
                             <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
-                                    <span>Accettazione clienti e registrazione completa veicoli (targa, modello, tempi di sosta).</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
-                                    <span>Monitoraggio arrivi voli in tempo reale per la preparazione e movimentazione tempestiva delle auto.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
-                                    <span>Gestione incassi (contanti/POS), fatturazione, prima nota e riconciliazione giornaliera gestionale.</span>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <i class="fas fa-check-circle text-cyberGold mt-0.5"></i>
-                                    <span>Coordinamento del personale via radio per navette aeroporto, gestione bagagli e flussi veicolari.</span>
-                                </li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Accettazione clienti e registrazione veicoli (targa, modello, tempi di sosta).</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Gestione incassi contanti/POS, fatturazione e riconciliazione giornaliera.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberGold mt-0.5"></i><span>Coordinamento personale via radio per navette e flussi veicolari.</span></li>
                             </ul>
                         </div>
                     </div>
@@ -534,28 +481,23 @@
                             <i class="fas fa-plane-departure text-4xl text-cyberGold animate-bounce"></i>
                             <h4 class="text-lg font-bold text-white font-mono">Precisione sotto Pressione</h4>
                             <p class="text-xs text-slate-400 leading-relaxed font-mono">
-                                L'esperienza nell'hub aeroportuale ha consolidato una spiccata attitudine al problem solving rapido, comunicazione radio efficace e gestione contabile senza errori.
+                                L'esperienza nell'hub aeroportuale ha consolidato una spiccata attitudine al problem solving rapido e comunicazione radio efficace.
                             </p>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </section>
 
-        <!-- CERTIFICATIONS SECTION & MODAL TRIGGER -->
+        <!-- CERTIFICATIONS SECTION -->
         <section id="certifications" class="py-32 px-6 relative bg-cyberDark/60">
             <div class="max-w-6xl mx-auto space-y-16">
-                
                 <div class="text-center space-y-3">
                     <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// 04. FORMAZIONE UFFICIALE & ATTESTATI</span>
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-white">Certificazioni di Valore</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-                    
-                    <!-- Main Feature: Aulab Hackademy Card -->
                     <div class="md:col-span-8 hud-border hud-border-gold p-8 rounded-2xl relative overflow-hidden space-y-6 tilt-card">
                         <div class="flex justify-between items-start">
                             <div>
@@ -565,20 +507,17 @@
                             </div>
                             <i class="fas fa-award text-4xl text-cyberGold"></i>
                         </div>
-
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            Formazione intensiva teorico-pratica incentrata sullo sviluppo di web app complete: architetture MVC in PHP/Laravel, manipolazione DOM avanzata in JavaScript, database SQL e metodologia Agile (Scrum).
+                            Formazione intensiva teorico-pratica incentrata sullo sviluppo di web app complete: architetture MVC in PHP/Laravel, JavaScript ES6, database SQL e metodologia Agile.
                         </p>
-
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
                             <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-html5 text-orange-500 mr-1"></i> HTML5 & CSS3</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 mr-1"></i> JavaScript ES6</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-js text-yellow-400 mr-1"></i> JavaScript</div>
                             <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-php text-indigo-400 mr-1"></i> PHP</div>
                             <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fab fa-laravel text-red-500 mr-1"></i> Laravel</div>
-                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-database text-blue-400 mr-1"></i> SQL Database</div>
+                            <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-database text-blue-400 mr-1"></i> SQL DB</div>
                             <div class="p-2.5 rounded bg-slate-900 border border-slate-800 text-center"><i class="fas fa-users-gear text-green-400 mr-1"></i> Agile Scrum</div>
                         </div>
-
                         <div class="flex flex-wrap items-center justify-between pt-4 border-t border-white/10 gap-4 font-mono text-xs">
                             <span class="text-slate-400">ID CERTIFICATO: <strong class="text-white">79426108</strong> (8 Agosto 2023)</span>
                             <button onclick="openCertModal()" class="px-5 py-2.5 rounded bg-cyberGold text-black font-bold hover:bg-yellow-400 transition-colors flex items-center gap-2">
@@ -587,125 +526,80 @@
                         </div>
                     </div>
 
-                    <!-- Side Certificates -->
                     <div class="md:col-span-4 space-y-6">
-                        
                         <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
                             <span class="text-xs font-mono text-cyberCyan">ABILITAZIONE OPERATIVA 2025</span>
                             <h4 class="text-lg font-bold text-white">Patente Piattaforme Aeree (PLE)</h4>
                             <p class="text-xs text-slate-400">Abilitazione alla conduzione di macchinari per il lavoro in quota.</p>
                         </div>
-
                         <div class="hud-border p-6 rounded-2xl border-slate-800 space-y-2">
                             <span class="text-xs font-mono text-emerald-400">DIPLOMA DI STATO 2017</span>
                             <h4 class="text-lg font-bold text-white">Diploma Alberghiero</h4>
                             <p class="text-xs text-slate-400">Forte orientamento alla comunicazione e al servizio clienti.</p>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         </section>
 
         <!-- SKILLS MATRIX RADAR -->
         <section id="skills" class="py-32 px-6 relative">
             <div class="max-w-6xl mx-auto space-y-16">
-                
                 <div class="text-center space-y-3">
                     <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 05. SKILLS MATRIX & TECH RADAR</span>
                     <h2 class="text-4xl sm:text-5xl font-extrabold text-white">Mappa delle Competenze</h2>
                 </div>
 
-                <!-- Category Filters -->
                 <div class="flex justify-center flex-wrap gap-3 font-mono text-xs">
                     <button onclick="filterSkills('all')" class="skill-btn px-4 py-2 rounded hud-border text-cyberCyan active">TUTTE LE SKILLS</button>
                     <button onclick="filterSkills('web')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">WEB DEVELOPMENT</button>
                     <button onclick="filterSkills('logistics')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">LOGISTICA & GDO</button>
-                    <button onclick="filterSkills('ops')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">OPERATIONS & FRONT OFFICE</button>
+                    <button onclick="filterSkills('ops')" class="skill-btn px-4 py-2 rounded hud-border text-slate-400">OPERATIONS</button>
                 </div>
 
                 <div id="skills-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
-                    
-                    <!-- Web Dev Skill Card -->
                     <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">HTML5 / CSS3 / Tailwind</span>
-                            <span class="text-cyberCyan">95%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberCyan w-[95%]"></div>
-                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">HTML5 / CSS3 / Tailwind</span><span class="text-cyberCyan">95%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberCyan w-[95%]"></div></div>
                         <p class="text-[11px] text-slate-400">Layout moderni, responsive design, animations & Glassmorphism.</p>
                     </div>
 
                     <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">PHP & Laravel</span>
-                            <span class="text-cyberCyan">88%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberCyan w-[88%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Architetture MVC, controller, routing, ORM Eloquent e relazioni SQL.</p>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">PHP & Laravel</span><span class="text-cyberCyan">88%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberCyan w-[88%]"></div></div>
+                        <p class="text-[11px] text-slate-400">Architetture MVC, controller, routing e relazioni SQL.</p>
                     </div>
 
                     <div class="skill-card web hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">JavaScript ES6+</span>
-                            <span class="text-cyberCyan">85%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberCyan w-[85%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Manipolazione DOM, Fetch API, chiamate asincrone ed eventi interattivi.</p>
-                    </div>
-
-                    <!-- Logistics Cards -->
-                    <div class="skill-card logistics hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">Gestione Giacenze & DDT</span>
-                            <span class="text-cyberViolet">92%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberViolet w-[92%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Verifica documenti di trasporto, giacenze e conteggi pedane mensili.</p>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">JavaScript ES6+</span><span class="text-cyberCyan">85%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberCyan w-[85%]"></div></div>
+                        <p class="text-[11px] text-slate-400">Manipolazione DOM, Fetch API ed eventi interattivi.</p>
                     </div>
 
                     <div class="skill-card logistics hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">Pianificazione Viaggi Autisti</span>
-                            <span class="text-cyberViolet">90%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberViolet w-[90%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Ottimizzazione rotte di consegna Nord Italia e slot di scarico GDO.</p>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">Gestione Giacenze & DDT</span><span class="text-cyberViolet">92%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberViolet w-[92%]"></div></div>
+                        <p class="text-[11px] text-slate-400">Verifica documenti di trasporto e conteggi pedane.</p>
                     </div>
 
-                    <!-- Ops Cards -->
+                    <div class="skill-card logistics hud-border p-6 rounded-2xl space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">Pianificazione Viaggi</span><span class="text-cyberViolet">90%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberViolet w-[90%]"></div></div>
+                        <p class="text-[11px] text-slate-400">Ottimizzazione rotte di consegna Nord Italia e slot GDO.</p>
+                    </div>
+
                     <div class="skill-card ops hud-border p-6 rounded-2xl space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                            <span class="font-bold text-white text-sm">Gestione Cassa & Prima Nota</span>
-                            <span class="text-cyberGold">94%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
-                            <div class="h-full bg-cyberGold w-[94%]"></div>
-                        </div>
-                        <p class="text-[11px] text-slate-400">Riconciliazione incassi POS/contanti e controllo gestionale.</p>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3"><span class="font-bold text-white text-sm">Gestione Cassa & POS</span><span class="text-cyberGold">94%</span></div>
+                        <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden"><div class="h-full bg-cyberGold w-[94%]"></div></div>
+                        <p class="text-[11px] text-slate-400">Riconciliazione incassi e controllo gestionale.</p>
                     </div>
-
                 </div>
-
             </div>
         </section>
 
         <!-- CONTACT SECTION -->
         <section id="contact" class="py-32 px-6 relative bg-cyberDark/80">
             <div class="max-w-4xl mx-auto hud-border p-8 sm:p-12 rounded-3xl space-y-10 border-cyberCyan/40">
-                
                 <div class="text-center space-y-3">
                     <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 06. CONTATTO DIRETTO</span>
                     <h2 class="text-4xl font-extrabold text-white">Avvia un Canale di Comunicazione</h2>
@@ -732,7 +626,6 @@
                     </div>
                 </div>
 
-                <!-- Interactive Message Form -->
                 <form id="contact-form" onsubmit="handleForm(event)" class="space-y-4 font-mono text-xs">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input type="text" placeholder="Nome / Azienda" required class="w-full p-4 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-cyberCyan">
@@ -743,11 +636,8 @@
                     <button type="submit" class="w-full py-4 rounded bg-gradient-to-r from-cyberCyan via-blue-600 to-cyberViolet text-black font-bold tracking-wider hover:shadow-[0_0_20px_rgba(0,243,255,0.5)] transition-all">
                         <i class="fas fa-paper-plane mr-2"></i> INVIA MESSAGGIO
                     </button>
-                    <div id="form-status" class="hidden text-center text-cyberCyan pt-2">
-                        ✓ Messaggio inviato con successo!
-                    </div>
+                    <div id="form-status" class="hidden text-center text-cyberCyan pt-2">✓ Messaggio inviato con successo!</div>
                 </form>
-
             </div>
         </section>
 
@@ -759,10 +649,9 @@
         <p class="text-[10px] text-slate-600 mt-1">Sviluppato con Three.js, GSAP ScrollTrigger & Web Audio API</p>
     </footer>
 
-    <!-- AULAB DEDICATED CERTIFICATE INSPECTOR MODAL -->
+    <!-- AULAB CERTIFICATE MODAL -->
     <div id="cert-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl hidden opacity-0 transition-opacity duration-300">
         <div class="hud-border hud-border-gold max-w-2xl w-full p-8 rounded-3xl space-y-6 relative bg-cyberBlack text-slate-100">
-            
             <button onclick="closeCertModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center font-mono font-bold">✕</button>
 
             <div class="flex items-center gap-4">
@@ -775,7 +664,6 @@
                 </div>
             </div>
 
-            <!-- Authentic Certificate Yellow Badge Box -->
             <div class="bg-yellow-400 p-6 rounded-2xl text-black font-mono space-y-4 shadow-2xl">
                 <div class="flex justify-between items-center border-b-2 border-black pb-3">
                     <span class="font-black text-xl tracking-wider">IN CODE WE TRUST</span>
@@ -785,22 +673,17 @@
                 <div class="space-y-1 text-xs">
                     <p>Si attesta che lo studente <strong>LUCA SESSA</strong> ha conseguito con successo gli obiettivi del corso Hackademy.</p>
                     <p class="pt-2"><strong>DURATA CORSO:</strong> <span id="cert-hours-counter" class="text-lg font-black">0</span> ORE INTENSIVE</p>
-                    <p><strong>COMPETENZE ACQUISITE:</strong> HTML, CSS, JavaScript, PHP, Framework Laravel e Metodologie Agili (Scrum).</p>
+                    <p><strong>COMPETENZE ACQUISITE:</strong> HTML, CSS, JavaScript, PHP, Framework Laravel e Metodologie Agili.</p>
                     <p><strong>CODICE DI VERIFICA:</strong> <span class="bg-black text-yellow-400 px-2 py-0.5 rounded font-bold">79426108</span></p>
                     <p><strong>DATA DI RILASCIO:</strong> 8 Agosto 2023</p>
                 </div>
 
-                <div class="text-right text-[11px] font-bold border-t border-black/30 pt-2">
-                    Giancarlo Valente — CTO e Co-founder aulab
-                </div>
+                <div class="text-right text-[11px] font-bold border-t border-black/30 pt-2">Giancarlo Valente — CTO e Co-founder aulab</div>
             </div>
 
             <div class="flex justify-end pt-2">
-                <button onclick="closeCertModal()" class="px-6 py-2.5 rounded hud-border hud-border-gold text-cyberGold font-mono text-xs font-bold hover:bg-cyberGold/20 transition-all">
-                    CHIUDI ISPEZIONE
-                </button>
+                <button onclick="closeCertModal()" class="px-6 py-2.5 rounded hud-border hud-border-gold text-cyberGold font-mono text-xs font-bold hover:bg-cyberGold/20 transition-all">CHIUDI ISPEZIONE</button>
             </div>
-
         </div>
     </div>
 
@@ -825,7 +708,6 @@
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             const now = audioCtx.currentTime;
 
             if (type === 'click') {
@@ -869,29 +751,16 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Central Complex Wireframe Object
             const coreGeo = new THREE.IcosahedronGeometry(8, 2);
-            const coreMat = new THREE.MeshBasicMaterial({
-                color: 0x00f3ff,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.35
-            });
+            const coreMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff, wireframe: true, transparent: true, opacity: 0.35 });
             cyberCoreMesh = new THREE.Mesh(coreGeo, coreMat);
             scene.add(cyberCoreMesh);
 
-            // Surrounding Torus Knot Ring
             const torusGeo = new THREE.TorusKnotGeometry(14, 0.6, 120, 16);
-            const torusMat = new THREE.MeshBasicMaterial({
-                color: 0x7000ff,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.25
-            });
+            const torusMat = new THREE.MeshBasicMaterial({ color: 0x7000ff, wireframe: true, transparent: true, opacity: 0.25 });
             torusKnotMesh = new THREE.Mesh(torusGeo, torusMat);
             cyberCoreMesh.add(torusKnotMesh);
 
-            // Floating Particle Field Stream
             const particleCount = 1200;
             const positions = new Float32Array(particleCount * 3);
             for (let i = 0; i < particleCount * 3; i++) {
@@ -899,17 +768,10 @@
             }
             const particleGeo = new THREE.BufferGeometry();
             particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-            const particleMat = new THREE.PointsMaterial({
-                size: 0.18,
-                color: 0x00f3ff,
-                transparent: true,
-                opacity: 0.7
-            });
+            const particleMat = new THREE.PointsMaterial({ size: 0.18, color: 0x00f3ff, transparent: true, opacity: 0.7 });
             particleStreamMesh = new THREE.Points(particleGeo, particleMat);
             scene.add(particleStreamMesh);
 
-            // PointLights
             const light1 = new THREE.PointLight(0x00f3ff, 2, 100);
             light1.position.set(10, 10, 10);
             scene.add(light1);
@@ -932,7 +794,6 @@
             mouseX = (e.clientX - window.innerWidth / 2) * 0.0008;
             mouseY = (e.clientY - window.innerHeight / 2) * 0.0008;
 
-            // Custom Cursor Position Update
             const dot = document.getElementById('cursor-dot');
             const ring = document.getElementById('cursor-ring');
             dot.style.left = `${e.clientX}px`;
@@ -943,27 +804,19 @@
 
         function animateThreeJS() {
             requestAnimationFrame(animateThreeJS);
-
-            // Core Rotations
             cyberCoreMesh.rotation.y += 0.003;
             cyberCoreMesh.rotation.x += 0.0015;
-
             torusKnotMesh.rotation.z -= 0.004;
-
-            // Mouse Reaction
             cyberCoreMesh.rotation.y += mouseX * 0.2;
             cyberCoreMesh.rotation.x += mouseY * 0.2;
-
             particleStreamMesh.rotation.y -= 0.0005;
-
             renderer.render(scene, camera);
         }
 
-        // --- 3. GSAP SCROLL & CAMERA PARALLAX CONTROL ---
+        // --- 3. GSAP SCROLL & LOCKDOWN SEQUENCE ---
         function initGSAP() {
             gsap.registerPlugin(ScrollTrigger);
 
-            // Scroll percentage indicator
             ScrollTrigger.create({
                 trigger: "body",
                 start: "top top",
@@ -974,42 +827,28 @@
                 }
             });
 
-            // Sincronizzazione Camera 3D con lo scroll
-            gsap.to(camera.position, {
+            // Timeline interattiva per il blocco (Lockdown 3D)
+            const lockdownTl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: "#story-1",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                z: 22,
-                y: -4
+                    trigger: "#matrix-lockdown",
+                    start: "top top",
+                    end: "+=1500",
+                    pin: true,
+                    scrub: 1,
+                    anticipatePin: 1
+                }
             });
 
-            gsap.to(camera.position, {
-                scrollTrigger: {
-                    trigger: "#story-2",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                z: 32,
-                x: 6
-            });
-
-            gsap.to(camera.position, {
-                scrollTrigger: {
-                    trigger: "#story-3",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: 1
-                },
-                z: 26,
-                x: -6
-            });
+            // Zoom drammatico del nucleo 3D e comparsa delle card in sequenza
+            lockdownTl.to(cyberCoreMesh.scale, { x: 1.8, y: 1.8, z: 1.8, duration: 1 })
+                      .to(camera.position, { z: 16, duration: 1 }, 0)
+                      .to('.lockdown-card:nth-child(1)', { opacity: 1, y: 0, duration: 0.8 }, 0.2)
+                      .to('.lockdown-card:nth-child(2)', { opacity: 1, y: 0, duration: 0.8 }, 0.5)
+                      .to('.lockdown-card:nth-child(3)', { opacity: 1, y: 0, duration: 0.8 }, 0.8)
+                      .to(cyberCoreMesh.scale, { x: 1, y: 1, z: 1, duration: 1 }, 1.2);
         }
 
-        // --- 4. 3D GLASS TILT CARDS LOGIC ---
+        // --- 4. TILT CARDS & ALTRI EFFETTI ---
         function initTiltCards() {
             const cards = document.querySelectorAll('.tilt-card');
             cards.forEach(card => {
@@ -1017,30 +856,23 @@
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
                     const rotateX = ((y - centerY) / centerY) * -10;
                     const rotateY = ((x - centerX) / centerX) * 10;
-
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
-
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
                 });
-
                 card.addEventListener('mouseenter', () => playSynthSound('hover'));
             });
         }
 
-        // --- 5. SKILLS MATRIX FILTERING ---
         function filterSkills(category) {
             playSynthSound('click');
             const btns = document.querySelectorAll('.skill-btn');
             btns.forEach(b => b.classList.remove('active', 'text-cyberCyan'));
-
             event.target.classList.add('active', 'text-cyberCyan');
 
             const cards = document.querySelectorAll('.skill-card');
@@ -1053,14 +885,12 @@
             });
         }
 
-        // --- 6. CERTIFICATE INSPECTION MODAL & COUNTER ---
         function openCertModal() {
             playSynthSound('click');
             const modal = document.getElementById('cert-modal');
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
 
-            // Animate Hours Counter
             const counter = document.getElementById('cert-hours-counter');
             let count = 0;
             const target = 400;
@@ -1081,7 +911,6 @@
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
 
-        // --- 7. FORM SUBMISSION ---
         function handleForm(e) {
             e.preventDefault();
             playSynthSound('click');
@@ -1091,7 +920,6 @@
             setTimeout(() => status.classList.add('hidden'), 5000);
         }
 
-        // --- INITIALIZE ON LOAD ---
         window.onload = function() {
             initThreeJS();
             animateThreeJS();
