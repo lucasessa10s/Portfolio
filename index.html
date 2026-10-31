@@ -515,24 +515,24 @@
             </div>
         </section>
 
-        <!-- MINI-GIOCO CYBER PONG NEON 1V1 VS AI (YOU A SINISTRA, SESSA.AI A DESTRA) -->
+        <!-- MINI-GIOCO CYBER PONG NEON 1V1 VS AI (SESSA.AI A SINISTRA, YOU A DESTRA) -->
         <section id="cyber-pong" class="py-24 px-6 relative bg-cyberDark/80">
             <div class="max-w-3xl mx-auto hud-border p-6 sm:p-8 rounded-3xl space-y-6 text-center border-cyberCyan/40 bg-cyberBlack/90">
                 <div class="space-y-2">
                     <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 05. ARCADE INTERATTIVO // NEON PONG 1V1</span>
                     <h3 class="text-2xl font-bold text-white">Cyber Pong vs Sessa.AI (Primi a 3 Vincono!)</h3>
-                    <p class="text-xs text-slate-400 font-mono">Muovi il cursore o trascina il dito per muovere la tua racchetta a sinistra (Azzurra). Sessa.AI è a destra (Viola)!</p>
+                    <p class="text-xs text-slate-400 font-mono">Sessa.AI è a sinistra (Viola). Muovi il cursore o trascina il dito per controllare la tua racchetta a destra (Azzurra)!</p>
                 </div>
 
                 <div class="flex justify-center items-center gap-8 font-mono">
                     <div class="p-3 bg-slate-900 rounded border border-slate-800">
-                        <span class="block text-slate-500 text-[10px]">YOU (PLAYER)</span>
-                        <span id="pong-player-score" class="text-2xl font-bold text-cyberCyan">0</span>
+                        <span class="block text-slate-500 text-[10px]">SESSA.AI</span>
+                        <span id="pong-ai-score" class="text-2xl font-bold text-cyberViolet">0</span>
                     </div>
 
                     <div class="p-3 bg-slate-900 rounded border border-slate-800">
-                        <span class="block text-slate-500 text-[10px]">SESSA.AI</span>
-                        <span id="pong-ai-score" class="text-2xl font-bold text-cyberViolet">0</span>
+                        <span class="block text-slate-500 text-[10px]">YOU (PLAYER)</span>
+                        <span id="pong-player-score" class="text-2xl font-bold text-cyberCyan">0</span>
                     </div>
                 </div>
 
@@ -884,7 +884,7 @@
             }
         }
 
-        // --- 5. MINI-GIOCO CYBER PONG (YOU A SINISTRA, SESSA.AI A DESTRA) ---
+        // --- 5. MINI-GIOCO CYBER PONG (SESSA.AI A SINISTRA, YOU A DESTRA) ---
         let pongCanvas, pongCtx;
         let pongRunning = false;
         let playerY = 135, aiY = 135;
@@ -898,6 +898,7 @@
             if(!pongCanvas) return;
             pongCtx = pongCanvas.getContext('2d');
 
+            // Il giocatore controlla la racchetta a DESTRA (Player)
             pongCanvas.addEventListener('mousemove', (e) => {
                 const rect = pongCanvas.getBoundingClientRect();
                 const scaleY = pongCanvas.height / rect.height;
@@ -922,13 +923,13 @@
             pongCtx.fillStyle = 'rgba(0, 243, 255, 0.2)';
             pongCtx.fillRect(pongCanvas.width / 2 - 1, 0, 2, pongCanvas.height);
 
-            // Racchetta Player (Azzurra - Sinistra)
-            pongCtx.fillStyle = '#00f3ff';
-            pongCtx.fillRect(10, playerY, paddleWidth, paddleHeight);
-
-            // Racchetta Sessa.AI (Viola - Destra)
+            // Racchetta SESSA.AI (Viola - SINISTRA)
             pongCtx.fillStyle = '#7000ff';
-            pongCtx.fillRect(pongCanvas.width - 20, aiY, paddleWidth, paddleHeight);
+            pongCtx.fillRect(10, aiY, paddleWidth, paddleHeight);
+
+            // Racchetta PLAYER (Azzurra - DESTRA)
+            pongCtx.fillStyle = '#00f3ff';
+            pongCtx.fillRect(pongCanvas.width - 20, playerY, paddleWidth, paddleHeight);
 
             // Palla
             pongCtx.beginPath();
@@ -972,7 +973,7 @@
                 ballSpeedY = -ballSpeedY;
             }
 
-            // AI (Sessa.AI a Destra) segue la palla
+            // SESSA.AI (Sinistra) segue la palla
             const aiCenter = aiY + paddleHeight / 2;
             if (aiCenter < ballY - 15) {
                 aiY += 3.8;
@@ -985,30 +986,30 @@
             if (aiY < 0) aiY = 0;
             if (aiY > pongCanvas.height - paddleHeight) aiY = pongCanvas.height - paddleHeight;
 
-            // Collisione Player (Sinistra)
-            if (ballX <= 20 + paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
+            // Collisione SESSA.AI (Racchetta a Sinistra)
+            if (ballX <= 20 + paddleWidth && ballY >= aiY && ballY <= aiY + paddleHeight) {
                 ballSpeedX = -ballSpeedX * 1.05;
                 playSynthSound('hover');
             }
 
-            // Collisione Sessa.AI (Destra)
-            if (ballX >= pongCanvas.width - 20 - paddleWidth && ballY >= aiY && ballY <= aiY + paddleHeight) {
+            // Collisione PLAYER (Racchetta a Destra)
+            if (ballX >= pongCanvas.width - 20 - paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
                 ballSpeedX = -ballSpeedX * 1.05;
                 playSynthSound('hover');
             }
 
-            // Punto per Sessa.AI (Palla esce a sinistra)
+            // Punto per PLAYER (Palla esce a sinistra oltre Sessa.AI)
             if (ballX <= 0) {
-                aiScore++;
+                playerScore++;
                 updatePongScores();
                 playSynthSound('click');
                 checkWinCondition();
                 if (pongRunning) resetPongBall();
             }
 
-            // Punto per Player (Palla esce a destra)
+            // Punto per SESSA.AI (Palla esce a destra oltre Player)
             if (ballX >= pongCanvas.width) {
-                playerScore++;
+                aiScore++;
                 updatePongScores();
                 playSynthSound('click');
                 checkWinCondition();
