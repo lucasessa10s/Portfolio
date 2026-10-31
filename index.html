@@ -69,7 +69,7 @@
             color: #e2e8f0;
             overflow-x: hidden;
             cursor: none;
-            touch-action: pan-y; /* Previene zoom indesiderati su tap rapidi da mobile */
+            touch-action: pan-y;
         }
 
         #canvas-3d {
@@ -142,8 +142,10 @@
         .glow-text-gold { text-shadow: 0 0 15px rgba(255, 183, 0, 0.6); }
         .glow-text-violet { text-shadow: 0 0 15px rgba(112, 0, 255, 0.6); }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Previeni lo scroll o trascinamenti quando si gioca a Pong su Canvas */
+        #pong-canvas {
+            touch-action: none;
+        }
     </style>
 </head>
 <body class="relative min-h-screen text-slate-100 antialiased overflow-x-hidden">
@@ -189,7 +191,7 @@
                 <a href="#stack" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberViolet transition-colors"><span class="text-cyberViolet">/02</span> TECH STACK</a>
                 <a href="#certifications" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors"><span class="text-cyberGold">/03</span> CERTIFICATO AULAB</a>
                 <a href="#terminal-hacker" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberPink transition-colors"><span class="text-cyberPink">/04</span> TERMINAL CLI</a>
-                <a href="#cyber-mini-game" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberGold transition-colors"><span class="text-cyberGold">/05</span> MINI-GAME</a>
+                <a href="#cyber-pong" onclick="playSynthSound('click')" class="text-slate-400 hover:text-cyberCyan transition-colors"><span class="text-cyberCyan">/05</span> CYBER PONG</a>
             </nav>
 
             <a href="#contact" onclick="playSynthSound('click')" class="hud-border px-4 py-2 rounded text-xs font-mono font-semibold text-cyberCyan hover:bg-cyberCyan hover:text-black transition-all duration-300">
@@ -316,9 +318,9 @@
                                 Dalla configurazione iniziale del dominio e dei server DNS fino al lancio online e alla formazione del cliente sull'utilizzo del back office.
                             </p>
                             <ul class="space-y-3 font-mono text-xs text-slate-300">
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"><span>Configurazione domini, account aziendali, protocolli e caselle email dedicate.</span></i></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"><span>Impostazione, strutturazione cataloghi prodotti e gestione e-commerce (specialmente settore abbigliamento).</span></i></li>
-                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"><span>Creazione grafiche base, attivazione social media aziendali e monitoraggio campagne ADV.</span></i></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Configurazione domini, account aziendali, protocolli e caselle email dedicate.</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Impostazione, strutturazione cataloghi prodotti e gestione e-commerce (specialmente settore abbigliamento).</span></li>
+                                <li class="flex items-start gap-3"><i class="fas fa-check-circle text-cyberCyan mt-0.5"></i><span>Creazione grafiche base, attivazione social media aziendali e monitoraggio campagne ADV.</span></li>
                             </ul>
                             <div class="pt-4 flex flex-wrap gap-2 font-mono text-[11px]">
                                 <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyberCyan">PHP / Laravel</span>
@@ -477,36 +479,35 @@
             </div>
         </section>
 
-        <!-- MINI-GIOCO CYBER REFLEX TEST (FIXED MOBILE BUG) -->
-        <section id="cyber-mini-game" class="py-24 px-6 relative bg-cyberDark/80">
-            <div class="max-w-3xl mx-auto hud-border p-8 rounded-3xl space-y-6 text-center border-cyberGold/40 bg-cyberDark/90">
+        <!-- MINI-GIOCO CYBER PONG NEON 1V1 VS AI -->
+        <section id="cyber-pong" class="py-24 px-6 relative bg-cyberDark/80">
+            <div class="max-w-3xl mx-auto hud-border p-6 sm:p-8 rounded-3xl space-y-6 text-center border-cyberCyan/40 bg-cyberBlack/90">
                 <div class="space-y-2">
-                    <span class="text-cyberGold font-mono text-xs tracking-widest uppercase">// 05. GAMIFICATION // REFLEX TEST</span>
-                    <h3 class="text-2xl font-bold text-white">Test di Prontezza di Sviluppo</h3>
-                    <p class="text-xs text-slate-400 font-mono">Clicca ripetutamente sul pulsante prima dello scadere dei 5 secondi!</p>
+                    <span class="text-cyberCyan font-mono text-xs tracking-widest uppercase">// 05. ARCADE INTERATTIVO // NEON PONG 1V1</span>
+                    <h3 class="text-2xl font-bold text-white">Cyber Pong vs AI</h3>
+                    <p class="text-xs text-slate-400 font-mono">Muovi il cursore o trascina il dito per muovere la racchetta (Azzurra) e battere l'AI (Viola)!</p>
                 </div>
 
                 <div class="flex justify-center items-center gap-8 font-mono">
                     <div class="p-3 bg-slate-900 rounded border border-slate-800">
-                        <span class="block text-slate-500 text-[10px]">TIMER</span>
-                        <span id="game-timer" class="text-2xl font-bold text-cyberCyan">05.00s</span>
+                        <span class="block text-slate-500 text-[10px]">YOU (PLAYER)</span>
+                        <span id="pong-player-score" class="text-2xl font-bold text-cyberCyan">0</span>
                     </div>
 
                     <div class="p-3 bg-slate-900 rounded border border-slate-800">
-                        <span class="block text-slate-500 text-[10px]">CLICK COUNT</span>
-                        <span id="game-score" class="text-2xl font-bold text-cyberGold">0</span>
+                        <span class="block text-slate-500 text-[10px]">SESSA.AI</span>
+                        <span id="pong-ai-score" class="text-2xl font-bold text-cyberViolet">0</span>
                     </div>
                 </div>
 
-                <div>
-                    <!-- Utilizzato touchstart/click protetto per evitare zoom indesiderati su iPhone -->
-                    <button id="game-btn" type="button" onclick="handleGameClick()" class="px-10 py-5 rounded-2xl bg-gradient-to-r from-cyberGold via-amber-500 to-cyberPink text-black font-mono font-black text-sm tracking-widest active:scale-95 transition-transform shadow-[0_0_20px_rgba(255,183,0,0.4)]">
-                        AVVIA TEST RAPIDITÀ
-                    </button>
+                <div class="relative flex justify-center">
+                    <canvas id="pong-canvas" width="600" height="350" class="w-full max-w-full rounded-2xl border border-cyberCyan/30 bg-cyberBlack shadow-[0_0_15px_rgba(0,243,255,0.2)]"></canvas>
                 </div>
 
-                <div id="game-rank" class="hidden text-sm font-mono text-cyberCyan pt-2">
-                    RANK SVILUPPATORE: <span id="rank-val" class="font-bold text-white">---</span>
+                <div>
+                    <button id="pong-start-btn" onclick="startPongGame()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyberCyan via-blue-600 to-cyberViolet text-black font-mono font-bold text-xs tracking-wider hover:scale-105 active:scale-95 transition-all shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                        AVVIA PARTITA PONG
+                    </button>
                 </div>
             </div>
         </section>
@@ -783,50 +784,142 @@
             }
         }
 
-        // --- 5. MINI-GIOCO CYBER REFLEX TEST (FIXED FAST TAP ZOOM BUG) ---
-        let gameActive = false;
-        let gameScore = 0;
-        let gameTime = 5.0;
-        let gameInterval = null;
+        // --- 5. MINI-GIOCO CYBER PONG 1V1 VS AI ENGINE ---
+        let pongCanvas, pongCtx;
+        let pongRunning = false;
+        let playerY = 135, aiY = 135;
+        let paddleHeight = 80, paddleWidth = 10;
+        let ballX = 300, ballY = 175;
+        let ballSpeedX = 5, ballSpeedY = 3;
+        let playerScore = 0, aiScore = 0;
 
-        function handleGameClick() {
+        function initPongCanvas() {
+            pongCanvas = document.getElementById('pong-canvas');
+            if(!pongCanvas) return;
+            pongCtx = pongCanvas.getContext('2d');
+
+            // Controls via Mouse & Touch
+            pongCanvas.addEventListener('mousemove', (e) => {
+                const rect = pongCanvas.getBoundingClientRect();
+                const scaleY = pongCanvas.height / rect.height;
+                playerY = (e.clientY - rect.top) * scaleY - paddleHeight / 2;
+            });
+
+            pongCanvas.addEventListener('touchmove', (e) => {
+                const rect = pongCanvas.getBoundingClientRect();
+                const scaleY = pongCanvas.height / rect.height;
+                if (e.touches.length > 0) {
+                    playerY = (e.touches[0].clientY - rect.top) * scaleY - paddleHeight / 2;
+                }
+            }, { passive: true });
+
+            drawPongInitial();
+        }
+
+        function drawPongInitial() {
+            pongCtx.fillStyle = '#050608';
+            pongCtx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
+
+            pongCtx.fillStyle = 'rgba(0, 243, 255, 0.2)';
+            pongCtx.fillRect(pongCanvas.width / 2 - 1, 0, 2, pongCanvas.height);
+
+            // Player Paddle
+            pongCtx.fillStyle = '#00f3ff';
+            pongCtx.fillRect(10, playerY, paddleWidth, paddleHeight);
+
+            // AI Paddle
+            pongCtx.fillStyle = '#7000ff';
+            pongCtx.fillRect(pongCanvas.width - 20, aiY, paddleWidth, paddleHeight);
+
+            // Ball
+            pongCtx.beginPath();
+            pongCtx.arc(ballX, ballY, 7, 0, Math.PI * 2);
+            pongCtx.fillStyle = '#ffb700';
+            pongCtx.fill();
+        }
+
+        function startPongGame() {
             playSynthSound('click');
-            const btn = document.getElementById('game-btn');
-            const scoreEl = document.getElementById('game-score');
-            const timerEl = document.getElementById('game-timer');
-            const rankEl = document.getElementById('game-rank');
-
-            if (!gameActive) {
-                gameActive = true;
-                gameScore = 1;
-                gameTime = 5.0;
-                scoreEl.innerText = gameScore;
-                rankEl.classList.add('hidden');
-                btn.innerText = "CLICCA RAPIDO!!";
-
-                gameInterval = setInterval(() => {
-                    gameTime -= 0.05;
-                    timerEl.innerText = `${gameTime.toFixed(2)}s`;
-
-                    if (gameTime <= 0) {
-                        clearInterval(gameInterval);
-                        gameActive = false;
-                        timerEl.innerText = "00.00s";
-                        btn.innerText = "RIPROVA TEST";
-
-                        let rank = "C - JUNIOR DEV";
-                        if (gameScore > 35) rank = "S+ MASTER FULL STACK";
-                        else if (gameScore > 25) rank = "A - SENIOR DEV";
-                        else if (gameScore > 15) rank = "B - PRO DEVELOPER";
-
-                        document.getElementById('rank-val').innerText = rank;
-                        rankEl.classList.remove('hidden');
-                    }
-                }, 50);
-            } else {
-                gameScore++;
-                scoreEl.innerText = gameScore;
+            if(!pongRunning) {
+                pongRunning = true;
+                playerScore = 0;
+                aiScore = 0;
+                updatePongScores();
+                resetPongBall();
+                document.getElementById('pong-start-btn').innerText = "PARTITA IN CORSO...";
+                requestAnimationFrame(updatePongLoop);
             }
+        }
+
+        function resetPongBall() {
+            ballX = pongCanvas.width / 2;
+            ballY = pongCanvas.height / 2;
+            ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * (4 + Math.random() * 2);
+            ballSpeedY = (Math.random() > 0.5 ? 1 : -1) * (3 + Math.random() * 2);
+        }
+
+        function updatePongScores() {
+            document.getElementById('pong-player-score').innerText = playerScore;
+            document.getElementById('pong-ai-score').innerText = aiScore;
+        }
+
+        function updatePongLoop() {
+            if (!pongRunning) return;
+
+            // Move Ball
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Bounce Top / Bottom
+            if (ballY <= 7 || ballY >= pongCanvas.height - 7) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            // AI Paddle Movement Tracking
+            const aiCenter = aiY + paddleHeight / 2;
+            if (aiCenter < ballY - 15) {
+                aiY += 3.8;
+            } else if (aiCenter > ballY + 15) {
+                aiY -= 3.8;
+            }
+
+            // Keep Paddles Inside Canvas
+            if (playerY < 0) playerY = 0;
+            if (playerY > pongCanvas.height - paddleHeight) playerY = pongCanvas.height - paddleHeight;
+            if (aiY < 0) aiY = 0;
+            if (aiY > pongCanvas.height - paddleHeight) aiY = pongCanvas.height - paddleHeight;
+
+            // Collision Player Paddle (Left)
+            if (ballX <= 20 + paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
+                ballSpeedX = -ballSpeedX * 1.05; // Aumenta velocità
+                playSynthSound('hover');
+            }
+
+            // Collision AI Paddle (Right)
+            if (ballX >= pongCanvas.width - 20 - paddleWidth && ballY >= aiY && ballY <= aiY + paddleHeight) {
+                ballSpeedX = -ballSpeedX * 1.05;
+                playSynthSound('hover');
+            }
+
+            // Score Player (Point)
+            if (ballX >= pongCanvas.width) {
+                playerScore++;
+                updatePongScores();
+                playSynthSound('click');
+                resetPongBall();
+            }
+
+            // Score AI (Point)
+            if (ballX <= 0) {
+                aiScore++;
+                updatePongScores();
+                playSynthSound('click');
+                resetPongBall();
+            }
+
+            drawPongInitial();
+
+            requestAnimationFrame(updatePongLoop);
         }
 
         // --- 6. TILT CARDS & CERT MODAL ---
@@ -890,6 +983,7 @@
             animateThreeJS();
             initGSAP();
             initTiltCards();
+            initPongCanvas();
         };
     </script>
 </body>
